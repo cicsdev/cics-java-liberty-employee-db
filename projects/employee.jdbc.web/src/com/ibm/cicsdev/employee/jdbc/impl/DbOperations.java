@@ -68,6 +68,7 @@ public class DbOperations {
 			
 			// Prepare our query, then send to the DB
 			statement = conn.prepareStatement(sqlCmd);
+			// Uppercase lastname and set as 1st query value
 			statement.setString(1, lastName.toUpperCase() + "%");
 			ResultSet rs = statement.executeQuery();
 			
@@ -247,7 +248,7 @@ public class DbOperations {
 	 */
 	public static void deleteEmployeeWithJta(Employee employee, DataSource ds) throws Exception {
 		
-		// Set up the required objects inlcuding a user transaction
+		// Set up the required objects including a user transaction
 		Connection conn = null;
 		PreparedStatement statement = null;
 		UserTransaction utx = null;
@@ -447,11 +448,11 @@ public class DbOperations {
 
 			// Set up the connection to the database
 			conn = ds.getConnection();
-			statement = conn.prepareStatement(sqlCmd);
-			
-			// Set up the SQL statement, filling in the template
-			// then execute it
+			statement = conn.prepareStatement(sqlCmd);			
+
+			// Format the SQL statement using the 14 values from the employee bean
 			populateStatement(employee, statement);
+			// Set the 15th value as the employee number 
 			statement.setString(15, employee.getEmpno());
 			statement.execute();
 			
