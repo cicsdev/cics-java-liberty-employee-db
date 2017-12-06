@@ -24,42 +24,33 @@
 			<tr>
 				<td>Employee Number</td>
 				<td><h:inputText size="6" value="#{addEmpBean.empno}"/></td>
-			</tr>
-			
+			</tr>			
 			<tr>
 				<td>First Name</td>
 				<td><h:inputText size="15" value="#{addEmpBean.firstname}"/></td>
-			</tr>
-			
+			</tr>			
 			<tr>
 				<td>Last Name</td>
 				<td><h:inputText size="15" value="#{addEmpBean.lastname}"/></td>
-			</tr>
-			
+			</tr>			
 			<tr>
 				<td>Gender</td>
 				<td><h:inputText size="1" value="#{addEmpBean.gender}"/></td>
-			</tr>
-			
+			</tr>			
 			<tr>
 				<td>Job Title</td>
 				<td><h:inputText size="15" value="#{addEmpBean.job}"/></td>
-			</tr>
-			
+			</tr>			
 			<!--  Button used to trigger the actual update, passing in the values ->
 			<-    of the input fields                                            -->
 			<tr>
 				<td><h:commandButton value="Add employee" action="#{addEmpBean.createInDb}"/></td>
-			</tr>
-			
+			</tr>			
 			<!--  Button used to go back to master.xhtml -->
 			<tr>
 				<td><h:commandButton value="Go back" action="#{addEmpBean.goBack}"/></td>
-			</tr>
-			
-			
-		</table>
-	
+			</tr>			
+		</table>	
 	</h:form>
 </h:body>
 </html>

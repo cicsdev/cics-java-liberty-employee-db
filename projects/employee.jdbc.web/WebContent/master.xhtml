@@ -27,53 +27,45 @@
 		<!--  Table populated with all records matching the search results.     ->
 		<-    Contains a column for editing the rows as well as deleting them. -->
 		<h:dataTable id="tbl" var="emp" value="#{empListBean.allResults}" rows="#{empListBean.lastRow}" first="#{empListBean.firstRow}"
-			rendered="#{not empty empListBean.allResults}" border="1"	cellpadding="5">
-			
-			
+			rendered="#{not empty empListBean.allResults}" border="1"	cellpadding="5">					
 			<h:column>
 				<f:facet name="header">Employee Number</f:facet>#{emp.empno}
-			</h:column>
-			
+			</h:column>			
 			<h:column>
 				<f:facet name="header">First Name</f:facet>
 				<h:inputText value = "#{emp.firstname}"
 		               size = "10" rendered = "#{emp.canEdit}" />
 		            <h:outputText value = "#{emp.firstname}"
 		               rendered = "#{not emp.canEdit}" />
-			</h:column>
-			
+			</h:column>			
 			<h:column>
 				<f:facet name="header">Last Name</f:facet>
 				<h:inputText value = "#{emp.lastname}"
 		               size = "10" rendered = "#{emp.canEdit}" />
 		            <h:outputText value = "#{emp.lastname}"
 		               rendered = "#{not emp.canEdit}" />
-			</h:column>
-			
+			</h:column>			
 			<h:column>
 				<f:facet name="header">Gender</f:facet>
 				<h:inputText value = "#{emp.sex}"
 		               size = "10" rendered = "#{emp.canEdit}" />
 		            <h:outputText value = "#{emp.sex}"
 		               rendered = "#{not emp.canEdit}" />
-			</h:column>
-			
+			</h:column>			
 			<h:column>
 				<f:facet name="header">Phone Number</f:facet>
 				<h:inputText value = "#{emp.phoneno}"
 		               size = "10" rendered = "#{emp.canEdit}" />
 		            <h:outputText value = "#{emp.phoneno}"
 		               rendered = "#{not emp.canEdit}" />
-			</h:column>
-			
+			</h:column>			
 			<h:column>
 				<f:facet name="header">Job Title</f:facet>
 				<h:inputText value = "#{emp.job}"
 		               size = "10" rendered = "#{emp.canEdit}" />
 		            <h:outputText value = "#{emp.job}"
 		               rendered = "#{not emp.canEdit}" />
-			</h:column>
-			
+			</h:column>			
 			<!--  Edit button. Will change to a save button when pressed -->
 			<h:column>
                <f:facet name = "header">Edit</f:facet>
@@ -106,15 +98,13 @@
                   <f:setPropertyActionListener
                      target="#{empListBean.emp}" value="#{emp}"/>
                   </h:commandButton>
-            </h:column>			
-            	
+            </h:column>            	
 		</h:dataTable>
 
 		<!--  Button that will take the user to addEmp.xhtml -->
 		<table><tr>
 			<td><h:commandButton value="Add new employee" action="#{empListBean.goToAddScreen}" rendered="#{empListBean.dbAvailable}" /></td>
 		</tr></table>
-
 
 	</h:form>
 
