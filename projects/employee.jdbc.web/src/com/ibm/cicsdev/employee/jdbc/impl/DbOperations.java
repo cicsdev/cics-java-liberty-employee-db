@@ -59,9 +59,9 @@ public class DbOperations {
 		
 		try {
 			// The SQL command used to find our employees list
-			String sqlCmd = "SELECT E.BIRTHDATE, E.BONUS, E.COMM, E.EDLEVEL, E.EMPNO, E.FIRSTNME, E.HIREDATE, E.JOB, E.LASTNAME, E.MIDINIT, E.PHONENO, "
-					+ "E.SALARY, E.SEX, E.WORKDEPT FROM EMP AS E "
-					+ "WHERE E.LASTNAME LIKE ? ORDER BY E.LASTNAME, E.EMPNO";
+			String sqlCmd = "SELECT BIRTHDATE, BONUS, COMM, EDLEVEL, EMPNO, FIRSTNME, HIREDATE, JOB, LASTNAME, MIDINIT, PHONENO, "
+					+ "SALARY, SEX, WORKDEPT FROM EMP "
+					+ "WHERE LASTNAME LIKE ? ORDER BY LASTNAME, EMPNO";
 			
 			// Connect to the data source
 			conn = ds.getConnection();
@@ -384,10 +384,14 @@ public class DbOperations {
 			conn = ds.getConnection();
 			statement = conn.prepareStatement(sqlCmd);
 			
+			// Uppercase the Gender
+			employee.setSex(employee.getSex().toUpperCase());
+			
 			// Format the statement using the 14 values from the employee bean
 			populateStatement(employee, statement);
 			// Set the 15th value as the employee number 
 			statement.setString(15, employee.getEmpno());
+
 			statement.execute();
 			
 			// Write some basic information about the update to a TSQ
@@ -449,6 +453,9 @@ public class DbOperations {
 			// Set up the connection to the database
 			conn = ds.getConnection();
 			statement = conn.prepareStatement(sqlCmd);			
+			
+			// Uppercase the Gender
+			employee.setSex(employee.getSex().toUpperCase());
 
 			// Format the SQL statement using the 14 values from the employee bean
 			populateStatement(employee, statement);
