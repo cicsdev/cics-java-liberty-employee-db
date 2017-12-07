@@ -1,11 +1,7 @@
-# cics-java-liberty-employee
-Sample JDBC application using DB2 employee table
-
-
 cics-java-liberty-employee
 =====================
 
-Sample Java EE web application demonstrating how to use JDBC in a Java application.
+Sample Java EE web application demonstrating how to use JDBC and to control data base commits from a CICS Java application.
 
 ## Repository structure
 
