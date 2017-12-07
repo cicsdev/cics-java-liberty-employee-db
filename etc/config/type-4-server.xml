@@ -16,7 +16,7 @@
 				    currentSchema="DSN81210" 
 				    password="{xor}<password>" 			    
 				    serverName="localhost"
-				    portNumber="<port>"/> 				    			        
+				    portNumber="<port>" /> 				    			        
     </dataSource>	
 
 
