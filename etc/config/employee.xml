@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="CICS Liberty profile JDBC configuration">
+
+	<!-- Enable features -->
+<featureManager>
+	<feature>jsf-2.2</feature>
+	<feature>jndi-1.0</feature>
+	<feature>jdbc-4.1</feature>
+</featureManager>
+
+<!-- JDBC driver-->
+<library id="Db2Lib" name="jdbclib">
+	<fileset dir="/usr/lpp/db2c10/db2a/jdbc/classes" includes="db2jcc4.jar db2jcc_license_cisuz.jar"/>
+	<fileset dir="/usr/lpp/db2c10/db2a/jdbc/lib" includes="libdb2jcct2zos4_64.so"/>
+</library>
+
+
+<!-- type 2 data source -->
+<dataSource id="db2type2" jndiName="jdbc/type2sample"  transactional="false">
+    <jdbcDriver libraryRef="jdbclib"/>
+        <properties.db2.jcc driverType="2"
+	      currentSchema="DSN81210" />
+        <connectionManager agedTimeout="0"/>
+</dataSource>
+
+
+<!-- Web application-->
+<application 
+    location="<>/apps/employee.jdbc.web.war">
+</application>
+
+
+
+</server>
