@@ -52,8 +52,8 @@ public class DbOperations {
      * 
      * @return
      */
-    public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException {
-        
+    public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
+    {
         // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
@@ -78,7 +78,7 @@ public class DbOperations {
             
             // Store any results in the Employee bean list
             ArrayList<Employee> results = new ArrayList<Employee>();
-            while(rs.next()) {
+            while ( rs.next() ) {
                 results.add(createEmployeeBean(rs));
             }
             
@@ -112,8 +112,8 @@ public class DbOperations {
      * 
      * @throws Exception All exceptions are propagated from this method.
      */
-    public static void createEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception {
-        
+    public static void createEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
+    {
         // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
@@ -218,8 +218,8 @@ public class DbOperations {
      * 
      * @throws Exception
      */
-    public static void deleteEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception {
-        
+    public static void deleteEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
+    {
         // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
@@ -313,8 +313,8 @@ public class DbOperations {
      * @param employee - The employee object populated
      * @throws Exception
      */
-    public static void updateEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception {
-        
+    public static void updateEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
+    {
         // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
@@ -421,8 +421,8 @@ public class DbOperations {
      * 
      * @return - Populated Employee bean
      */
-    private static Employee createEmployeeBean(ResultSet currentResult) throws SQLException{
-        
+    private static Employee createEmployeeBean(ResultSet currentResult) throws SQLException
+    {
         Employee employee = new Employee();
         
         // Gather the employee information from the DB and set up the bean
@@ -453,9 +453,9 @@ public class DbOperations {
      * @return - A populated statement
      * @throws SQLException
      */
-    private static PreparedStatement populateStatement(Employee employee, PreparedStatement statement) throws SQLException {
-        
-        // Set a null department, as not sed for the application
+    private static PreparedStatement populateStatement(Employee employee, PreparedStatement statement) throws SQLException
+    {
+        // Set a null department, as not set for the application
         String deptno = null;
     
         // Check for the values on date fields.
@@ -480,6 +480,4 @@ public class DbOperations {
         
         return statement;
     }
-    
-    
 }
