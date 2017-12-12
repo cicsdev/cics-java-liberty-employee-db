@@ -42,7 +42,7 @@ public class DbOperations {
     /**
      * Name of CICS TSQ used to log activity.
      */
-    static final String TSQ_NAME = "DB2LOG"; 
+    private static final String TSQ_NAME = "DB2LOG"; 
 
     /**
      * Uses a specified last name to find a matching employee
