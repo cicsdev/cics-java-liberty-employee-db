@@ -65,7 +65,7 @@ public class Employee implements Serializable
         canDel = false;
     }
     
-    public String getEmpno() {
+    public String getEmpNo() {
         return this.empNo;
     }
 

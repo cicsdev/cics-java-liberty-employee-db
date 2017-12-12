@@ -172,7 +172,7 @@ public class DbOperations {
             // Update a TSQ, including it in the transaction
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Added %s with last name: %s", employee.getEmpno(), employee.getLastName());
+            String msg = String.format("Added %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -255,7 +255,7 @@ public class DbOperations {
             
             // Prepare the statement and add the specified employee number
             statement = conn.prepareStatement("DELETE FROM EMP WHERE EMPNO = ?");
-            statement.setString(1, employee.getEmpno());
+            statement.setString(1, employee.getEmpNo());
             
             // Perform the DELETE operation
             statement.execute();
@@ -268,7 +268,7 @@ public class DbOperations {
             // Write some basic information about the deleted record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Deleted %s with last name: %s", employee.getEmpno(), employee.getLastName());
+            String msg = String.format("Deleted %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -366,7 +366,7 @@ public class DbOperations {
             // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
             populateStatement(statement, employee);
-            statement.setString(15, employee.getEmpno());
+            statement.setString(15, employee.getEmpNo());
             
             // Perform the UPDATE operation
             statement.execute();
@@ -379,7 +379,7 @@ public class DbOperations {
             // Write some basic information about the updated record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Updated %s with last name: %s", employee.getEmpno(), employee.getLastName());
+            String msg = String.format("Updated %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -467,7 +467,7 @@ public class DbOperations {
         statement.setBigDecimal(2, employee.getBonus());
         statement.setBigDecimal(3, employee.getComm());
         statement.setShort(4, employee.getEdLevel());
-        statement.setString(5, employee.getEmpno());
+        statement.setString(5, employee.getEmpNo());
         statement.setString(6,  employee.getFirstName());
         statement.setDate(7, hDate);
         statement.setString(8,  employee.getJob());
