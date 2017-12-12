@@ -9,7 +9,7 @@
 				
 	<dataSource id="db2type4" jndiName="jdbc/sample" type="javax.sql.XADataSource" >	    
 		<jdbcDriver libraryRef="jdbclib"/>
-		<connectionManager maxPoolSize="50"/>
+		<connectionManager maxPoolSize="50" />
 		<properties.db2.jcc driverType="4" 
 				    databaseName="<>"
 				    user="<user>"

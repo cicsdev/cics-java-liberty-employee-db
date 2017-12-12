@@ -6,13 +6,10 @@
 	<fileset dir="/usr/lpp/db2c10/db2a/jdbc/lib" includes="libdb2jcct2zos4_64.so"/>
 </library>
 
-<dataSource id="db2type2"
-    jndiName="jdbc/type2sample" 
-    transactional="false">
+<dataSource id="db2type2" jndiName="jdbc/type2sample" transactional="false">
     <jdbcDriver libraryRef="jdbclib"/>
-        <properties.db2.jcc driverType="2"
-	      currentSchema="DSN81210" />
-        <connectionManager agedTimeout="0"/>
+        <properties.db2.jcc driverType="2" currentSchema="DSN81210" />
+        <connectionManager agedTimeout="0" />
 </dataSource>
 
 
