@@ -27,161 +27,161 @@ import java.util.Date;
  * 
  */
 public class Employee implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	private String empno;
+    private static final long serialVersionUID = -5094938829089545370L;
+    
+    private String empno;
 
-	private Date birthdate;
+    private Date birthdate;
 
-	private BigDecimal bonus;
+    private BigDecimal bonus;
 
-	private BigDecimal comm;
+    private BigDecimal comm;
 
-	private short edlevel;
+    private short edlevel;
 
-	private String firstname;
+    private String firstname;
 
-	private Date hiredate;
+    private Date hiredate;
 
-	private String job;
+    private String job;
 
-	private String lastname;
+    private String lastname;
 
-	private String midinit;
+    private String midinit;
 
-	private String phoneno;
+    private String phoneno;
 
-	private BigDecimal salary;
+    private BigDecimal salary;
 
-	private String sex;
+    private String sex;
 
-	private boolean canEdit;
-	
-	private boolean canDel;
-	
-	public Employee() {
-		canEdit = false;
-		canDel = false;
-	}
-	
-	public String getEmpno() {
-		return this.empno;
-	}
+    private boolean canEdit;
+    
+    private boolean canDel;
+    
+    public Employee() {
+        canEdit = false;
+        canDel = false;
+    }
+    
+    public String getEmpno() {
+        return this.empno;
+    }
 
-	public void setEmpno(String empno) {
-		this.empno = empno;
-	}
+    public void setEmpno(String empno) {
+        this.empno = empno;
+    }
 
-	public Date getBirthdate() {
-		return this.birthdate;
-	}
+    public Date getBirthdate() {
+        return this.birthdate;
+    }
 
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
-	}
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
 
-	public BigDecimal getBonus() {
-		return this.bonus;
-	}
+    public BigDecimal getBonus() {
+        return this.bonus;
+    }
 
-	public void setBonus(BigDecimal bonus) {
-		this.bonus = bonus;
-	}
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
+    }
 
-	public BigDecimal getComm() {
-		return this.comm;
-	}
+    public BigDecimal getComm() {
+        return this.comm;
+    }
 
-	public void setComm(BigDecimal comm) {
-		this.comm = comm;
-	}
+    public void setComm(BigDecimal comm) {
+        this.comm = comm;
+    }
 
-	public short getEdlevel() {
-		return this.edlevel;
-	}
+    public short getEdlevel() {
+        return this.edlevel;
+    }
 
-	public void setEdlevel(short edlevel) {
-		this.edlevel = edlevel;
-	}
+    public void setEdlevel(short edlevel) {
+        this.edlevel = edlevel;
+    }
 
-	public String getFirstname() {
-		return this.firstname;
-	}
+    public String getFirstname() {
+        return this.firstname;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public Date getHiredate() {
-		return this.hiredate;
-	}
+    public Date getHireDate() {
+        return this.hiredate;
+    }
 
-	public void setHiredate(Date hiredate) {
-		this.hiredate = hiredate;
-	}
+    public void setHireDate(Date hireDate) {
+        this.hiredate = hireDate;
+    }
 
-	public String getJob() {
-		return this.job;
-	}
+    public String getJob() {
+        return this.job;
+    }
 
-	public void setJob(String job) {
-		this.job = job;
-	}
+    public void setJob(String job) {
+        this.job = job;
+    }
 
-	public String getLastname() {
-		return this.lastname;
-	}
+    public String getLastname() {
+        return this.lastname;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public String getMidinit() {
-		return this.midinit;
-	}
+    public String getMidinit() {
+        return this.midinit;
+    }
 
-	public void setMidinit(String midinit) {
-		this.midinit = midinit;
-	}
+    public void setMidinit(String midinit) {
+        this.midinit = midinit;
+    }
 
-	public String getPhoneno() {
-		return this.phoneno;
-	}
+    public String getPhoneno() {
+        return this.phoneno;
+    }
 
-	public void setPhoneno(String phoneno) {
-		this.phoneno = phoneno;
-	}
+    public void setPhoneno(String phoneno) {
+        this.phoneno = phoneno;
+    }
 
-	public BigDecimal getSalary() {
-		return this.salary;
-	}
+    public BigDecimal getSalary() {
+        return this.salary;
+    }
 
-	public void setSalary(BigDecimal salary) {
-		this.salary = salary;
-	}
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
 
-	public String getSex() {
-		return this.sex;
-	}
+    public String getSex() {
+        return this.sex;
+    }
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-	public boolean isCanEdit() {
-	      return canEdit;
-	}
+    public boolean isCanEdit() {
+          return canEdit;
+    }
 
-	public void setCanEdit(boolean canEdit) {
-	      this.canEdit = canEdit;
-	}
-	
-	public boolean isCanDel() {
-	      return canDel;
-	}
+    public void setCanEdit(boolean canEdit) {
+          this.canEdit = canEdit;
+    }
+    
+    public boolean isCanDel() {
+          return canDel;
+    }
 
-	public void setCanDel(boolean canDel) {
-	      this.canDel = canDel;
-	}
+    public void setCanDel(boolean canDel) {
+          this.canDel = canDel;
+    }
 
 }
