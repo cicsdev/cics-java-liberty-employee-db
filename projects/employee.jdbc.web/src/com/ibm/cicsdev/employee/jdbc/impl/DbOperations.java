@@ -54,6 +54,7 @@ public class DbOperations {
      */
     public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException{
         
+        // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
         
@@ -63,7 +64,7 @@ public class DbOperations {
                     + "SALARY, SEX, WORKDEPT FROM EMP "
                     + "WHERE LASTNAME LIKE ? ORDER BY LASTNAME, EMPNO";
             
-            // Connect to the data source
+            // Get the DB connection
             conn = ds.getConnection();
             
             // Prepare our query, then send to the DB
@@ -115,7 +116,7 @@ public class DbOperations {
      */
     public static void createEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception {
         
-        // Otherwise prepare objects without a user transaction
+        // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
         
@@ -155,12 +156,14 @@ public class DbOperations {
                                 "?, ?, ?, ?, ?, " + 
                                 "?, ?, ?, ?)";
             
-            // Start the DB connection
+            // Get the DB connection
             conn = ds.getConnection();
             
-            // Prepare the query to send to the DB
+            // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
             statement = populateStatement(employee, statement);
+            
+            // Perform the INSERT operation
             statement.executeUpdate();
             
             
@@ -248,10 +251,14 @@ public class DbOperations {
              * Update the database.
              */
             
-            // Set up the connection to the DB and execute the delete SQL statement
-            conn = ds.getConnection();            
+            // Get the DB connection
+            conn = ds.getConnection();
+            
+            // Prepare the statement and add the specified employee number
             statement = conn.prepareStatement("DELETE FROM EMP WHERE EMPNO = ?");
             statement.setString(1, employee.getEmpno());
+            
+            // Perform the DELETE operation
             statement.execute();
 
 
@@ -332,12 +339,19 @@ public class DbOperations {
                 // Compiler not smart enough to work out utx won't be used again
                 utx = null;
             }
+
             
+            /*
+             * Clean some of the data before passing to the database.
+             */
+
+            // Uppercase the gender
+            employee.setSex(employee.getSex().toUpperCase());
+
             
             /*
              * Update the database.
              */
-            
             
             // The update command template used for the operation
             String sqlCmd = "UPDATE EMP SET " +
@@ -346,19 +360,16 @@ public class DbOperations {
                                 "PHONENO = ?, SALARY = ?, SEX = ?, WORKDEPT = ? " +
                             "WHERE EMPNO = ?";
 
-            // Set up the connection to the database
+            // Get the DB connection
             conn = ds.getConnection();
-            statement = conn.prepareStatement(sqlCmd);            
-            
-            // Uppercase the Gender
-            employee.setSex(employee.getSex().toUpperCase());
 
-            // Format the SQL statement using the 14 values from the employee bean
+            // Prepare the statement and populate with data
+            statement = conn.prepareStatement(sqlCmd);
             populateStatement(employee, statement);
-            // Set the 15th value as the employee number 
             statement.setString(15, employee.getEmpno());
-            statement.execute();
             
+            // Perform the UPDATE operation
+            statement.execute();
 
 
             /*
