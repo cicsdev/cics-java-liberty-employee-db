@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manifest xmlns="http://www.ibm.com/xmlns/prod/cics/bundle" id="employee.jdbc.cicsbundle" bundleMajorVer="1" bundleMinorVer="0" bundleMicroVer="0" bundleVersion="1" bundleRelease="0" build="IntB-201705232112">
+    <meta_directives>
+        <timestamp>2017-12-12T11:48:20.233Z</timestamp>
+    </meta_directives>
+    <define name="employee.jdbc.web" type="http://www.ibm.com/xmlns/prod/cics/bundle/WARBUNDLE" path="employee.jdbc.web.warbundle"/>
+</manifest>
