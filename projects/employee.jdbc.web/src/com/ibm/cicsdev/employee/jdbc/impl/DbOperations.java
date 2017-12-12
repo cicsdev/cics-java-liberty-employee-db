@@ -288,75 +288,6 @@ public class DbOperations {
     }
     
     /**
-     * Uses JTA to commit a update an employee in the database.
-     * 
-     * This method is called when a user presses the 'Edit' then 'Save' button
-     * next to an employee row when the JTA toggle is true.
-     * 
-     * It will use the employee number in the bean to fill in an UPDATE statement
-     * and update the associated record from the DB
-     * 
-     * @param ds - The target data source
-     * @param employee - The employee object populated
-     * @throws Exception
-     */
-    public static void updateEmployeeWithJta(DataSource ds, Employee employee) throws Exception {
-        
-        // Prepare the connection objects and a user transaction
-        Connection conn = null;
-        PreparedStatement statement = null;
-        UserTransaction utx = null;
-        
-        try {
-            
-            // Get a new user transaction for this piece of work and start it
-            utx = (UserTransaction)InitialContext.doLookup("java:comp/UserTransaction");
-            utx.begin();
-            
-            // The update command template used to execute the query 
-            String sqlCmd = "UPDATE EMP SET BIRTHDATE = ?, BONUS = ?, COMM = ?, EDLEVEL = ?, EMPNO = ?, FIRSTNME = ?, HIREDATE = ?, JOB = ?, LASTNAME = ?, "
-                    + "MIDINIT = ?, PHONENO = ?, SALARY = ?, SEX = ?, WORKDEPT = ? WHERE EMPNO = ?";
-            
-            // Connect to the database
-            conn = ds.getConnection();
-            statement = conn.prepareStatement(sqlCmd);
-            
-            // Uppercase the Gender
-            employee.setSex(employee.getSex().toUpperCase());
-            
-            // Format the statement using the 14 values from the employee bean
-            populateStatement(employee, statement);
-            // Set the 15th value as the employee number 
-            statement.setString(15, employee.getEmpno());
-
-            statement.execute();
-            
-            // Write some basic information about the update to a TSQ
-            TSQ tsq = new TSQ();
-            tsq.setName(TSQ_NAME);
-            tsq.writeString("Updated " + employee.getEmpno() + " with last name: " + employee.getLastname());
-            
-            // Commit the changes and close the connection
-            utx.commit();            
-            statement.close();
-            conn.close();
-            
-        }catch(Exception e) {
-            
-            // Close the connection to the DB
-            if(statement !=null) {
-                statement.close();
-            }
-            if(conn !=null) {
-                conn.close();
-            }
-            
-            // Propagate the exception
-            throw e;
-        }
-    }
-    
-    /**
      * Uses connection.commit to commit a update an employee in the database.
      * 
      * This method is called when a user presses the 'Edit' then 'Save' button
@@ -369,19 +300,38 @@ public class DbOperations {
      * @param employee - The employee object populated
      * @throws Exception
      */
-    public static void updateEmployee(DataSource ds, Employee employee, boolean useJta) throws Exception {
+    public static void updateEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception {
         
-        // If we want to use JTA, call the right method
-        if(useJta) {
-            updateEmployeeWithJta(ds, employee);
-            return;
-        }
-        
-        // If not, prepare the objects with out a user tranasction
+        // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
         
         try {
+
+            /*
+             * Setup the transaction, based on whether JTA has been requested.
+             */
+            
+            // The JTA transaction, if we're using one
+            UserTransaction utx;
+            
+            // Transactions are started implictly in CICS, explicitly in JTA
+            if ( useJta ) {
+                // Get a new user transaction for this piece of work and start it
+                utx = (UserTransaction) InitialContext.doLookup("java:comp/UserTransaction");
+                utx.begin();
+            }
+            else {
+                // A unit of work is already provided for this CICS transaction: no-op
+                // Compiler not smart enough to work out utx won't be used again
+                utx = null;
+            }
+            
+            
+            /*
+             * Update the database.
+             */
+            
             
             // The update command template used for the operation
             String sqlCmd = "UPDATE EMP SET BIRTHDATE = ?, BONUS = ?, COMM = ?, EDLEVEL = ?, EMPNO = ?, FIRSTNME = ?, HIREDATE = ?, JOB = ?, LASTNAME = ?, "
@@ -400,30 +350,46 @@ public class DbOperations {
             statement.setString(15, employee.getEmpno());
             statement.execute();
             
+
+
+            /*
+             * Update a CICS resource.
+             */
+            
             // Write some basic information about the updated record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
             tsq.writeString("Updated " + employee.getEmpno() + " with last name: " + employee.getLastname());
+
             
-            // Commit the changes and close the connection
-            conn.commit();            
-            statement.close();
-            conn.close();
+            /*
+             * Commit the transaction.
+             */
             
-        }catch(Exception e) {
+            // Handle JTA and non-JTA commits differently
+            if ( useJta ) {
+                // Use the JTA API to commit the changes
+                utx.commit();
+            }
+            else {
+                // Use the connection to commit the changes
+                conn.commit();
+            }
+        }
+        finally {
             
-            // Close the connection to the DB
-            if(statement !=null) {
+            // Any exceptions will be propagated
+            
+            // Close database objects, regardless of what happened
+            if ( statement != null ) {
                 statement.close();
             }
-            if(conn !=null) {
+            if ( conn != null ) {
                 conn.close();
             }
-            
-            // Propagate the exception
-            throw e;
         }
     }
+
     
     /**
      * Takes a ResultSet with a set pointer, and extracts
