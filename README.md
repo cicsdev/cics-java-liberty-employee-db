@@ -10,8 +10,8 @@ Sample web application that uses JDBC to access the Db2 employee table
 
 ## Project overview
 
-* `employee.jdbc.web` - Dynamic web project. 
-* `employee.jdbc.cicsbundle` - CICS bundle project 
+* [`employee.jdbc.web`](projects/employee.jdbc.web) - Dynamic web project
+* [`employee.jdbc.cicsbundle`](projects/employee.jdbc.cicsbundle) - CICS bundle project 
 
 ## Pre-requisites
 * CICS TS V5.3 with APAR PI67640 and APAR PI58375, or CICS TS V5.4
