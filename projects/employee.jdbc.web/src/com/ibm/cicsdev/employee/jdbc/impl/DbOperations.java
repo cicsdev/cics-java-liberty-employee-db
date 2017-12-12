@@ -52,7 +52,7 @@ public class DbOperations {
      * 
      * @return
      */
-    public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException{
+    public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException {
         
         // Instances of JDBC objects
         Connection conn = null;
@@ -60,17 +60,20 @@ public class DbOperations {
         
         try {
             // The SQL command used to find our employees list
-            String sqlCmd = "SELECT BIRTHDATE, BONUS, COMM, EDLEVEL, EMPNO, FIRSTNME, HIREDATE, JOB, LASTNAME, MIDINIT, PHONENO, "
-                    + "SALARY, SEX, WORKDEPT FROM EMP "
-                    + "WHERE LASTNAME LIKE ? ORDER BY LASTNAME, EMPNO";
+            String sqlCmd = "SELECT " +
+                                "BIRTHDATE, BONUS, COMM, EDLEVEL, EMPNO, " +
+                                "FIRSTNME, HIREDATE, JOB, LASTNAME, MIDINIT, " +
+                                "PHONENO, SALARY, SEX, WORKDEPT " +
+                            "FROM EMP  WHERE LASTNAME LIKE ? ORDER BY LASTNAME, EMPNO";
             
             // Get the DB connection
             conn = ds.getConnection();
             
-            // Prepare our query, then send to the DB
+            // Prepare the statement, uppercase lastname and set as first query value
             statement = conn.prepareStatement(sqlCmd);
-            // Uppercase lastname and set as 1st query value
             statement.setString(1, lastName.toUpperCase() + "%");
+            
+            // Perform the SELECT operation
             ResultSet rs = statement.executeQuery();
             
             // Store any results in the Employee bean list
@@ -79,26 +82,21 @@ public class DbOperations {
                 results.add(createEmployeeBean(rs));
             }
             
-            // Close the connection to the DB
-            statement.close();
-            conn.close();
-            
             // Return the full list
             return results;
+        }
+        finally {
             
-        } catch(SQLException e) {
-            // Close the connection to the DB
-            if(statement !=null) {
+            // Any exceptions will be propagated
+            
+            // Close database objects, regardless of what happened
+            if ( statement != null ) {
                 statement.close();
             }
-            if(conn !=null) {
+            if ( conn != null ) {
                 conn.close();
             }
-            
-            // Propagate the exception
-            throw e;
         }
-                
     }
     
     /**
