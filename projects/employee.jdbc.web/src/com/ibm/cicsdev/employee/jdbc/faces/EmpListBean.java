@@ -36,29 +36,45 @@ import javax.naming.NamingException;
 @SessionScoped
 public class EmpListBean {
 
-    /** Stores current target employee for update/delete **/
+    /**
+     * Stores current target employee for update/delete.
+     */
     Employee emp;
     
-    /** Object for our Liberty data source **/
+    /**
+     * Object for our Liberty data source.
+     */
     DataSource ds;
     
-    /** Stores the last name used as the search criteria **/
+    /**
+     * Stores the last name used as the search criteria.
+     */
     public String lastName;
     
-    /** Stores the results of any search. Used by JSF to display
-     * the results in a table. */
+    /**
+     * Stores the results of any search. Used by JSF to display
+     * the results in a table.
+     */
     public ArrayList<Employee> allResults = new ArrayList<Employee>();
     
-    /** Used to indicate the index of the first result displayed **/
+    /**
+     * Used to indicate the index of the first result displayed.
+     */
     public int firstRow = 0;
     
-    /** Used to limit the number of rows displayed by the application **/
+    /**
+     * Used to limit the number of rows displayed by the application.
+     */
     public int lastRow = 15;
     
-    /** Currently used to store error messages */
+    /**
+     * Currently used to store error messages.
+     */
     public String message = "";
     
-    /** Stores the current state of the JTA flag **/
+    /**
+     * Stores the current state of the JTA flag.
+     */
     public boolean jtatoggle = true;
     
     
