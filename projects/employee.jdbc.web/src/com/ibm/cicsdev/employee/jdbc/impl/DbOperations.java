@@ -113,7 +113,7 @@ public class DbOperations {
      * @param employee - The employee object populated
      * @throws Exception
      */
-    public static void createEmployeeWithJta(DataSource ds, Employee employee) throws Exception {
+    private static void createEmployeeWithJta(DataSource ds, Employee employee) throws Exception {
         
         // Prepare the connection objects including a user transaction
         Connection conn = null;
