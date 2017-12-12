@@ -174,7 +174,7 @@ public class DbOperations {
             
             // Handle JTA and non-JTA commits differently
             if ( useJta ) {
-                // Use the JTA API to commit the transaction
+                // Use the JTA API to commit the changes
                 utx.commit();
             }
             else {
@@ -197,120 +197,94 @@ public class DbOperations {
     }
     
     /**
-     * Uses JTA to commit a delete an employee from the database.
+     * Deletes an employee from the database.
      * 
-     * This method is called when a user presses the 'Delete' button
-     * next to an employee row when the JTA toggle is true.
+     * This method is called when a user presses the 'Delete' button next to an employee row.
      * 
      * It will use the employee number in the bean to fill in an delete statement
-     * and remove the associated record from the DB
+     * and remove the associated record from the DB.
      * 
      * @param ds - The target data source
      * @param employee - The employee object populated
+     * @param useJta - use JTA to provide unit of work support, rather than CICS
+     * 
      * @throws Exception
      */
-    public static void deleteEmployeeWithJta(Employee employee, DataSource ds) throws Exception {
+    public static void deleteEmployee(Employee employee, DataSource ds, final boolean useJta) throws Exception {
         
-        // Set up the required objects including a user transaction
+        // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
-        UserTransaction utx = null;
         
         try {
-            
-            // Get a new user transaction for this piece of work and start it
-            utx = (UserTransaction)InitialContext.doLookup("java:comp/UserTransaction");
-            utx.begin();
 
-            // Set up the connection to the DB and format the SQL command
-            conn = ds.getConnection();
-            statement = conn.prepareStatement("DELETE FROM EMP WHERE EMPNO = ?");
-            statement.setString(1, employee.getEmpno());
-            statement.execute();
+            /*
+             * Setup the transaction, based on whether JTA has been requested.
+             */
             
-            // Write some basic information about the deleted record
-            // to a TSQ to keep a record
-            TSQ tsq = new TSQ();
-            tsq.setName(TSQ_NAME);
-            tsq.writeString("Deleted " + employee.getEmpno() + " with last name: " + employee.getLastname());
+            // The JTA transaction, if we're using one
+            UserTransaction utx;
             
-            // Finish the transaction and close the connection
-            utx.commit();        
-            statement.close();
-            conn.close();
-                    
-        }catch(Exception e) {
-            
-            // Close the connection to the DB
-            if(statement !=null) {
-                statement.close();
+            // Transactions are started implictly in CICS, explicitly in JTA
+            if ( useJta ) {
+                // Get a new user transaction for this piece of work and start it
+                utx = (UserTransaction) InitialContext.doLookup("java:comp/UserTransaction");
+                utx.begin();
             }
-            if(conn !=null) {
-                conn.close();
+            else {
+                // A unit of work is already provided for this CICS transaction: no-op
+                // Compiler not smart enough to work out utx won't be used again
+                utx = null;
             }
             
-            // Propagate the exception
-            throw e;
-        }
-    }
-    
-    /**
-     * Uses cinnection.commit to commit a delete an employee from the database.
-     * 
-     * This method is called when a user presses the 'Delete' button
-     * next to an employee row when the JTA toggle is false.
-     * 
-     * It will use the employee number in the bean to fill in an delete statement
-     * and remove the associated record from the DB
-     * 
-     * @param ds - The target data source
-     * @param employee - The employee object populated
-     * @throws Exception
-     */
-    public static void deleteEmployee(Employee employee, DataSource ds, boolean useJta) throws Exception {
-        
-        // If we want to use JTA, call the correct method
-        if(useJta) {
-            deleteEmployeeWithJta(employee, ds);
-            return;
-        }
-        
-        // If not, prepare the objects without a user transaction
-        Connection conn = null;
-        PreparedStatement statement = null;
-        
-        try {
+            
+            /*
+             * Update the database.
+             */
             
             // Set up the connection to the DB and execute the delete SQL statement
             conn = ds.getConnection();            
             statement = conn.prepareStatement("DELETE FROM EMP WHERE EMPNO = ?");
             statement.setString(1, employee.getEmpno());
             statement.execute();
+
+
+            /*
+             * Update a CICS resource.
+             */
             
             // Write some basic information about the deleted record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
             tsq.writeString("Deleted " + employee.getEmpno() + " with last name: " + employee.getLastname());
+
             
-            // Commit the change to DB and close the connection
-            conn.commit();            
-            statement.close();
-            conn.close();
-                    
-        }catch(Exception e) {
+            /*
+             * Commit the transaction.
+             */
             
-            // Close the connection to the DB
-            if(statement !=null) {
+            // Handle JTA and non-JTA commits differently
+            if ( useJta ) {
+                // Use the JTA API to commit the changes
+                utx.commit();
+            }
+            else {
+                // Use the connection to commit the changes
+                conn.commit();
+            }
+        }
+        finally {
+            
+            // Any exceptions will be propagated
+            
+            // Close database objects, regardless of what happened
+            if ( statement != null ) {
                 statement.close();
             }
-            if(conn !=null) {
+            if ( conn != null ) {
                 conn.close();
             }
-            
-            // Propagate the exception
-            throw e;
         }
-    
     }
     
     /**
