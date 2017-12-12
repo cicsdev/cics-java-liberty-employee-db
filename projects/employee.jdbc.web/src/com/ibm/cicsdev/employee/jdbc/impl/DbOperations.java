@@ -172,7 +172,7 @@ public class DbOperations {
             // Update a TSQ, including it in the transaction
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Added %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            String msg = String.format("Added %s with last name: %s", employee.getEmpno(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -268,7 +268,7 @@ public class DbOperations {
             // Write some basic information about the deleted record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Deleted %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            String msg = String.format("Deleted %s with last name: %s", employee.getEmpno(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -379,7 +379,7 @@ public class DbOperations {
             // Write some basic information about the updated record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Updated %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            String msg = String.format("Updated %s with last name: %s", employee.getEmpno(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -426,17 +426,17 @@ public class DbOperations {
         Employee employee = new Employee();
         
         // Gather the employee information from the DB and set up the bean
-        employee.setBirthdate(currentResult.getDate("BIRTHDATE"));
+        employee.setBirthDate(currentResult.getDate("BIRTHDATE"));
         employee.setBonus(currentResult.getBigDecimal("BONUS"));
         employee.setComm(currentResult.getBigDecimal("COMM"));
-        employee.setEdlevel(currentResult.getObject("EDLEVEL") == null ? 0 : (short)currentResult.getShort("EDLEVEL"));
-        employee.setEmpno(currentResult.getString("EMPNO"));
-        employee.setFirstname(currentResult.getString("FIRSTNME"));
+        employee.setEdLevel(currentResult.getObject("EDLEVEL") == null ? 0 : (short)currentResult.getShort("EDLEVEL"));
+        employee.setEmpNo(currentResult.getString("EMPNO"));
+        employee.setFirstName(currentResult.getString("FIRSTNME"));
         employee.setHireDate(currentResult.getDate("HIREDATE"));
         employee.setJob(currentResult.getString("JOB"));
-        employee.setLastname(currentResult.getString("LASTNAME"));
-        employee.setMidinit(currentResult.getString("MIDINIT"));
-        employee.setPhoneno(currentResult.getString("PHONENO"));
+        employee.setLastName(currentResult.getString("LASTNAME"));
+        employee.setMidInit(currentResult.getString("MIDINIT"));
+        employee.setPhoneNo(currentResult.getString("PHONENO"));
         employee.setSalary(currentResult.getBigDecimal("SALARY"));
         employee.setSex(currentResult.getString("SEX"));
         
@@ -459,21 +459,21 @@ public class DbOperations {
         String deptno = null;
     
         // Check for the values on date fields.
-        Date bDate = employee.getBirthdate() == null ? null : (new Date(employee.getBirthdate().getTime()));
+        Date bDate = employee.getBirthDate() == null ? null : (new Date(employee.getBirthDate().getTime()));
         Date hDate = employee.getHireDate() == null ? null : (new Date(employee.getHireDate().getTime()));
         
         // Fill in the rest of the fields
         statement.setDate(1, bDate);
         statement.setBigDecimal(2, employee.getBonus());
         statement.setBigDecimal(3, employee.getComm());
-        statement.setShort(4, employee.getEdlevel());
+        statement.setShort(4, employee.getEdLevel());
         statement.setString(5, employee.getEmpno());
-        statement.setString(6,  employee.getFirstname());
+        statement.setString(6,  employee.getFirstName());
         statement.setDate(7, hDate);
         statement.setString(8,  employee.getJob());
-        statement.setString(9,  employee.getLastname());
-        statement.setString(10,  employee.getMidinit());
-        statement.setString(11,  employee.getPhoneno());
+        statement.setString(9,  employee.getLastName());
+        statement.setString(10,  employee.getMidInit());
+        statement.setString(11,  employee.getPhoneNo());
         statement.setBigDecimal(12, employee.getSalary());
         statement.setString(13,  employee.getSex());
         statement.setString(14,  deptno);

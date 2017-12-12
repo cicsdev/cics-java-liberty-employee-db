@@ -241,16 +241,16 @@ public class AddEmpBean {
         // these so we don't care about them.
         emp.setBonus(new BigDecimal(1000000));
         emp.setComm(new BigDecimal(1000000));
-        emp.setMidinit("R");
-        emp.setPhoneno("1111");
+        emp.setMidInit("R");
+        emp.setPhoneNo("1111");
         emp.setSalary(new BigDecimal(1000000));        
-        short s = 1; emp.setEdlevel(s);
+        short s = 1; emp.setEdLevel(s);
         
         // Now add in the user input
-        emp.setEmpno(this.empno.toUpperCase());
-        emp.setFirstname(firstname.toUpperCase());
+        emp.setEmpNo(this.empno.toUpperCase());
+        emp.setFirstName(firstname.toUpperCase());
         emp.setJob(job.toUpperCase());
-        emp.setLastname(lastname.toUpperCase());
+        emp.setLastName(lastname.toUpperCase());
         emp.setSex(gender.toUpperCase());        
         
     }
