@@ -210,7 +210,7 @@ public class DbOperations {
      * 
      * @throws Exception
      */
-    public static void deleteEmployee(Employee employee, DataSource ds, final boolean useJta) throws Exception {
+    public static void deleteEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception {
         
         // Instances of JDBC objects
         Connection conn = null;
@@ -300,7 +300,7 @@ public class DbOperations {
      * @param employee - The employee object populated
      * @throws Exception
      */
-    public static void updateEmployeeWithJta(Employee employee, DataSource ds) throws Exception {
+    public static void updateEmployeeWithJta(DataSource ds, Employee employee) throws Exception {
         
         // Prepare the connection objects and a user transaction
         Connection conn = null;
@@ -369,11 +369,11 @@ public class DbOperations {
      * @param employee - The employee object populated
      * @throws Exception
      */
-    public static void updateEmployee(Employee employee, DataSource ds, boolean useJta) throws Exception {
+    public static void updateEmployee(DataSource ds, Employee employee, boolean useJta) throws Exception {
         
         // If we want to use JTA, call the right method
         if(useJta) {
-            updateEmployeeWithJta(employee, ds);
+            updateEmployeeWithJta(ds, employee);
             return;
         }
         

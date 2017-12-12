@@ -213,7 +213,7 @@ public class EmpListBean {
     public void saveUpdates() {
         
         try {
-            DbOperations.updateEmployee(emp, ds, jtatoggle);
+            DbOperations.updateEmployee(ds, emp, jtatoggle);
         } catch(Exception e) {
             message = "ERROR: Please check stderr.";
             e.printStackTrace();
@@ -273,7 +273,7 @@ public class EmpListBean {
         
         try {
             // call the delete employee function for this employee
-            DbOperations.deleteEmployee(emp, ds, jtatoggle);
+            DbOperations.deleteEmployee(ds, emp, jtatoggle);
         } catch(Exception e) {
         
             // Check for the delete permissions error
