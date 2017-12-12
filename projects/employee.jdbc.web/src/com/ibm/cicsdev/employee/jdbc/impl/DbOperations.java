@@ -159,7 +159,7 @@ public class DbOperations {
             
             // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
-            statement = populateStatement(employee, statement);
+            statement = populateStatement(statement, employee);
             
             // Perform the INSERT operation
             statement.executeUpdate();
@@ -365,7 +365,7 @@ public class DbOperations {
 
             // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
-            populateStatement(employee, statement);
+            populateStatement(statement, employee);
             statement.setString(15, employee.getEmpno());
             
             // Perform the UPDATE operation
@@ -453,7 +453,7 @@ public class DbOperations {
      * @return - A populated statement
      * @throws SQLException
      */
-    private static PreparedStatement populateStatement(Employee employee, PreparedStatement statement) throws SQLException
+    private static PreparedStatement populateStatement(PreparedStatement statement, Employee employee) throws SQLException
     {
         // Set a null department, as not set for the application
         String deptno = null;
