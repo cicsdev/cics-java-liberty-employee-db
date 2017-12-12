@@ -27,7 +27,7 @@ import java.util.Date;
  * 
  */
 public class Employee implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5094938829089545370L;
     
     private String empno;
 
