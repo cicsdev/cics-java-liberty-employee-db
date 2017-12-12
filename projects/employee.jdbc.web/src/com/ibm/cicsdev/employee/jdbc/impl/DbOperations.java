@@ -146,8 +146,14 @@ public class DbOperations {
              */
             
             // Our INSERT command for the DB
-            String sqlCmd = "INSERT INTO EMP (BIRTHDATE, BONUS, COMM, EDLEVEL, EMPNO, FIRSTNME, HIREDATE, JOB, LASTNAME, MIDINIT, PHONENO, SALARY, SEX, WORKDEPT) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sqlCmd = "INSERT INTO EMP (" +
+                                "BIRTHDATE, BONUS,    COMM, EDLEVEL,  EMPNO, " +
+                                "FIRSTNME,  HIREDATE, JOB,  LASTNAME, MIDINIT, " +
+                                "PHONENO,   SALARY,   SEX,  WORKDEPT) " +
+                            "VALUES (" +
+                                "?, ?, ?, ?, ?, " +
+                                "?, ?, ?, ?, ?, " + 
+                                "?, ?, ?, ?)";
             
             // Start the DB connection
             conn = ds.getConnection();
@@ -334,8 +340,11 @@ public class DbOperations {
             
             
             // The update command template used for the operation
-            String sqlCmd = "UPDATE EMP SET BIRTHDATE = ?, BONUS = ?, COMM = ?, EDLEVEL = ?, EMPNO = ?, FIRSTNME = ?, HIREDATE = ?, JOB = ?, LASTNAME = ?, "
-                    + "MIDINIT = ?, PHONENO = ?, SALARY = ?, SEX = ?, WORKDEPT = ? WHERE EMPNO = ?";
+            String sqlCmd = "UPDATE EMP SET " +
+                                "BIRTHDATE = ?, BONUS = ?, COMM = ?, EDLEVEL = ?, EMPNO = ?, " +
+                                "FIRSTNME = ?, HIREDATE = ?, JOB = ?, LASTNAME = ?, MIDINIT = ?, " +
+                                "PHONENO = ?, SALARY = ?, SEX = ?, WORKDEPT = ? " +
+                            "WHERE EMPNO = ?";
 
             // Set up the connection to the database
             conn = ds.getConnection();
