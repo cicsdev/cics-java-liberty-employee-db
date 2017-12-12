@@ -1,7 +1,7 @@
 cics-java-liberty-employee
 =====================
 
-Sample weB pplication that uses JDBC to access the Db2 employee table
+Sample web application that uses JDBC to access the Db2 employee table
 
 ## Repository structure
 
@@ -51,7 +51,7 @@ A template server.xml is provided in the [etc/config/type-4-server.xml](etc/conf
 
 ## Deploying the sample
 
-To deploy the sample you will need to import the projects into CICS Explorer. 
+To deploy the sample you will need to import the projects into Eclipse. 
 
 To install the sample as a CICS bundle:
 
