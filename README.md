@@ -1,7 +1,7 @@
 cics-java-liberty-employee
 =====================
 
-Sample Java EE web application demonstrating how to use JDBC and to control data base commits from a CICS Java application.
+Sample Java EE web application demonstrating how to use JDBC in a Java application.
 
 ## Repository structure
 
@@ -26,27 +26,45 @@ JDBC type 2 connectivity,  or a remote database with a JDBC type 4 connectivity.
 ### To import the samples into Eclipse
 1. Import the projects into CICS Explorer using **File -> Import -> General -> Existing projects into workspace**
 1. Resolve the build path errors on the Dynamic web project using the following menu from the web project: **Build Path -> Configure Build Path -> Libraries -> Add Library -> CICS with Java EE and Liberty** and select the version of CICS TS for deployment (either CICS TS V5.3 or CICS TS V5.4)
+1. Export the web project 
 
-### To configure CICS for JDBC type 2 connectivity to DB2
+### To configure CICS Liberty for JDBC type 2 connectivity to Db2
+1. Update the CICS STEPLIB with the Db2 SDSNLOAD and SDSNLOD2 libraries
+1. Configure CICS URIMAP, DB2CONN, DB2TRAN and DB2ENTRY resource definitions as described in [How you can define the CICS DB2 connection](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.4.0/configuring/databases/dfhtk2c.html)
+1. Bind the Db2 plan that is specified in the CICS DB2CONN or DB2ENTRY definition with a PKLIST of NULLID.* 
 1. Create a Liberty JVM server as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
-1. Update the CICS STEPLIB with the DB2 SDSNLOAD and SDSNLOD2 libraries
-1. Configure CICS DB2CONN, DB2TRAN and DB2ENTRY resource definitions as described in [How you can define the CICS DB2 connection](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.4.0/configuring/databases/dfhtk2c.html)
-1. Bind the DB2 plan that is specified in the CICS DB2CONN or DB2ENTRY definition with a PKLIST of NULLID.* 
-1. Add the following properties in the JVM profile to set the location of the DB2 drivers to allow CICS to automatically configure the default DataSource 
+1. Add the following Liberty features to the featureManger list in server.xml: ```jsf-2.2```, ```jndi-1.0```, ```jdbc-4.1```
+1. Add a library defintion to the Liberty server.xml that references the Db2 JCC libraries
+1. Add a data source definition to the Liberty server.xml with the ```jndiName="jdbc/sample"``` using the template given in [etc/config/type-2-server.xml](etc/config/type-2-server.xml). 
 
-```
--Dcom.ibm.cics.jvmserver.wlp.autoconfigure=true
--Dcom.ibm.cics.jvmserver.wlp.jdbc.driver.location=/usr/lpp/db2v12/jdbc
-```
-Where  ```/usr/lpp/db2v12/jdbc``` is the location of the DB2 JDBC driver
 
-An example Liberty server configuration of a DataSource with a type 2 connection is supplied in [etc/config/type-2-server.xml](etc/config/type-2-server.xml). Configuration with DataSource and a type 4 connection is in [etc/config/type-4-server.xml](etc/config/type-4-server.xml)
 
-### To deploy the sample into a CICS region 
+### To configure CICS Liberty for JDBC type 4 connectivity to Db2
+1. Create a Liberty JVM server called DFHWLP as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
+1. Add a library defintion to the Liberty server.xml that references the Db2 JCC libraries
+1. Add a data source definition to the Liberty server.xml with the ```jndiName="jdbc/sample"``` using the template given in [etc/config/type-4-server.xml](etc/config/type-4-server.xml). 
+1. Add the following Liberty features to the featureManger list in server.xml: ```jsf-2.2```, ```jndi-1.0```, ```jdbc-4.1```
+
+## Deploying the Sample
+
+To deploy the sample you will need to import the projects into CICS Explorer. 
+
+To install the sample as a CICS bundle:
+
+1. Export the CICS bundle from Eclipse by selecting the project **employee.jdbc.cicsbundle** > **Export Bundle Project to z/OS UNIX File System**. 
+1. Define and install a BUNDLE resource that references the zFS directory above.
+
+To install the sample through Liberty configuration
+1. Export the Web project from Eclipse by selecting the project **employee.jdbc.cicsbundle** > **File** > **Export** > **WAR file** > **Finish**.
+1. Copy the WAR file in binary to the `apps` directory in the Liberty configuration directory on zFS.
+1. Add a application element to the the Liberty configuration file `server.xml` that refernces the WAR file using [server.xml](etc/config/employee.xml) as a basis.
+
+
+
 
 ## Running the sample
-* The servlet is accessed with the following URL:
-[http://host:port/employee.jdbc.web/](http://host:port/employee.jdbc.web/)  
+* The servlet is accessed with the following URL: [http://host:port/employee.jdbc.web/](http://host:port/employee.jdbc.web/)  and allows to performe create, read, update and delete
+operations on employees listed in the Db2 employee table.
 
 
 ## Reference
