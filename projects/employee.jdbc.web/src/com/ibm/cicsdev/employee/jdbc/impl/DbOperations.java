@@ -174,7 +174,8 @@ public class DbOperations {
             // Update a TSQ, including it in the transaction
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            tsq.writeString("Added " + employee.getEmpno() + " with last name: " + employee.getLastname());
+            String msg = String.format("Added %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            tsq.writeString(msg);
 
             
             /*
@@ -269,7 +270,8 @@ public class DbOperations {
             // Write some basic information about the deleted record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            tsq.writeString("Deleted " + employee.getEmpno() + " with last name: " + employee.getLastname());
+            String msg = String.format("Deleted %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            tsq.writeString(msg);
 
             
             /*
@@ -379,7 +381,8 @@ public class DbOperations {
             // Write some basic information about the updated record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            tsq.writeString("Updated " + employee.getEmpno() + " with last name: " + employee.getLastname());
+            String msg = String.format("Updated %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            tsq.writeString(msg);
 
             
             /*
