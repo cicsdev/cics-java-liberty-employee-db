@@ -36,7 +36,7 @@ JDBC type 2 connectivity,  or a remote database with a JDBC type 4 connectivity.
 1. Create a Liberty JVM server as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
 1. Add the following Liberty features to the featureManger list in server.xml: ```jsf-2.2```, ```jndi-1.0```, ```jdbc-4.1```
 1. Add a library defintion to the Liberty server.xml that references the Db2 JCC libraries
-1. Add a data source definition to the Liberty server.xmlwith the ```jndiName="jdbc/sample"``` 
+1. Add a data source definition to the Liberty server.xml with the attribute ```jndiName="jdbc/sample"``` 
 
 A template server.xml is provided in the [etc/config/type-2-server.xml](etc/config/type-2-server.xml) 
 
@@ -44,7 +44,7 @@ A template server.xml is provided in the [etc/config/type-2-server.xml](etc/conf
 ### To configure CICS Liberty for JDBC type 4 connectivity to Db2
 1. Create a Liberty JVM server called DFHWLP as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
 1. Add a library defintion to the Liberty server.xml that references the Db2 JCC libraries
-1. Add a data source definition to the Liberty server.xml with the ```jndiName="jdbc/sample"``` 
+1. Add a data source definition to the Liberty server.xml with the attribute ```jndiName="jdbc/sample"``` 
 1. Add the following Liberty features to the featureManger list in server.xml: ```jsf-2.2```, ```jndi-1.0```, ```jdbc-4.1```
 
 A template server.xml is provided in the [etc/config/type-4-server.xml](etc/config/type-4-server.xml) 

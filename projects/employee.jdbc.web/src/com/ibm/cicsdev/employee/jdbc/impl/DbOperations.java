@@ -432,7 +432,7 @@ public class DbOperations {
         employee.setEdlevel(currentResult.getObject("EDLEVEL") == null ? 0 : (short)currentResult.getShort("EDLEVEL"));
         employee.setEmpno(currentResult.getString("EMPNO"));
         employee.setFirstname(currentResult.getString("FIRSTNME"));
-        employee.setHiredate(currentResult.getDate("HIREDATE"));
+        employee.setHireDate(currentResult.getDate("HIREDATE"));
         employee.setJob(currentResult.getString("JOB"));
         employee.setLastname(currentResult.getString("LASTNAME"));
         employee.setMidinit(currentResult.getString("MIDINIT"));
@@ -460,7 +460,7 @@ public class DbOperations {
     
         // Check for the values on date fields.
         Date bDate = employee.getBirthdate() == null ? null : (new Date(employee.getBirthdate().getTime()));
-        Date hDate = employee.getHiredate() == null ? null : (new Date(employee.getHiredate().getTime()));
+        Date hDate = employee.getHireDate() == null ? null : (new Date(employee.getHireDate().getTime()));
         
         // Fill in the rest of the fields
         statement.setDate(1, bDate);

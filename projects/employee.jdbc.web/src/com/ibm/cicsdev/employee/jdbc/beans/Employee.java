@@ -112,12 +112,12 @@ public class Employee implements Serializable {
         this.firstname = firstname;
     }
 
-    public Date getHiredate() {
+    public Date getHireDate() {
         return this.hiredate;
     }
 
-    public void setHiredate(Date hiredate) {
-        this.hiredate = hiredate;
+    public void setHireDate(Date hireDate) {
+        this.hiredate = hireDate;
     }
 
     public String getJob() {
