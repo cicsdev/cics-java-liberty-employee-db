@@ -34,8 +34,8 @@ import javax.naming.NamingException;
  */
 @ManagedBean(name = "empListBean")
 @SessionScoped
-public class EmpListBean {
-
+public class EmpListBean
+{
     /**
      * Stores current target employee for update/delete.
      */
