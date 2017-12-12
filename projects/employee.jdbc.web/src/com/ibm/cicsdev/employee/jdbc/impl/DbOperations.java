@@ -39,9 +39,9 @@ import java.util.ArrayList;
  */
 public class DbOperations {
     
-    /*
-    Name of CICS TSQ used to log activity
-    */
+    /**
+     * Name of CICS TSQ used to log activity.
+     */
     static final String TSQ_NAME = "DB2LOG"; 
 
     /**
