@@ -29,20 +29,20 @@
         <h:dataTable id="tbl" var="emp" value="#{empListBean.allResults}" rows="#{empListBean.lastRow}" first="#{empListBean.firstRow}"
             rendered="#{not empty empListBean.allResults}" border="1"    cellpadding="5">                    
             <h:column>
-                <f:facet name="header">Employee Number</f:facet>#{emp.empno}
+                <f:facet name="header">Employee Number</f:facet>#{emp.empNo}
             </h:column>            
             <h:column>
                 <f:facet name="header">First Name</f:facet>
-                <h:inputText value = "#{emp.firstname}"
+                <h:inputText value = "#{emp.firstName}"
                        size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.firstname}"
+                    <h:outputText value = "#{emp.firstName}"
                        rendered = "#{not emp.canEdit}" />
             </h:column>            
             <h:column>
                 <f:facet name="header">Last Name</f:facet>
-                <h:inputText value = "#{emp.lastname}"
+                <h:inputText value = "#{emp.lastName}"
                        size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.lastname}"
+                    <h:outputText value = "#{emp.lastName}"
                        rendered = "#{not emp.canEdit}" />
             </h:column>            
             <h:column>
@@ -54,9 +54,9 @@
             </h:column>            
             <h:column>
                 <f:facet name="header">Phone Number</f:facet>
-                <h:inputText value = "#{emp.phoneno}"
+                <h:inputText value = "#{emp.phoneNo}"
                        size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.phoneno}"
+                    <h:outputText value = "#{emp.phoneNo}"
                        rendered = "#{not emp.canEdit}" />
             </h:column>            
             <h:column>
