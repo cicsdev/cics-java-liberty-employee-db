@@ -417,30 +417,31 @@ public class DbOperations {
      * the Employee information from the row, storing it in a
      * new Employee bean.
      * 
-     * @param currentResult - ResultSet with pointer
+     * @param rs - ResultSet with pointer
      * 
      * @return - Populated Employee bean
      */
-    private static Employee createEmployeeBean(ResultSet currentResult) throws SQLException
+    private static Employee createEmployeeBean(ResultSet rs) throws SQLException
     {
+        // Create a new instance
         Employee employee = new Employee();
         
-        // Gather the employee information from the DB and set up the bean
-        employee.setBirthDate(currentResult.getDate("BIRTHDATE"));
-        employee.setBonus(currentResult.getBigDecimal("BONUS"));
-        employee.setComm(currentResult.getBigDecimal("COMM"));
-        employee.setEdLevel(currentResult.getObject("EDLEVEL") == null ? 0 : (short)currentResult.getShort("EDLEVEL"));
-        employee.setEmpNo(currentResult.getString("EMPNO"));
-        employee.setFirstName(currentResult.getString("FIRSTNME"));
-        employee.setHireDate(currentResult.getDate("HIREDATE"));
-        employee.setJob(currentResult.getString("JOB"));
-        employee.setLastName(currentResult.getString("LASTNAME"));
-        employee.setMidInit(currentResult.getString("MIDINIT"));
-        employee.setPhoneNo(currentResult.getString("PHONENO"));
-        employee.setSalary(currentResult.getBigDecimal("SALARY"));
-        employee.setSex(currentResult.getString("SEX"));
+        // Gather the employee information from the current row of the ResultSet and set up the bean
+        employee.setBirthDate(rs.getDate("BIRTHDATE"));
+        employee.setBonus(rs.getBigDecimal("BONUS"));
+        employee.setComm(rs.getBigDecimal("COMM"));
+        employee.setEdLevel(rs.getObject("EDLEVEL") == null ? 0 : (short) rs.getShort("EDLEVEL"));
+        employee.setEmpNo(rs.getString("EMPNO"));
+        employee.setFirstName(rs.getString("FIRSTNME"));
+        employee.setHireDate(rs.getDate("HIREDATE"));
+        employee.setJob(rs.getString("JOB"));
+        employee.setLastName(rs.getString("LASTNAME"));
+        employee.setMidInit(rs.getString("MIDINIT"));
+        employee.setPhoneNo(rs.getString("PHONENO"));
+        employee.setSalary(rs.getBigDecimal("SALARY"));
+        employee.setSex(rs.getString("SEX"));
         
-        
+        // Return the constructed instance
         return employee;
     }
     
