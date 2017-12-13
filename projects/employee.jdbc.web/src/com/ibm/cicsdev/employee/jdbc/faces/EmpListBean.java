@@ -53,20 +53,10 @@ public class EmpListBean
     private String lastName;
     
     /**
-     * Stores the results of any search. Used by JSF to display
-     * the results in a table.
+     * Stores the results of any search.
+     * Used by JSF to display the results in a table.
      */
     private ArrayList<Employee> allResults = new ArrayList<Employee>();
-    /**
-     * Returns the full list of results. Used by JSF
-     * to populate a table in empList.xhtml.
-     * @return
-     */
-    /**
-     * Sets the allResults field. Not used by application
-     * but must be present for JSF to function.
-     * @param allResults
-     */
     
     /**
      * Used to indicate the index of the first result displayed.
@@ -79,7 +69,7 @@ public class EmpListBean
     private int lastRow = 15;
     
     /**
-     * Currently used to store error messages.
+     * Current error message for display.
      */
     private String message = "";
     
@@ -92,6 +82,11 @@ public class EmpListBean
      * Flag to indicate the connection to the database is available.
      */
     private boolean databaseAvailable = false;
+
+    
+    /*
+     * Constructor.
+     */
     
     /**
      * No args constructor for this bean. JSF will call it when
@@ -111,6 +106,30 @@ public class EmpListBean
         }
         
     }
+
+    
+    /*
+     * Action methods.
+     */
+    
+    /**
+     * Navigates the user to the correct page to add an employee.
+     * 
+     * @return the name of the JSF file for rendering next.
+     */
+    public String goToAddScreen() {
+        return "addEmp.xhtml";
+    }
+    
+    /** 
+     * Toggles the state of the JTA flag.
+     */
+    public void toggleJta() {
+        this.jta = ! this.jta;
+    }
+    
+    
+    
     /** 
      * Performs the actual search function. This will be called by
      * JSF when the user presses the search button.
@@ -173,17 +192,6 @@ public class EmpListBean
         employee.setCanDel(true);
     }
     
-    /** 
-     * Provides the action for the 'Toggle JTA' button in
-     * master.xhtml. 
-     * 
-     * If JTA is on it'll switch it off, and vice versa.
-     * It will also update the status message.
-     */
-    public void toggleJta() {
-        this.jta = ! this.jta;
-    }
-    
     /**
      * Provides the action for the confirm deletion button on master.xhtml.
      * 
@@ -222,16 +230,6 @@ public class EmpListBean
         // Call the search function, refreshing the view
         // of the rows, removing the deleted record
         return search();
-    }
-    
-    /**
-     * Provides the function for the 'Add employee' button
-     * that directs to the addEmp.xhtml page.
-     * 
-     * @return
-     */
-    public String goToAddScreen() {
-        return "addEmp.xhtml";
     }
     
     /*
