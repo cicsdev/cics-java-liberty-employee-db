@@ -20,9 +20,9 @@
         
         <!-- Toggle and status message for JTA support -->
         <table><tr>
-            <td><h:commandButton value="Toggle JTA" action="#{employeeList.toggleJta}"/></td>
-            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{employeeList.jta}"/></td>
-            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not employeeList.jta}"/></td>
+            <td><h:commandButton value="Toggle JTA" action="#{employeeList.toggleJta}" /></td>
+            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{employeeList.jta}" /></td>
+            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not employeeList.jta}" /></td>
         </tr></table>
 
         <!--  Table populated with all records matching the search results.    -->
@@ -87,7 +87,7 @@
 
         </h:dataTable>
 
-        <!--  Button that will take the user to addEmp.xhtml -->
+        <!--  Button that will take the user to add an employee -->
         <table><tr><td>
         	<h:commandButton value="Add new employee" action="#{employeeList.goToAddScreen}" rendered="#{employeeList.databaseAvailable}" />
        	</td></tr></table>
