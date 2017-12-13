@@ -257,20 +257,16 @@ public class EmpListBean
         this.lastName = lastName;
     }
     
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    
     public String getMessage() {
         return message;
     }
     
-    public int getLastRow() {
-        return lastRow;
-    }
-    
     public int getFirstRow() {
         return firstRow;
+    }
+    
+    public int getLastRow() {
+        return lastRow;
     }
     
     public ArrayList<Employee> getallResults() {
