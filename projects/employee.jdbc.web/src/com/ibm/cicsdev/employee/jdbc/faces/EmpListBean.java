@@ -40,6 +40,20 @@ public class EmpListBean
      * Stores current target employee for update/delete.
      */
     private Employee emp;
+    /**
+     * Allows JSF to retrieve the emp field, which contains
+     * the specific employee being edited.
+     * FIXME Funny behaviour when you select delete/edit for
+     * more than one record
+     * @return
+     */
+    /**
+     * Allows JSF to store a specific employee in the emp field.
+     * This is used to track which one is being modified with
+     * either edit or delete.
+     * 
+     * @param emp
+     */
     
     /**
      * Object for our Liberty data source.
@@ -50,12 +64,33 @@ public class EmpListBean
      * Stores the last name used as the search criteria.
      */
     private String lastName;
+    /** Allows one to retrieve the lastName field.
+     * Not used, but required.
+     * 
+     * @return - lastName field
+     */
+    /**
+     * Sets the lastName used as the search field.
+     * This will be called by newEmpList.xhtml
+     * 
+     * @param lastName - Name desired to be searched
+     */
     
     /**
      * Stores the results of any search. Used by JSF to display
      * the results in a table.
      */
     private ArrayList<Employee> allResults = new ArrayList<Employee>();
+    /**
+     * Returns the full list of results. Used by JSF
+     * to populate a table in empList.xhtml.
+     * @return
+     */
+    /**
+     * Sets the allResults field. Not used by application
+     * but must be present for JSF to function.
+     * @param allResults
+     */
     
     /**
      * Used to indicate the index of the first result displayed.
@@ -76,9 +111,23 @@ public class EmpListBean
      * Flag to indicate we will use JTA for unit of work support.
      */
     private boolean jta = true;
+    /**
+     * Allows JSF to retrieve the value of the JTA toggle.
+     * Used to display it at the top of the page.
+     * 
+     * @return
+     */
     
     
     private boolean dbAvailable = false;
+    /**
+     * Allows JSF to check the flag indicating whether the DB
+     * is available. If the look-up fails, a message indicating
+     * the data source is not available will be displayed
+     * at the top of the page
+     * 
+     * @return
+     */
     
     /**
      * No args constructor for this bean. JSF will call it when
@@ -98,94 +147,6 @@ public class EmpListBean
         }
         
     }
-    
-    /** Allows one to retrieve the lastName field.
-     * Not used, but required.
-     * 
-     * @return - lastName field
-     */
-    public String getlastName() {
-        return lastName;
-    }
-    
-    /**
-     * Sets the lastName used as the search field.
-     * This will be called by newEmpList.xhtml
-     * 
-     * @param lastName - Name desired to be searched
-     */
-    public void setlastName(String lastName) {
-        this.lastName = lastName;
-    }
-    
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    
-    public String getMessage() {
-        return message;
-    }
-    
-    public int getlastRow() {
-        return lastRow;
-    }
-    
-    public int getfirstRow() {
-        return firstRow;
-    }
-    
-    /**
-     * Returns the full list of results. Used by JSF
-     * to populate a table in empList.xhtml.
-     * @return
-     */
-    public ArrayList<Employee> getallResults() {
-        return allResults;
-    }
-    
-    /**
-     * Sets the allResults field. Not used by application
-     * but must be present for JSF to function.
-     * @param allResults
-     */
-    public void setAllResults(ArrayList<Employee> allResults) {
-        this.allResults = allResults;
-    }
-    
-    /**
-     * Allows JSF to retrieve the emp field, which contains
-     * the specific employee being edited.
-     * FIXME Funny behaviour when you select delete/edit for
-     * more than one record
-     * @return
-     */
-    public Employee getemp() {
-        return emp;
-    }
-    
-    /**
-     * Allows JSF to store a specific employee in the emp field.
-     * This is used to track which one is being modified with
-     * either edit or delete.
-     * 
-     * @param emp
-     */
-    public void setemp(Employee emp) {
-        this.emp = emp;
-    }
-    
-    /**
-     * Allows JSF to check the flag indicating whether the DB
-     * is available. If the look-up fails, a message indicating
-     * the data source is not available will be displayed
-     * at the top of the page
-     * 
-     * @return
-     */
-    public boolean getdbAvailable() {
-        return dbAvailable;
-    }
-    
     /** 
      * Performs the actual search function. This will be called by
      * JSF when the user presses the search button.
@@ -248,16 +209,6 @@ public class EmpListBean
         emp.setCanDel(true);
     }
     
-    /**
-     * Allows JSF to retrieve the value of the JTA toggle.
-     * Used to display it at the top of the page.
-     * 
-     * @return
-     */
-    public boolean isJta() {
-        return jta;
-    }
-    
     /** 
      * Provides the action for the 'Toggle JTA' button in
      * master.xhtml. 
@@ -318,4 +269,56 @@ public class EmpListBean
     public String goToAddScreen() {
         return "addEmp.xhtml";
     }
+    
+    /*
+     * Attribute accessor methods used by JSF.
+     */
+    
+    public String getlastName() {
+        return lastName;
+    }
+    
+    public void setlastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public int getlastRow() {
+        return lastRow;
+    }
+    
+    public int getfirstRow() {
+        return firstRow;
+    }
+    
+    public ArrayList<Employee> getallResults() {
+        return allResults;
+    }
+    
+    public void setAllResults(ArrayList<Employee> allResults) {
+        this.allResults = allResults;
+    }
+    
+    public Employee getemp() {
+        return emp;
+    }
+    
+    public void setemp(Employee emp) {
+        this.emp = emp;
+    }
+    
+    public boolean getdbAvailable() {
+        return dbAvailable;
+    }
+    
+    public boolean isJta() {
+        return jta;
+    }    
 }
