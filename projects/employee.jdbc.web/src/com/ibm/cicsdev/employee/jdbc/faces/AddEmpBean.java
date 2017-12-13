@@ -140,39 +140,42 @@ public class AddEmpBean
      * 
      * @return - Sends you back to addEmp.xhtml
      */
-    public String createInDb() {
+    public String create() {
         
         // Create a new instance to store the data
         Employee employee = new Employee();
         
         // Set our default values - we don't display these, so we don't care about them
-        employee.setBonus( new BigDecimal(1_000_000) );
-        employee.setComm(new BigDecimal(1000000));
         employee.setMidInit("R");
         employee.setPhoneNo("1111");
-        employee.setSalary(new BigDecimal(1000000));        
-        short s = 1;
-        employee.setEdLevel(s);
+        employee.setBonus( new BigDecimal(1_000_000) );
+        employee.setComm( new BigDecimal(1_000_000) );
+        employee.setSalary( new BigDecimal(1_000_000) );        
+        employee.setEdLevel((short) 1);
         
         // Now add in the user input
         employee.setEmpNo(this.empno.toUpperCase());
-        employee.setFirstName(firstname.toUpperCase());
-        employee.setJob(job.toUpperCase());
-        employee.setLastName(lastname.toUpperCase());
-        employee.setSex(gender.toUpperCase());        
+        employee.setFirstName(this.firstname.toUpperCase());
+        employee.setJob(this.job.toUpperCase());
+        employee.setLastName(this.lastname.toUpperCase());
+        employee.setSex(this.gender.toUpperCase());        
 
-        
-        // Attempt to create the new employee record in the DB
         try {
+            // Attempt to create the new employee record in the DB
             DbOperations.createEmployee(this.ds, employee, this.jta);
             this.resultMessage = "SUCCESSFULLY ADDED EMPLOYEE";
-        } catch (Exception e) {
-            this.resultMessage = "ERROR ";
-            if(e.getMessage().contains("DUPLICATE VALUES")) {
-                resultMessage += "Employee number already in use";
-            } else {
-                resultMessage += "Please consult stderr.";
+        }
+        catch (Exception e) {
+            
+            // Explicit test for duplicate values error
+            if (e.getMessage().contains("DUPLICATE VALUES")) {
+                this.resultMessage = "ERROR Employee number already in use";
             }
+            else {
+                this.resultMessage = "ERROR Please consult stderr";
+            }
+            
+            // Dump to output for debug purposes
             e.printStackTrace();
         }
         
