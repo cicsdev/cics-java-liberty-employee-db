@@ -77,7 +77,7 @@ public class AddEmpBean
     /**
      * Flag to indicate we will use JTA for unit of work support.
      */
-    public boolean jtatoggle = true;
+    public boolean jta = true;
 
     
     /*
@@ -118,16 +118,11 @@ public class AddEmpBean
      * Provides the action for the 'Toggle JTA' button in
      * master.xhtml. 
      * 
-     * If JTA is on it will switch it off, and vice versa.
+     * If JTA is on it will switch it off, and vice versa. No return value as we
+     * want to stay on the same page.
      */
-    public String toggleJta() {
-        if(jtatoggle) {
-            jtatoggle = false;
-        } else {
-            jtatoggle = true;
-        }
-        
-        return "addEmp.xhtml";
+    public void toggleJta() {
+        this.jta = ! this.jta;
     }
 
     /**
@@ -151,7 +146,7 @@ public class AddEmpBean
         
         // Attempt to create the new employee record in the DB
         try {
-            DbOperations.createEmployee(ds, employee, jtatoggle);
+            DbOperations.createEmployee(ds, employee, jta);
             resultMessage = "SUCCESSFULLY ADDED EMPLOYEE";
         } catch (Exception e) {
             resultMessage = "ERROR ";
@@ -206,14 +201,8 @@ public class AddEmpBean
      * Attribute accessor methods used by JSF.
      */
     
-    /**
-     * Used by JSF to check the value of the JTA toggle and
-     * display it on the addEmp.xhtml page
-     * 
-     * @return - the current toggle value
-     */
-    public boolean getjtatoggle() {
-        return jtatoggle;
+    public boolean isJta() {
+        return jta;
     }
     
     /**
