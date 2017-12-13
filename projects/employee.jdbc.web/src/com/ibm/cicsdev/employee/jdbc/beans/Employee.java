@@ -58,11 +58,11 @@ public class Employee implements Serializable
 
     private boolean canEdit;
     
-    private boolean canDel;
+    private boolean canDelete;
     
     public Employee() {
         canEdit = false;
-        canDel = false;
+        canDelete = false;
     }
     
     public String getEmpNo() {
@@ -177,12 +177,12 @@ public class Employee implements Serializable
         this.canEdit = canEdit;
     }
     
-    public boolean isCanDel() {
-        return canDel;
+    public boolean isCanDelete() {
+        return canDelete;
     }
 
-    public void setCanDel(boolean canDel) {
-        this.canDel = canDel;
+    public void setCanDelete(boolean canDel) {
+        this.canDelete = canDel;
     }
 
 }

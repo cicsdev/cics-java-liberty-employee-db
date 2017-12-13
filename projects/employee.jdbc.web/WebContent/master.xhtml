@@ -77,10 +77,10 @@
             <!--  Delete button. Will change to a confirmation button when pressed -->
             <h:column>
             	<f:facet name="header">Delete</f:facet>
-                <h:commandButton value="Delete" action="#{empListBean.confirmDel}" rendered="#{not emp.canDel}">
+                <h:commandButton value="Delete" action="#{empListBean.confirmDel}" rendered="#{not emp.canDelete}">
                 	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
                 </h:commandButton>
-                <h:commandButton value="Confirm" action="#{empListBean.deleteEmp}" rendered="#{emp.canDel}">
+                <h:commandButton value="Confirm" action="#{empListBean.deleteEmployee}" rendered="#{emp.canDelete}">
                 	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
                 </h:commandButton>
             </h:column>

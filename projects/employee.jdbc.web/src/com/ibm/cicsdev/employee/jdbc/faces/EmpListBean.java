@@ -174,16 +174,23 @@ public class EmpListBean
     public String search() {
         
         try {
+            // Search the database for this string
             allResults = DbOperations.findEmployeeByLastName(ds, lastName);
-            if(allResults.size() < 1) {
+            
+            // Message if no results are found
+            if (allResults.size() < 1) {
                 message = "NO RESULTS FOUND.";
-            }else {
+            }
+            else {
                 message = "";
             }
-        } catch(Exception e) {
+        }
+        catch(Exception e) {
             e.printStackTrace();
             message = "ERROR: Please see stderr";
         }
+        
+        // Redirect back to main page
         return "master.xhtml";
     }
     
@@ -193,7 +200,7 @@ public class EmpListBean
      * This flag enables or disabled the delete function.
      */
     public void confirmDel() {
-        employee.setCanDel(true);
+        employee.setCanDelete(true);
     }
     
     /**
@@ -208,7 +215,7 @@ public class EmpListBean
      * 
      * @return - Calls the search function, refreshing the rows. Removing the record
      */
-    public String deleteEmp() {
+    public String deleteEmployee() {
         
         try {
             // call the delete employee function for this employee
@@ -219,14 +226,14 @@ public class EmpListBean
             // If found, returns the user to the same page
             if(e.getMessage().contains("RESTRICTS THE DELETION")){
                 message = "ERROR: You cannot delete this record.";
-                employee.setCanDel(false);
+                employee.setCanDelete(false);
                 return "master.xhtml";
             }
             
             // If we can't find the permission error, report the problem
             message = "ERROR: See stdout for details";
             e.printStackTrace();
-            employee.setCanDel(false);
+            employee.setCanDelete(false);
             return "master.xhtml";
             
         }    
@@ -256,11 +263,11 @@ public class EmpListBean
         return message;
     }
     
-    public int getlastRow() {
+    public int getLastRow() {
         return lastRow;
     }
     
-    public int getfirstRow() {
+    public int getFirstRow() {
         return firstRow;
     }
     
