@@ -26,30 +26,31 @@ import java.util.Date;
  * @author Michael Jones
  * 
  */
-public class Employee implements Serializable {
+public class Employee implements Serializable
+{
     private static final long serialVersionUID = -5094938829089545370L;
     
-    private String empno;
+    private String empNo;
 
-    private Date birthdate;
+    private Date birthDate;
 
     private BigDecimal bonus;
 
     private BigDecimal comm;
 
-    private short edlevel;
+    private short edLevel;
 
-    private String firstname;
+    private String firstName;
 
-    private Date hiredate;
+    private Date hireDate;
 
     private String job;
 
-    private String lastname;
+    private String lastName;
 
-    private String midinit;
+    private String midInit;
 
-    private String phoneno;
+    private String phoneNo;
 
     private BigDecimal salary;
 
@@ -57,27 +58,27 @@ public class Employee implements Serializable {
 
     private boolean canEdit;
     
-    private boolean canDel;
+    private boolean canDelete;
     
     public Employee() {
         canEdit = false;
-        canDel = false;
+        canDelete = false;
     }
     
-    public String getEmpno() {
-        return this.empno;
+    public String getEmpNo() {
+        return this.empNo;
     }
 
-    public void setEmpno(String empno) {
-        this.empno = empno;
+    public void setEmpNo(String empNo) {
+        this.empNo = empNo;
     }
 
-    public Date getBirthdate() {
-        return this.birthdate;
+    public Date getBirthDate() {
+        return this.birthDate;
     }
 
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public BigDecimal getBonus() {
@@ -96,28 +97,28 @@ public class Employee implements Serializable {
         this.comm = comm;
     }
 
-    public short getEdlevel() {
-        return this.edlevel;
+    public short getEdLevel() {
+        return this.edLevel;
     }
 
-    public void setEdlevel(short edlevel) {
-        this.edlevel = edlevel;
+    public void setEdLevel(short edLevel) {
+        this.edLevel = edLevel;
     }
 
-    public String getFirstname() {
-        return this.firstname;
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public Date getHireDate() {
-        return this.hiredate;
+        return this.hireDate;
     }
 
     public void setHireDate(Date hireDate) {
-        this.hiredate = hireDate;
+        this.hireDate = hireDate;
     }
 
     public String getJob() {
@@ -128,28 +129,28 @@ public class Employee implements Serializable {
         this.job = job;
     }
 
-    public String getLastname() {
-        return this.lastname;
+    public String getLastName() {
+        return this.lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getMidinit() {
-        return this.midinit;
+    public String getMidInit() {
+        return this.midInit;
     }
 
-    public void setMidinit(String midinit) {
-        this.midinit = midinit;
+    public void setMidInit(String midInit) {
+        this.midInit = midInit;
     }
 
-    public String getPhoneno() {
-        return this.phoneno;
+    public String getPhoneNo() {
+        return this.phoneNo;
     }
 
-    public void setPhoneno(String phoneno) {
-        this.phoneno = phoneno;
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
 
     public BigDecimal getSalary() {
@@ -169,19 +170,19 @@ public class Employee implements Serializable {
     }
 
     public boolean isCanEdit() {
-          return canEdit;
+        return canEdit;
     }
 
     public void setCanEdit(boolean canEdit) {
-          this.canEdit = canEdit;
+        this.canEdit = canEdit;
     }
     
-    public boolean isCanDel() {
-          return canDel;
+    public boolean isCanDelete() {
+        return canDelete;
     }
 
-    public void setCanDel(boolean canDel) {
-          this.canDel = canDel;
+    public void setCanDelete(boolean canDel) {
+        this.canDelete = canDel;
     }
 
 }

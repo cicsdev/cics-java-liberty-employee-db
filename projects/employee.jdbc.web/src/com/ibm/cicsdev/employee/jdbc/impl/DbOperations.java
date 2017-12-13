@@ -159,7 +159,7 @@ public class DbOperations {
             
             // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
-            statement = populateStatement(employee, statement);
+            statement = populateStatement(statement, employee);
             
             // Perform the INSERT operation
             statement.executeUpdate();
@@ -172,7 +172,7 @@ public class DbOperations {
             // Update a TSQ, including it in the transaction
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Added %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            String msg = String.format("Added %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -255,7 +255,7 @@ public class DbOperations {
             
             // Prepare the statement and add the specified employee number
             statement = conn.prepareStatement("DELETE FROM EMP WHERE EMPNO = ?");
-            statement.setString(1, employee.getEmpno());
+            statement.setString(1, employee.getEmpNo());
             
             // Perform the DELETE operation
             statement.execute();
@@ -268,7 +268,7 @@ public class DbOperations {
             // Write some basic information about the deleted record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Deleted %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            String msg = String.format("Deleted %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -365,8 +365,8 @@ public class DbOperations {
 
             // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
-            populateStatement(employee, statement);
-            statement.setString(15, employee.getEmpno());
+            populateStatement(statement, employee);
+            statement.setString(15, employee.getEmpNo());
             
             // Perform the UPDATE operation
             statement.execute();
@@ -379,7 +379,7 @@ public class DbOperations {
             // Write some basic information about the updated record to a TSQ
             TSQ tsq = new TSQ();
             tsq.setName(TSQ_NAME);
-            String msg = String.format("Updated %s with last name: %s", employee.getEmpno(), employee.getLastname());
+            String msg = String.format("Updated %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
             
@@ -417,30 +417,31 @@ public class DbOperations {
      * the Employee information from the row, storing it in a
      * new Employee bean.
      * 
-     * @param currentResult - ResultSet with pointer
+     * @param rs - ResultSet with pointer
      * 
      * @return - Populated Employee bean
      */
-    private static Employee createEmployeeBean(ResultSet currentResult) throws SQLException
+    private static Employee createEmployeeBean(ResultSet rs) throws SQLException
     {
+        // Create a new instance
         Employee employee = new Employee();
         
-        // Gather the employee information from the DB and set up the bean
-        employee.setBirthdate(currentResult.getDate("BIRTHDATE"));
-        employee.setBonus(currentResult.getBigDecimal("BONUS"));
-        employee.setComm(currentResult.getBigDecimal("COMM"));
-        employee.setEdlevel(currentResult.getObject("EDLEVEL") == null ? 0 : (short)currentResult.getShort("EDLEVEL"));
-        employee.setEmpno(currentResult.getString("EMPNO"));
-        employee.setFirstname(currentResult.getString("FIRSTNME"));
-        employee.setHireDate(currentResult.getDate("HIREDATE"));
-        employee.setJob(currentResult.getString("JOB"));
-        employee.setLastname(currentResult.getString("LASTNAME"));
-        employee.setMidinit(currentResult.getString("MIDINIT"));
-        employee.setPhoneno(currentResult.getString("PHONENO"));
-        employee.setSalary(currentResult.getBigDecimal("SALARY"));
-        employee.setSex(currentResult.getString("SEX"));
+        // Gather the employee information from the current row of the ResultSet and set up the bean
+        employee.setBirthDate(rs.getDate("BIRTHDATE"));
+        employee.setBonus(rs.getBigDecimal("BONUS"));
+        employee.setComm(rs.getBigDecimal("COMM"));
+        employee.setEdLevel(rs.getObject("EDLEVEL") == null ? 0 : (short) rs.getShort("EDLEVEL"));
+        employee.setEmpNo(rs.getString("EMPNO"));
+        employee.setFirstName(rs.getString("FIRSTNME"));
+        employee.setHireDate(rs.getDate("HIREDATE"));
+        employee.setJob(rs.getString("JOB"));
+        employee.setLastName(rs.getString("LASTNAME"));
+        employee.setMidInit(rs.getString("MIDINIT"));
+        employee.setPhoneNo(rs.getString("PHONENO"));
+        employee.setSalary(rs.getBigDecimal("SALARY"));
+        employee.setSex(rs.getString("SEX"));
         
-        
+        // Return the constructed instance
         return employee;
     }
     
@@ -448,36 +449,41 @@ public class DbOperations {
     /**
      * Populates a CREATE statement with values, taken from an employee bean.
      * 
-     * @param employee - The employee you wish to use values from
      * @param statement - The statement you want to populate
-     * @return - A populated statement
-     * @throws SQLException
+     * @param employee - The employee you wish to use values from
+     * 
+     * @return A populated statement
+     * 
+     * @throws SQLException if any JDBC errors are encountered when updating
+     * the statement.
      */
-    private static PreparedStatement populateStatement(Employee employee, PreparedStatement statement) throws SQLException
+    private static PreparedStatement populateStatement(PreparedStatement statement, Employee employee) throws SQLException
     {
+        // Check for non-null value on birth date field
+        Date bDate = employee.getBirthDate() == null ? null : new Date(employee.getBirthDate().getTime());
+        statement.setDate(1, bDate);
+        
+        // Check for non-null value on hire date field
+        Date hDate = employee.getHireDate() == null ? null : new Date(employee.getHireDate().getTime());
+        statement.setDate(7, hDate);
+                
         // Set a null department, as not set for the application
-        String deptno = null;
-    
-        // Check for the values on date fields.
-        Date bDate = employee.getBirthdate() == null ? null : (new Date(employee.getBirthdate().getTime()));
-        Date hDate = employee.getHireDate() == null ? null : (new Date(employee.getHireDate().getTime()));
+        statement.setString(14, null);
         
         // Fill in the rest of the fields
-        statement.setDate(1, bDate);
         statement.setBigDecimal(2, employee.getBonus());
         statement.setBigDecimal(3, employee.getComm());
-        statement.setShort(4, employee.getEdlevel());
-        statement.setString(5, employee.getEmpno());
-        statement.setString(6,  employee.getFirstname());
-        statement.setDate(7, hDate);
-        statement.setString(8,  employee.getJob());
-        statement.setString(9,  employee.getLastname());
-        statement.setString(10,  employee.getMidinit());
-        statement.setString(11,  employee.getPhoneno());
+        statement.setShort(4, employee.getEdLevel());
+        statement.setString(5, employee.getEmpNo());
+        statement.setString(6, employee.getFirstName());
+        statement.setString(8, employee.getJob());
+        statement.setString(9, employee.getLastName());
+        statement.setString(10, employee.getMidInit());
+        statement.setString(11, employee.getPhoneNo());
         statement.setBigDecimal(12, employee.getSalary());
-        statement.setString(13,  employee.getSex());
-        statement.setString(14,  deptno);
+        statement.setString(13, employee.getSex());
         
+        // Return the populated statement
         return statement;
     }
 }

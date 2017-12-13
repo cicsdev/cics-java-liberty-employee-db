@@ -1,5 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"    xmlns:h="http://xmlns.jcp.org/jsf/html"    xmlns:f="http://xmlns.jcp.org/jsf/core">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head/>
 <h:body>
 
@@ -10,101 +13,84 @@
         <!-- Search box allowing one to search by last name -->
         <table><tr>
             <td><h:outputText style="color: black;" value="Search by last name: " /></td>
-            <td><h:inputText id="inputSearchTxt" value="#{empListBean.lastName}" /></td>
-            <td><h:commandButton value="Search" action="#{empListBean.search}" rendered="#{empListBean.dbAvailable}"/></td>
-            <td><h:outputText style="color: red;" value="#{empListBean.message}" /></td>
+            <td><h:inputText id="inputSearchTxt" value="#{employeeList.lastName}" /></td>
+            <td><h:commandButton value="Search" action="#{employeeList.search}" rendered="#{employeeList.databaseAvailable}"/></td>
+            <td><h:outputText style="color: red;" value="#{employeeList.message}" /></td>
         </tr></table>
         
         <!-- Toggle and status message for JTA support -->
-        <table>
-            <tr>
-                <td><h:commandButton value="Toggle JTA" action="#{empListBean.toggleJta}"/></td>
-                <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{empListBean.jtatoggle}"/></td>
-                <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not empListBean.jtatoggle}"/></td>
-            </tr>
-        </table>
+        <table><tr>
+            <td><h:commandButton value="Toggle JTA" action="#{employeeList.toggleJta}"/></td>
+            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{employeeList.jta}"/></td>
+            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not employeeList.jta}"/></td>
+        </tr></table>
 
-        <!--  Table populated with all records matching the search results.     ->
-        <-    Contains a column for editing the rows as well as deleting them. -->
-        <h:dataTable id="tbl" var="emp" value="#{empListBean.allResults}" rows="#{empListBean.lastRow}" first="#{empListBean.firstRow}"
-            rendered="#{not empty empListBean.allResults}" border="1"    cellpadding="5">                    
-            <h:column>
-                <f:facet name="header">Employee Number</f:facet>#{emp.empno}
-            </h:column>            
+        <!--  Table populated with all records matching the search results.    -->
+        <!--  Contains a column for editing the rows as well as deleting them. -->
+        <h:dataTable id="tbl" var="emp" value="#{employeeList.allResults}"
+        		rows="#{employeeList.lastRow}" first="#{employeeList.firstRow}"
+            	rendered="#{not empty employeeList.allResults}" border="1" cellpadding="5">
+            	                    
+            <h:column><f:facet name="header">Employee Number</f:facet>#{emp.empNo}</h:column>
+                        
             <h:column>
                 <f:facet name="header">First Name</f:facet>
-                <h:inputText value = "#{emp.firstname}"
-                       size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.firstname}"
-                       rendered = "#{not emp.canEdit}" />
-            </h:column>            
+                <h:inputText value="#{emp.firstName}" size="10" rendered="#{emp.canEdit}" />
+                    <h:outputText value="#{emp.firstName}" rendered="#{not emp.canEdit}" />
+            </h:column>
+                        
             <h:column>
                 <f:facet name="header">Last Name</f:facet>
-                <h:inputText value = "#{emp.lastname}"
-                       size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.lastname}"
-                       rendered = "#{not emp.canEdit}" />
-            </h:column>            
+                <h:inputText value="#{emp.lastName}" size="10" rendered="#{emp.canEdit}" />
+                <h:outputText value="#{emp.lastName}" rendered="#{not emp.canEdit}" />
+            </h:column>
+                        
             <h:column>
                 <f:facet name="header">Gender</f:facet>
-                <h:inputText value = "#{emp.sex}"
-                       size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.sex}"
-                       rendered = "#{not emp.canEdit}" />
-            </h:column>            
+                <h:inputText value="#{emp.sex}" size="10" rendered="#{emp.canEdit}" />
+                <h:outputText value="#{emp.sex}" rendered="#{not emp.canEdit}" />
+            </h:column>
+                        
             <h:column>
                 <f:facet name="header">Phone Number</f:facet>
-                <h:inputText value = "#{emp.phoneno}"
-                       size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.phoneno}"
-                       rendered = "#{not emp.canEdit}" />
-            </h:column>            
+                <h:inputText value="#{emp.phoneNo}" size="10" rendered="#{emp.canEdit}" />
+                <h:outputText value="#{emp.phoneNo}" rendered="#{not emp.canEdit}" />
+            </h:column>
+            
             <h:column>
                 <f:facet name="header">Job Title</f:facet>
-                <h:inputText value = "#{emp.job}"
-                       size = "10" rendered = "#{emp.canEdit}" />
-                    <h:outputText value = "#{emp.job}"
-                       rendered = "#{not emp.canEdit}" />
-            </h:column>            
+                <h:inputText value="#{emp.job}" size="10" rendered="#{emp.canEdit}" />
+                <h:outputText value="#{emp.job}" rendered="#{not emp.canEdit}" />
+            </h:column>
+            
             <!--  Edit button. Will change to a save button when pressed -->
             <h:column>
-               <f:facet name = "header">Edit</f:facet>
-               <h:commandButton value = "Edit" 
-                  action="#{empListBean.setCanEdit}" 
-                  rendered="#{not emp.canEdit}">        
-                  <f:setPropertyActionListener 
-                  target="#{empListBean.emp}" value="#{emp}" />
-               </h:commandButton>
-               <h:commandButton value="Save"
-                  action="#{empListBean.saveUpdates}"
-                  rendered="#{emp.canEdit}">
-                  <f:setPropertyActionListener
-                     target="#{empListBean.emp}" value="#{emp}"/>
-                  </h:commandButton>
+                <f:facet name="header">Edit</f:facet>
+                <h:commandButton value="Edit" action="#{employeeList.setCanEdit}" rendered="#{not emp.canEdit}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
+                </h:commandButton>
+                <h:commandButton value="Save" action="#{employeeList.saveUpdates}" rendered="#{emp.canEdit}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
+                </h:commandButton>
             </h:column>
             
             <!--  Delete button. Will change to a confirmation button when pressed -->
             <h:column>
-               <f:facet name = "header">Delete</f:facet>
-               <h:commandButton value = "Delete" 
-                  action="#{empListBean.confirmDel}" 
-                  rendered="#{not emp.canDel}">        
-                  <f:setPropertyActionListener 
-                  target="#{empListBean.emp}" value="#{emp}" />
-               </h:commandButton>
-               <h:commandButton value="Confirm"
-                  action="#{empListBean.deleteEmp}"
-                  rendered="#{emp.canDel}">
-                  <f:setPropertyActionListener
-                     target="#{empListBean.emp}" value="#{emp}"/>
-                  </h:commandButton>
-            </h:column>                
+            	<f:facet name="header">Delete</f:facet>
+                <h:commandButton value="Delete" action="#{employeeList.confirmDel}" rendered="#{not emp.canDelete}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
+                </h:commandButton>
+                <h:commandButton value="Confirm" action="#{employeeList.deleteEmployee}" rendered="#{emp.canDelete}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
+                </h:commandButton>
+            </h:column>
+
         </h:dataTable>
 
         <!--  Button that will take the user to addEmp.xhtml -->
-        <table><tr>
-            <td><h:commandButton value="Add new employee" action="#{empListBean.goToAddScreen}" rendered="#{empListBean.dbAvailable}" /></td>
-        </tr></table>
+        <table><tr><td>
+        	<h:commandButton value="Add new employee" action="#{employeeList.goToAddScreen}" rendered="#{employeeList.databaseAvailable}" />
+       	</td></tr></table>
 
     </h:form>
 
