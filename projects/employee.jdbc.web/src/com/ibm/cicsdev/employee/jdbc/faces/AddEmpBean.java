@@ -39,28 +39,44 @@ public class AddEmpBean
      * Instance fields.
      */    
     
-    /** The Employee number specified on the form */
+    /**
+     * The employee number specified on the form.
+     */
     public String empno;
     
-    /** The first name value specified on addEmp.xhtml */
+    /**
+     * The first name value specified on the form.
+     */
     public String firstname;
     
-    /** The last name value specified on addEmp.xhtml */
+    /**
+     * The last name value specified on the form.
+     */
     public String lastname;
     
-    /** The gender value specified on addEmp.xhtml */
+    /**
+     * The gender value specified on the form.
+     */
     public String gender;
     
-    /** The job value specified on addEmp.xhtml */
+    /**
+     * The job value specified on the form.
+     */
     public String job;
     
-    /** Holds the result message of our submission **/
+    /**
+     * Current error message for display.
+     */
     public String resultMessage = "";
     
-    /** Object for our Liberty data source **/
+    /**
+     * Object for our Liberty data source.
+     */
     DataSource ds;
     
-    /** Stores the current state of the JTA flag **/
+    /**
+     * Flag to indicate we will use JTA for unit of work support.
+     */
     public boolean jtatoggle = true;
 
     
