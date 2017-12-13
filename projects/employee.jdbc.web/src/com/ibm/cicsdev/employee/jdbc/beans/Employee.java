@@ -54,7 +54,7 @@ public class Employee implements Serializable
 
     private BigDecimal salary;
 
-    private String sex;
+    private String gender;
 
     private boolean canEdit;
     
@@ -161,12 +161,12 @@ public class Employee implements Serializable
         this.salary = salary;
     }
 
-    public String getSex() {
-        return this.sex;
+    public String getGender() {
+        return this.gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public boolean isCanEdit() {

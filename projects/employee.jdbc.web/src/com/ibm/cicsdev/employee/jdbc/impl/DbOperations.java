@@ -351,7 +351,7 @@ public class DbOperations {
              */
 
             // Uppercase the gender
-            employee.setSex(employee.getSex().toUpperCase());
+            employee.setGender(employee.getGender().toUpperCase());
 
             
             /*
@@ -444,7 +444,7 @@ public class DbOperations {
         employee.setMidInit(rs.getString("MIDINIT"));
         employee.setPhoneNo(rs.getString("PHONENO"));
         employee.setSalary(rs.getBigDecimal("SALARY"));
-        employee.setSex(rs.getString("SEX"));
+        employee.setGender(rs.getString("SEX"));
         
         // Return the constructed instance
         return employee;
@@ -486,7 +486,7 @@ public class DbOperations {
         statement.setString(10, employee.getMidInit());
         statement.setString(11, employee.getPhoneNo());
         statement.setBigDecimal(12, employee.getSalary());
-        statement.setString(13, employee.getSex());
+        statement.setString(13, employee.getGender());
         
         // Return the populated statement
         return statement;

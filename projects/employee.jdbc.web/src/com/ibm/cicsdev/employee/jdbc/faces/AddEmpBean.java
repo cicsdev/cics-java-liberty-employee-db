@@ -150,7 +150,7 @@ public class AddEmpBean
         employee.setEmpNo(this.empNo.toUpperCase());
         employee.setFirstName(this.firstName.toUpperCase());
         employee.setLastName(this.lastName.toUpperCase());
-        employee.setSex(this.gender.toUpperCase());        
+        employee.setGender(this.gender.toUpperCase());        
         employee.setJob(this.job.toUpperCase());
 
         try {
