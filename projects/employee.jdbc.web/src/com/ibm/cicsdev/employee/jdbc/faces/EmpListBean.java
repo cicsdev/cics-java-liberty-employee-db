@@ -37,23 +37,10 @@ import javax.naming.NamingException;
 public class EmpListBean
 {
     /**
-     * Stores current target employee for update/delete.
+     * Stores current target employee for an update or delete operation.
+     * FIXME Funny behaviour when you select delete/edit for more than one record.
      */
-    private Employee emp;
-    /**
-     * Allows JSF to retrieve the emp field, which contains
-     * the specific employee being edited.
-     * FIXME Funny behaviour when you select delete/edit for
-     * more than one record
-     * @return
-     */
-    /**
-     * Allows JSF to store a specific employee in the emp field.
-     * This is used to track which one is being modified with
-     * either edit or delete.
-     * 
-     * @param emp
-     */
+    private Employee employee;
     
     /**
      * Object for our Liberty data source.
@@ -152,7 +139,7 @@ public class EmpListBean
      * than just text boxes
      */
     public void setCanEdit() {
-        emp.setCanEdit(true);
+        employee.setCanEdit(true);
     }
     
     /**
@@ -167,14 +154,14 @@ public class EmpListBean
     public void saveUpdates() {
         
         try {
-            DbOperations.updateEmployee(ds, emp, jta);
+            DbOperations.updateEmployee(ds, employee, jta);
         } catch(Exception e) {
             message = "ERROR: Please check stderr.";
             e.printStackTrace();
         }
         
         
-        emp.setCanEdit(false);
+        employee.setCanEdit(false);
     }
     
     /**
@@ -183,7 +170,7 @@ public class EmpListBean
      * This flag enables or disabled the delete function.
      */
     public void confirmDel() {
-        emp.setCanDel(true);
+        employee.setCanDel(true);
     }
     
     /** 
@@ -213,21 +200,21 @@ public class EmpListBean
         
         try {
             // call the delete employee function for this employee
-            DbOperations.deleteEmployee(ds, emp, jta);
+            DbOperations.deleteEmployee(ds, employee, jta);
         } catch(Exception e) {
         
             // Check for the delete permissions error
             // If found, returns the user to the same page
             if(e.getMessage().contains("RESTRICTS THE DELETION")){
                 message = "ERROR: You cannot delete this record.";
-                emp.setCanDel(false);
+                employee.setCanDel(false);
                 return "master.xhtml";
             }
             
             // If we can't find the permission error, report the problem
             message = "ERROR: See stdout for details";
             e.printStackTrace();
-            emp.setCanDel(false);
+            employee.setCanDel(false);
             return "master.xhtml";
             
         }    
@@ -283,12 +270,12 @@ public class EmpListBean
         this.allResults = allResults;
     }
     
-    public Employee getemp() {
-        return emp;
+    public Employee getEmployee() {
+        return employee;
     }
     
-    public void setemp(Employee emp) {
-        this.emp = emp;
+    public void setEmployee(Employee emp) {
+        this.employee = emp;
     }
     
     public boolean isDatabaseAvailable() {

@@ -67,10 +67,10 @@
             <h:column>
                 <f:facet name="header">Edit</f:facet>
                 <h:commandButton value="Edit" action="#{empListBean.setCanEdit}" rendered="#{not emp.canEdit}">
-                	<f:setPropertyActionListener target="#{empListBean.emp}" value="#{emp}" />
+                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
                 </h:commandButton>
                 <h:commandButton value="Save" action="#{empListBean.saveUpdates}" rendered="#{emp.canEdit}">
-                	<f:setPropertyActionListener target="#{empListBean.emp}" value="#{emp}" />
+                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
                 </h:commandButton>
             </h:column>
             
@@ -78,10 +78,10 @@
             <h:column>
             	<f:facet name="header">Delete</f:facet>
                 <h:commandButton value="Delete" action="#{empListBean.confirmDel}" rendered="#{not emp.canDel}">
-                	<f:setPropertyActionListener target="#{empListBean.emp}" value="#{emp}" />
+                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
                 </h:commandButton>
                 <h:commandButton value="Confirm" action="#{empListBean.deleteEmp}" rendered="#{emp.canDel}">
-                	<f:setPropertyActionListener target="#{empListBean.emp}" value="#{emp}" />
+                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
                 </h:commandButton>
             </h:column>
 
