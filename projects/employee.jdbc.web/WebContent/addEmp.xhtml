@@ -11,14 +11,14 @@
     <h:form>
     
         <!--  Displays the result message of any executed command -->
-        <td><h:outputText style="color: red;" value="#{addEmpBean.resultMessage}" /></td>
+        <td><h:outputText style="color: red;" value="#{addEmployee.resultMessage}" /></td>
     
         <!--  Toggle button and status bar for JTA support -->
         <table>
             <tr>
-                <td><h:commandButton value="Toggle JTA" action="#{addEmpBean.toggleJta}"/></td>
-                <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{addEmpBean.jtatoggle}"/></td>
-                <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not addEmpBean.jtatoggle}"/></td>
+                <td><h:commandButton value="Toggle JTA" action="#{addEmployee.toggleJta}"/></td>
+                <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{addEmployee.jtatoggle}"/></td>
+                <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not addEmployee.jtatoggle}"/></td>
             </tr>
         </table>
     
@@ -26,32 +26,32 @@
         <table>        
             <tr>
                 <td>Employee Number</td>
-                <td><h:inputText size="6" value="#{addEmpBean.empno}"/></td>
+                <td><h:inputText size="6" value="#{addEmployee.empno}"/></td>
             </tr>            
             <tr>
                 <td>First Name</td>
-                <td><h:inputText size="15" value="#{addEmpBean.firstname}"/></td>
+                <td><h:inputText size="15" value="#{addEmployee.firstname}"/></td>
             </tr>            
             <tr>
                 <td>Last Name</td>
-                <td><h:inputText size="15" value="#{addEmpBean.lastname}"/></td>
+                <td><h:inputText size="15" value="#{addEmployee.lastname}"/></td>
             </tr>            
             <tr>
                 <td>Gender</td>
-                <td><h:inputText size="1" value="#{addEmpBean.gender}"/></td>
+                <td><h:inputText size="1" value="#{addEmployee.gender}"/></td>
             </tr>            
             <tr>
                 <td>Job Title</td>
-                <td><h:inputText size="15" value="#{addEmpBean.job}"/></td>
+                <td><h:inputText size="15" value="#{addEmployee.job}"/></td>
             </tr>            
             <!--  Button used to trigger the actual update, passing in the values ->
             <-    of the input fields                                            -->
             <tr>
-                <td><h:commandButton value="Add employee" action="#{addEmpBean.createInDb}"/></td>
+                <td><h:commandButton value="Add employee" action="#{addEmployee.createInDb}"/></td>
             </tr>            
             <!--  Button used to go back to master.xhtml -->
             <tr>
-                <td><h:commandButton value="Go back" action="#{addEmpBean.goBack}"/></td>
+                <td><h:commandButton value="Go back" action="#{addEmployee.goBack}"/></td>
             </tr>            
         </table>    
     </h:form>

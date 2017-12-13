@@ -31,7 +31,7 @@ import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
  * @author Michael Jones
  *
  */
-@ManagedBean(name = "addEmpBean")
+@ManagedBean(name = "addEmployee")
 @SessionScoped
 public class AddEmpBean {
     
