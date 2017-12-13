@@ -56,7 +56,7 @@ public class EmpListBean
      * Stores the results of any search.
      * Used by JSF to display the results in a table.
      */
-    private ArrayList<Employee> allResults = new ArrayList<Employee>();
+    private ArrayList<Employee> allResults = new ArrayList<>();
     
     /**
      * Used to indicate the index of the first result displayed.
