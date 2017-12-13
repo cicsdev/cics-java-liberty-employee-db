@@ -42,17 +42,17 @@ public class AddEmpBean
     /**
      * The employee number specified on the form.
      */
-    private String empno;
+    private String empNo;
     
     /**
      * The first name value specified on the form.
      */
-    private String firstname;
+    private String firstName;
     
     /**
      * The last name value specified on the form.
      */
-    private String lastname;
+    private String lastName;
     
     /**
      * The gender value specified on the form.
@@ -67,7 +67,7 @@ public class AddEmpBean
     /**
      * Current error message for display.
      */
-    private String resultMessage = "";
+    private String message = "";
     
     /**
      * Object for our Liberty data source.
@@ -96,7 +96,7 @@ public class AddEmpBean
         }
         catch (NamingException e) {
             // Flag the error and write out to the log
-            this.resultMessage = "NO DATASOURCE CONNECTION";
+            this.message = "NO DATASOURCE CONNECTION";
             e.printStackTrace();
         }
     }
@@ -114,7 +114,7 @@ public class AddEmpBean
      * @return The name of the page to navigate to
      */
     public String goBack() {
-        this.resultMessage = "";
+        this.message = "";
         return "master.xhtml";
     }
     
@@ -147,9 +147,9 @@ public class AddEmpBean
         employee.setEdLevel((short) 1);
         
         // Now add in the user input
-        employee.setEmpNo(this.empno.toUpperCase());
-        employee.setFirstName(this.firstname.toUpperCase());
-        employee.setLastName(this.lastname.toUpperCase());
+        employee.setEmpNo(this.empNo.toUpperCase());
+        employee.setFirstName(this.firstName.toUpperCase());
+        employee.setLastName(this.lastName.toUpperCase());
         employee.setSex(this.gender.toUpperCase());        
         employee.setJob(this.job.toUpperCase());
 
@@ -158,12 +158,12 @@ public class AddEmpBean
             DbOperations.createEmployee(this.ds, employee, this.jta);
             
             // Update the message
-            this.resultMessage = "SUCCESSFULLY ADDED EMPLOYEE";
+            this.message = "SUCCESSFULLY ADDED EMPLOYEE";
             
             // Clear the input data, ready for next request
-            this.empno = "";
-            this.firstname = "";
-            this.lastname = "";
+            this.empNo = "";
+            this.firstName = "";
+            this.lastName = "";
             this.gender = "";
             this.job = "";
         }
@@ -171,10 +171,10 @@ public class AddEmpBean
             
             // Explicit test for duplicate values error
             if (e.getMessage().contains("DUPLICATE VALUES")) {
-                this.resultMessage = "ERROR Employee number already in use";
+                this.message = "ERROR Employee number already in use";
             }
             else {
-                this.resultMessage = "ERROR Please consult stderr";
+                this.message = "ERROR Please consult stderr";
             }
             
             // Dump to output for debug purposes
@@ -192,31 +192,31 @@ public class AddEmpBean
     }
     
     public String getMessage() {
-        return this.resultMessage;
+        return this.message;
     }
     
     public String getEmpNo() {
-        return empno;
+        return empNo;
     }
     
     public void setEmpNo(String empno) {
-        this.empno = empno;
+        this.empNo = empno;
     }
 
     public String getFirstName() {
-        return firstname;
+        return firstName;
     }
     
     public void setFirstName(String firstname) {
-        this.firstname = firstname;
+        this.firstName = firstname;
     }
     
     public String getLastName() {
-        return lastname;
+        return lastName;
     }
     
     public void setLastName(String lastname) {
-        this.lastname = lastname;
+        this.lastName = lastname;
     }
     
     public String getGender() {
