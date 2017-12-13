@@ -73,9 +73,9 @@ public class EmpListBean
     private String message = "";
     
     /**
-     * Stores the current state of the JTA flag.
+     * Flag to indicate we will use JTA for unit of work support.
      */
-    private boolean jtatoggle = true;
+    private boolean jta = true;
     
     
     private boolean dbAvailable = false;
@@ -229,7 +229,7 @@ public class EmpListBean
     public void saveUpdates() {
         
         try {
-            DbOperations.updateEmployee(ds, emp, jtatoggle);
+            DbOperations.updateEmployee(ds, emp, jta);
         } catch(Exception e) {
             message = "ERROR: Please check stderr.";
             e.printStackTrace();
@@ -254,8 +254,8 @@ public class EmpListBean
      * 
      * @return
      */
-    public boolean getjtatoggle() {
-        return jtatoggle;
+    public boolean isJta() {
+        return jta;
     }
     
     /** 
@@ -266,11 +266,7 @@ public class EmpListBean
      * It will also update the status message.
      */
     public void toggleJta() {
-        if(jtatoggle) {
-            jtatoggle = false;
-        } else {
-            jtatoggle = true;
-        }
+        this.jta = ! this.jta;
     }
     
     /**
@@ -289,7 +285,7 @@ public class EmpListBean
         
         try {
             // call the delete employee function for this employee
-            DbOperations.deleteEmployee(ds, emp, jtatoggle);
+            DbOperations.deleteEmployee(ds, emp, jta);
         } catch(Exception e) {
         
             // Check for the delete permissions error

@@ -21,8 +21,8 @@
         <!-- Toggle and status message for JTA support -->
         <table><tr>
             <td><h:commandButton value="Toggle JTA" action="#{empListBean.toggleJta}"/></td>
-            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{empListBean.jtatoggle}"/></td>
-            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not empListBean.jtatoggle}"/></td>
+            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{empListBean.jta}"/></td>
+            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not empListBean.jta}"/></td>
         </tr></table>
 
         <!--  Table populated with all records matching the search results.    -->
