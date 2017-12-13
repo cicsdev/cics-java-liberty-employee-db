@@ -97,14 +97,17 @@ public class EmpListBean
      * the command buttons.
      */
     public EmpListBean() {
+        
         try {
-            ds = (DataSource)InitialContext.doLookup("jdbc/sample");
-            databaseAvailable = true;
-        } catch(NamingException e) {
+            // Attempt to lookup the configured DataSource instance
+            this.ds = (DataSource) InitialContext.doLookup("jdbc/sample");
+            this.databaseAvailable = true;
+        }
+        catch (NamingException e) {
+            // Flag the error and write out to the log
             message = "NO DATASOURCE CONNECTION";
             e.printStackTrace();
         }
-        
     }
 
     
@@ -126,30 +129,6 @@ public class EmpListBean
      */
     public void toggleJta() {
         this.jta = ! this.jta;
-    }
-    
-    
-    
-    /** 
-     * Performs the actual search function. This will be called by
-     * JSF when the user presses the search button.
-     * 
-     * @return - The empList.xhtml page, with results included
-     */
-    public String search() {
-        
-        try {
-            allResults = DbOperations.findEmployeeByLastName(ds, lastName);
-            if(allResults.size() < 1) {
-                message = "NO RESULTS FOUND.";
-            }else {
-                message = "";
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            message = "ERROR: Please see stderr";
-        }
-        return "master.xhtml";
     }
     
     /**
@@ -181,6 +160,30 @@ public class EmpListBean
         
         
         employee.setCanEdit(false);
+    }
+    
+    
+    
+    /** 
+     * Performs the actual search function. This will be called by
+     * JSF when the user presses the search button.
+     * 
+     * @return - The empList.xhtml page, with results included
+     */
+    public String search() {
+        
+        try {
+            allResults = DbOperations.findEmployeeByLastName(ds, lastName);
+            if(allResults.size() < 1) {
+                message = "NO RESULTS FOUND.";
+            }else {
+                message = "";
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            message = "ERROR: Please see stderr";
+        }
+        return "master.xhtml";
     }
     
     /**
