@@ -247,11 +247,11 @@ public class EmpListBean
      * Attribute accessor methods used by JSF.
      */
     
-    public String getlastName() {
+    public String getLastName() {
         return lastName;
     }
     
-    public void setlastName(String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
     
