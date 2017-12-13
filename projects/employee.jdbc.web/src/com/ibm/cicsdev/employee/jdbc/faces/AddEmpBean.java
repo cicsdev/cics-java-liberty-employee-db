@@ -145,8 +145,22 @@ public class AddEmpBean
         // Create a new instance to store the data
         Employee employee = new Employee();
         
-        // Set the employee object up ready for submission
-        setDefaults(employee);
+        // Set our default values - we don't display these, so we don't care about them
+        employee.setBonus( new BigDecimal(1_000_000) );
+        employee.setComm(new BigDecimal(1000000));
+        employee.setMidInit("R");
+        employee.setPhoneNo("1111");
+        employee.setSalary(new BigDecimal(1000000));        
+        short s = 1;
+        employee.setEdLevel(s);
+        
+        // Now add in the user input
+        employee.setEmpNo(this.empno.toUpperCase());
+        employee.setFirstName(firstname.toUpperCase());
+        employee.setJob(job.toUpperCase());
+        employee.setLastName(lastname.toUpperCase());
+        employee.setSex(gender.toUpperCase());        
+
         
         // Attempt to create the new employee record in the DB
         try {
@@ -164,40 +178,6 @@ public class AddEmpBean
         
         // Refresh the page
         return "addEmp.xhtml";
-    }
-    
-    
-    /*
-     * Utility methods.
-     */
-    
-    /**
-     * This method will fill in an Employee bean for
-     * the createEmployee method to use.
-     * 
-     * Some values are not provided by the user, so need
-     * to be defaulted.
-     * 
-     * @param emp - A populated Employee bean
-     */
-    private void setDefaults(Employee emp) {
-        
-        // Set our default values. We don't display
-        // these so we don't care about them.
-        emp.setBonus(new BigDecimal(1000000));
-        emp.setComm(new BigDecimal(1000000));
-        emp.setMidInit("R");
-        emp.setPhoneNo("1111");
-        emp.setSalary(new BigDecimal(1000000));        
-        short s = 1; emp.setEdLevel(s);
-        
-        // Now add in the user input
-        emp.setEmpNo(this.empno.toUpperCase());
-        emp.setFirstName(firstname.toUpperCase());
-        emp.setJob(job.toUpperCase());
-        emp.setLastName(lastname.toUpperCase());
-        emp.setSex(gender.toUpperCase());        
-        
     }
     
     
