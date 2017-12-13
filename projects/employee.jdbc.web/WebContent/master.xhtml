@@ -13,23 +13,23 @@
         <!-- Search box allowing one to search by last name -->
         <table><tr>
             <td><h:outputText style="color: black;" value="Search by last name: " /></td>
-            <td><h:inputText id="inputSearchTxt" value="#{empListBean.lastName}" /></td>
-            <td><h:commandButton value="Search" action="#{empListBean.search}" rendered="#{empListBean.databaseAvailable}"/></td>
-            <td><h:outputText style="color: red;" value="#{empListBean.message}" /></td>
+            <td><h:inputText id="inputSearchTxt" value="#{employeeList.lastName}" /></td>
+            <td><h:commandButton value="Search" action="#{employeeList.search}" rendered="#{employeeList.databaseAvailable}"/></td>
+            <td><h:outputText style="color: red;" value="#{employeeList.message}" /></td>
         </tr></table>
         
         <!-- Toggle and status message for JTA support -->
         <table><tr>
-            <td><h:commandButton value="Toggle JTA" action="#{empListBean.toggleJta}"/></td>
-            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{empListBean.jta}"/></td>
-            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not empListBean.jta}"/></td>
+            <td><h:commandButton value="Toggle JTA" action="#{employeeList.toggleJta}"/></td>
+            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{employeeList.jta}"/></td>
+            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not employeeList.jta}"/></td>
         </tr></table>
 
         <!--  Table populated with all records matching the search results.    -->
         <!--  Contains a column for editing the rows as well as deleting them. -->
-        <h:dataTable id="tbl" var="emp" value="#{empListBean.allResults}"
-        		rows="#{empListBean.lastRow}" first="#{empListBean.firstRow}"
-            	rendered="#{not empty empListBean.allResults}" border="1" cellpadding="5">
+        <h:dataTable id="tbl" var="emp" value="#{employeeList.allResults}"
+        		rows="#{employeeList.lastRow}" first="#{employeeList.firstRow}"
+            	rendered="#{not empty employeeList.allResults}" border="1" cellpadding="5">
             	                    
             <h:column><f:facet name="header">Employee Number</f:facet>#{emp.empNo}</h:column>
                         
@@ -66,22 +66,22 @@
             <!--  Edit button. Will change to a save button when pressed -->
             <h:column>
                 <f:facet name="header">Edit</f:facet>
-                <h:commandButton value="Edit" action="#{empListBean.setCanEdit}" rendered="#{not emp.canEdit}">
-                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
+                <h:commandButton value="Edit" action="#{employeeList.setCanEdit}" rendered="#{not emp.canEdit}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
                 </h:commandButton>
-                <h:commandButton value="Save" action="#{empListBean.saveUpdates}" rendered="#{emp.canEdit}">
-                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
+                <h:commandButton value="Save" action="#{employeeList.saveUpdates}" rendered="#{emp.canEdit}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
                 </h:commandButton>
             </h:column>
             
             <!--  Delete button. Will change to a confirmation button when pressed -->
             <h:column>
             	<f:facet name="header">Delete</f:facet>
-                <h:commandButton value="Delete" action="#{empListBean.confirmDel}" rendered="#{not emp.canDelete}">
-                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
+                <h:commandButton value="Delete" action="#{employeeList.confirmDel}" rendered="#{not emp.canDelete}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
                 </h:commandButton>
-                <h:commandButton value="Confirm" action="#{empListBean.deleteEmployee}" rendered="#{emp.canDelete}">
-                	<f:setPropertyActionListener target="#{empListBean.employee}" value="#{emp}" />
+                <h:commandButton value="Confirm" action="#{employeeList.deleteEmployee}" rendered="#{emp.canDelete}">
+                	<f:setPropertyActionListener target="#{employeeList.employee}" value="#{emp}" />
                 </h:commandButton>
             </h:column>
 
@@ -89,7 +89,7 @@
 
         <!--  Button that will take the user to addEmp.xhtml -->
         <table><tr><td>
-        	<h:commandButton value="Add new employee" action="#{empListBean.goToAddScreen}" rendered="#{empListBean.databaseAvailable}" />
+        	<h:commandButton value="Add new employee" action="#{employeeList.goToAddScreen}" rendered="#{employeeList.databaseAvailable}" />
        	</td></tr></table>
 
     </h:form>

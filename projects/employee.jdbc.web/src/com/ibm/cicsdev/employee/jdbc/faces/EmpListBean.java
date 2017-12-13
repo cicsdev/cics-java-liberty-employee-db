@@ -32,7 +32,7 @@ import javax.naming.NamingException;
  * @author Michael Jones
  *
  */
-@ManagedBean(name = "empListBean")
+@ManagedBean(name = "employeeList")
 @SessionScoped
 public class EmpListBean
 {
