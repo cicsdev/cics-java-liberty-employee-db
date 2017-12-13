@@ -191,7 +191,7 @@ public class AddEmpBean
         return jta;
     }
     
-    public String getResultMessage() {
+    public String getMessage() {
         return this.resultMessage;
     }
     
