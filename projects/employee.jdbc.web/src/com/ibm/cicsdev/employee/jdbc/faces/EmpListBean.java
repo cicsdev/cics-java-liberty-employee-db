@@ -48,9 +48,9 @@ public class EmpListBean
     private DataSource ds;
     
     /**
-     * Stores the last name used as the search criteria.
+     * Stores the last value used as the search criteria.
      */
-    private String lastName;
+    private String searchString;
     
     /**
      * Stores the results of any search.
@@ -178,7 +178,7 @@ public class EmpListBean
         
         try {
             // Search the database for this string
-            allResults = DbOperations.findEmployeeByLastName(ds, lastName);
+            allResults = DbOperations.findEmployeeByLastName(ds, searchString);
             
             // Message if no results are found
             if (allResults.size() < 1) {
@@ -252,12 +252,12 @@ public class EmpListBean
      * Attribute accessor methods used by JSF.
      */
     
-    public String getLastName() {
-        return lastName;
+    public String getSearchString() {
+        return searchString;
     }
     
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSearchString(String ss) {
+        this.searchString = ss;
     }
     
     public String getMessage() {

@@ -13,7 +13,7 @@
         <!-- Search box allowing one to search by last name -->
         <table><tr>
             <td><h:outputText style="color: black;" value="Search by last name: " /></td>
-            <td><h:inputText id="inputSearchTxt" value="#{employeeList.lastName}" /></td>
+            <td><h:inputText id="inputSearchTxt" value="#{employeeList.searchString}" /></td>
             <td><h:commandButton value="Search" action="#{employeeList.search}" rendered="#{employeeList.databaseAvailable}"/></td>
             <td><h:outputText style="color: red;" value="#{employeeList.message}" /></td>
         </tr></table>
