@@ -3,24 +3,22 @@
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	  xmlns:h="http://xmlns.jcp.org/jsf/html"
 	  xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head/>
+<h:head />
 <h:body>
 
-    <h1><h:outputText value="Add new employee" /></h1>
+	<h1><h:outputText value="Add new employee" /></h1>
     
     <h:form>
     
-        <!--  Displays the result message of any executed command -->
+    	<!--  Displays the result message of any executed command -->
         <td><h:outputText style="color: red;" value="#{addEmployee.resultMessage}" /></td>
     
         <!--  Toggle button and status bar for JTA support -->
-        <table>
-            <tr>
-                <td><h:commandButton value="Toggle JTA" action="#{addEmployee.toggleJta}"/></td>
-                <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{addEmployee.jta}"/></td>
-                <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not addEmployee.jta}"/></td>
-            </tr>
-        </table>
+        <table><tr>
+	        <td><h:commandButton value="Toggle JTA" action="#{addEmployee.toggleJta}"/></td>
+	        <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{addEmployee.jta}"/></td>
+	        <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not addEmployee.jta}"/></td>
+        </tr></table>
     
         <!--  Table containing user input fields for the employee -->
         <table>        
@@ -43,12 +41,14 @@
             <tr>
                 <td>Job Title</td>
                 <td><h:inputText size="15" value="#{addEmployee.job}"/></td>
-            </tr>            
-            <!--  Button used to trigger the actual update, passing in the values ->
-            <-    of the input fields                                            -->
+            </tr>
+                        
+            <!--  Button used to trigger the actual update, passing in the values -->
+            <!--  of the input fields                                             -->
             <tr>
                 <td><h:commandButton value="Add employee" action="#{addEmployee.createInDb}"/></td>
-            </tr>            
+            </tr>
+            
             <!--  Button used to go back to master.xhtml -->
             <tr>
                 <td><h:commandButton value="Go back" action="#{addEmployee.goBack}"/></td>
