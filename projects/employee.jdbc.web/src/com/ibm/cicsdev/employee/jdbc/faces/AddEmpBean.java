@@ -39,9 +39,6 @@ public class AddEmpBean
      * Instance fields.
      */    
     
-    /** Used to store information ready to be added to the DB */
-    Employee employee;
-    
     /** The Employee number specified on the form */
     public String empno;
     
@@ -76,8 +73,6 @@ public class AddEmpBean
      * will attempt to set up the connection to the database.
      */
     public AddEmpBean() {
-        employee = new Employee();
-        
         try {
             ds = (DataSource)InitialContext.doLookup(DbOperations.DATABASE_JNDI);
         } catch(NamingException e) {
@@ -131,6 +126,9 @@ public class AddEmpBean
      * @return - Sends you back to addEmp.xhtml
      */
     public String createInDb() {
+        
+        // Create a new instance to store the data
+        Employee employee = new Employee();
         
         // Set the employee object up ready for submission
         setDefaults(employee);
