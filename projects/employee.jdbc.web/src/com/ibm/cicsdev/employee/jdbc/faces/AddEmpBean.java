@@ -191,47 +191,47 @@ public class AddEmpBean
         return jta;
     }
     
-    public String getresultMessage() {
+    public String getResultMessage() {
         return this.resultMessage;
     }
     
-    public String getempno() {
+    public String getEmpNo() {
         return empno;
     }
     
-    public void setempno(String empno) {
+    public void setEmpNo(String empno) {
         this.empno = empno;
     }
 
-    public String getfirstname() {
+    public String getFirstName() {
         return firstname;
     }
     
-    public void setfirstname(String firstname) {
+    public void setFirstName(String firstname) {
         this.firstname = firstname;
     }
     
-    public String getlastname() {
+    public String getLastName() {
         return lastname;
     }
     
-    public void setlastname(String lastname) {
+    public void setLastName(String lastname) {
         this.lastname = lastname;
     }
     
-    public String getgender() {
+    public String getGender() {
         return gender;
     }
     
-    public void setgender(String gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
     
-    public String getjob() {
+    public String getJob() {
         return job;
     }
     
-    public void setjob(String job) {
+    public void setJob(String job) {
         this.job = job;
     }    
 }
