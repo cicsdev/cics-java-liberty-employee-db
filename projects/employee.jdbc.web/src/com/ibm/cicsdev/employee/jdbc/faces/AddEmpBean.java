@@ -33,7 +33,11 @@ import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
  */
 @ManagedBean(name = "addEmployee")
 @SessionScoped
-public class AddEmpBean {
+public class AddEmpBean
+{    
+    /*
+     * Instance fields.
+     */    
     
     /** Used to store information ready to be added to the DB */
     Employee employee;
@@ -61,7 +65,12 @@ public class AddEmpBean {
     
     /** Stores the current state of the JTA flag **/
     public boolean jtatoggle = true;
-        
+
+    
+    /*
+     * Constructor.
+     */
+    
     /**
      * Default constructor called by JSF. This constructor
      * will attempt to set up the connection to the database.
@@ -75,6 +84,133 @@ public class AddEmpBean {
             resultMessage = "NO DATABASE AVAILABLE";
             e.printStackTrace();
         }
+    }
+    
+
+    /*
+     * Action methods.
+     */
+
+    /**
+     * Provides the action of the "Go back" button in
+     * addEmp.xhtml. This will send the user back to 
+     * the master page.
+     * 
+     * @return
+     */
+    public String goBack() {
+        resultMessage = "";
+        return "master.xhtml";
+    }
+    
+    /** 
+     * Provides the action for the 'Toggle JTA' button in
+     * master.xhtml. 
+     * 
+     * If JTA is on it will switch it off, and vice versa.
+     */
+    public String toggleJta() {
+        if(jtatoggle) {
+            jtatoggle = false;
+        } else {
+            jtatoggle = true;
+        }
+        
+        return "addEmp.xhtml";
+    }
+
+    /**
+     * Submits the entered employee to the database.
+     * 
+     * This method is called by the 'Add employee' button on the
+     * addEmp.xhtml page.
+     * 
+     * The method will attempt to add the new employee, displaying
+     * messages if possible.
+     * 
+     * @return - Sends you back to addEmp.xhtml
+     */
+    public String createInDb() {
+        
+        // Set the employee object up ready for submission
+        setDefaults(employee);
+        
+        // Attempt to create the new employee record in the DB
+        try {
+            DbOperations.createEmployee(ds, employee, jtatoggle);
+            resultMessage = "SUCCESSFULLY ADDED EMPLOYEE";
+        } catch (Exception e) {
+            resultMessage = "ERROR ";
+            if(e.getMessage().contains("DUPLICATE VALUES")) {
+                resultMessage += "Employee number already in use";
+            } else {
+                resultMessage += "Please consult stderr.";
+            }
+            e.printStackTrace();
+        }
+        
+        // Refresh the page
+        return "addEmp.xhtml";
+    }
+    
+    
+    /*
+     * Utility methods.
+     */
+    
+    /**
+     * This method will fill in an Employee bean for
+     * the createEmployee method to use.
+     * 
+     * Some values are not provided by the user, so need
+     * to be defaulted.
+     * 
+     * @param emp - A populated Employee bean
+     */
+    private void setDefaults(Employee emp) {
+        
+        // Set our default values. We don't display
+        // these so we don't care about them.
+        emp.setBonus(new BigDecimal(1000000));
+        emp.setComm(new BigDecimal(1000000));
+        emp.setMidInit("R");
+        emp.setPhoneNo("1111");
+        emp.setSalary(new BigDecimal(1000000));        
+        short s = 1; emp.setEdLevel(s);
+        
+        // Now add in the user input
+        emp.setEmpNo(this.empno.toUpperCase());
+        emp.setFirstName(firstname.toUpperCase());
+        emp.setJob(job.toUpperCase());
+        emp.setLastName(lastname.toUpperCase());
+        emp.setSex(gender.toUpperCase());        
+        
+    }
+    
+    
+    /*
+     * Attribute accessor methods used by JSF.
+     */
+    
+    /**
+     * Used by JSF to check the value of the JTA toggle and
+     * display it on the addEmp.xhtml page
+     * 
+     * @return - the current toggle value
+     */
+    public boolean getjtatoggle() {
+        return jtatoggle;
+    }
+    
+    /**
+     * Allows JSF to retrieve the value of the
+     * resultMessage field, used to inform the user
+     * of the result of their submission.
+     * 
+     * @return
+     */
+    public String getresultMessage() {
+        return this.resultMessage;
     }
     
     /**
@@ -169,115 +305,4 @@ public class AddEmpBean {
         this.job = job;
     }
     
-    /**
-     * Provides the action of the "Go back" button in
-     * addEmp.xhtml. This will send the user back to 
-     * the master page.
-     * 
-     * @return
-     */
-    public String goBack() {
-        resultMessage = "";
-        return "master.xhtml";
-    }
-    
-    /**
-     * Allows JSF to retrieve the value of the
-     * resultMessage field, used to inform the user
-     * of the result of their submission.
-     * 
-     * @return
-     */
-    public String getresultMessage() {
-        return this.resultMessage;
-    }
-    
-    /**
-     * Submits the entered employee to the database.
-     * 
-     * This method is called by the 'Add employee' button on the
-     * addEmp.xhtml page.
-     * 
-     * The method will attempt to add the new employee, displaying
-     * messages if possible.
-     * 
-     * @return - Sends you back to addEmp.xhtml
-     */
-    public String createInDb() {
-        
-        // Set the employee object up ready for submission
-        setDefaults(employee);
-        
-        // Attempt to create the new employee record in the DB
-        try {
-            DbOperations.createEmployee(ds, employee, jtatoggle);
-            resultMessage = "SUCCESSFULLY ADDED EMPLOYEE";
-        } catch (Exception e) {
-            resultMessage = "ERROR ";
-            if(e.getMessage().contains("DUPLICATE VALUES")) {
-                resultMessage += "Employee number already in use";
-            } else {
-                resultMessage += "Please consult stderr.";
-            }
-            e.printStackTrace();
-        }
-        
-        // Refresh the page
-        return "addEmp.xhtml";
-    }
-    
-    /**
-     * This method will fill in an Employee bean for
-     * the createEmployee method to use.
-     * 
-     * Some values are not provided by the user, so need
-     * to be defaulted.
-     * 
-     * @param emp - A populated Employee bean
-     */
-    private void setDefaults(Employee emp) {
-        
-        // Set our default values. We don't display
-        // these so we don't care about them.
-        emp.setBonus(new BigDecimal(1000000));
-        emp.setComm(new BigDecimal(1000000));
-        emp.setMidInit("R");
-        emp.setPhoneNo("1111");
-        emp.setSalary(new BigDecimal(1000000));        
-        short s = 1; emp.setEdLevel(s);
-        
-        // Now add in the user input
-        emp.setEmpNo(this.empno.toUpperCase());
-        emp.setFirstName(firstname.toUpperCase());
-        emp.setJob(job.toUpperCase());
-        emp.setLastName(lastname.toUpperCase());
-        emp.setSex(gender.toUpperCase());        
-        
-    }
-    
-    /**
-     * Used by JSF to check the value of the JTA toggle and
-     * display it on the addEmp.xhtml page
-     * 
-     * @return - the current toggle value
-     */
-    public boolean getjtatoggle() {
-        return jtatoggle;
-    }
-    
-    /** 
-     * Provides the action for the 'Toggle JTA' button in
-     * master.xhtml. 
-     * 
-     * If JTA is on it will switch it off, and vice versa.
-     */
-    public String toggleJta() {
-        if(jtatoggle) {
-            jtatoggle = false;
-        } else {
-            jtatoggle = true;
-        }
-        
-        return "addEmp.xhtml";
-    }
 }
