@@ -137,6 +137,7 @@ public class EmpListBean
      * than just text boxes
      */
     public void setCanEdit() {
+        System.out.println(String.format("setCanEdit on employee %#08X", employee == null ? 0 : employee.hashCode()));
         employee.setCanEdit(true);
     }
     
@@ -149,6 +150,8 @@ public class EmpListBean
      * current record.
      */
     public void saveUpdates() {
+        
+        System.out.println(String.format("Save updates on employee %#08X", employee == null ? 0 : employee.hashCode()));
         
         try {
             // Call our utility routine to update the database
@@ -282,6 +285,8 @@ public class EmpListBean
     }
     
     public void setEmployee(Employee emp) {
+        System.out.println(String.format("Set to employee %#08X (%s)", emp == null ? 0 : emp.hashCode(), emp == null ? "null" : emp.getLastName()));
+        System.out.println(String.format("   Was employee %#08X (%s)", employee == null ? 0 : employee.hashCode(), employee == null ? "null" : employee.getLastName()));        
         this.employee = emp;
     }
     
