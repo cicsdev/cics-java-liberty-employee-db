@@ -14,7 +14,7 @@
         <table><tr>
             <td><h:outputText style="color: black;" value="Search by last name: " /></td>
             <td><h:inputText id="inputSearchTxt" value="#{empListBean.lastName}" /></td>
-            <td><h:commandButton value="Search" action="#{empListBean.search}" rendered="#{empListBean.dbAvailable}"/></td>
+            <td><h:commandButton value="Search" action="#{empListBean.search}" rendered="#{empListBean.databaseAvailable}"/></td>
             <td><h:outputText style="color: red;" value="#{empListBean.message}" /></td>
         </tr></table>
         
@@ -88,9 +88,9 @@
         </h:dataTable>
 
         <!--  Button that will take the user to addEmp.xhtml -->
-        <table><tr>
-            <td><h:commandButton value="Add new employee" action="#{empListBean.goToAddScreen}" rendered="#{empListBean.dbAvailable}" /></td>
-        </tr></table>
+        <table><tr><td>
+        	<h:commandButton value="Add new employee" action="#{empListBean.goToAddScreen}" rendered="#{empListBean.databaseAvailable}" />
+       	</td></tr></table>
 
     </h:form>
 

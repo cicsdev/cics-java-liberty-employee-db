@@ -64,17 +64,6 @@ public class EmpListBean
      * Stores the last name used as the search criteria.
      */
     private String lastName;
-    /** Allows one to retrieve the lastName field.
-     * Not used, but required.
-     * 
-     * @return - lastName field
-     */
-    /**
-     * Sets the lastName used as the search field.
-     * This will be called by newEmpList.xhtml
-     * 
-     * @param lastName - Name desired to be searched
-     */
     
     /**
      * Stores the results of any search. Used by JSF to display
@@ -111,23 +100,11 @@ public class EmpListBean
      * Flag to indicate we will use JTA for unit of work support.
      */
     private boolean jta = true;
-    /**
-     * Allows JSF to retrieve the value of the JTA toggle.
-     * Used to display it at the top of the page.
-     * 
-     * @return
-     */
     
-    
-    private boolean dbAvailable = false;
     /**
-     * Allows JSF to check the flag indicating whether the DB
-     * is available. If the look-up fails, a message indicating
-     * the data source is not available will be displayed
-     * at the top of the page
-     * 
-     * @return
+     * Flag to indicate the connection to the database is available.
      */
+    private boolean databaseAvailable = false;
     
     /**
      * No args constructor for this bean. JSF will call it when
@@ -140,7 +117,7 @@ public class EmpListBean
     public EmpListBean() {
         try {
             ds = (DataSource)InitialContext.doLookup("jdbc/sample");
-            dbAvailable = true;
+            databaseAvailable = true;
         } catch(NamingException e) {
             message = "NO DATASOURCE CONNECTION";
             e.printStackTrace();
@@ -314,8 +291,8 @@ public class EmpListBean
         this.emp = emp;
     }
     
-    public boolean getdbAvailable() {
-        return dbAvailable;
+    public boolean isDatabaseAvailable() {
+        return databaseAvailable;
     }
     
     public boolean isJta() {
