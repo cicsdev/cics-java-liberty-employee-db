@@ -42,42 +42,42 @@ public class AddEmpBean
     /**
      * The employee number specified on the form.
      */
-    public String empno;
+    private String empno;
     
     /**
      * The first name value specified on the form.
      */
-    public String firstname;
+    private String firstname;
     
     /**
      * The last name value specified on the form.
      */
-    public String lastname;
+    private String lastname;
     
     /**
      * The gender value specified on the form.
      */
-    public String gender;
+    private String gender;
     
     /**
      * The job value specified on the form.
      */
-    public String job;
+    private String job;
     
     /**
      * Current error message for display.
      */
-    public String resultMessage = "";
+    private String resultMessage = "";
     
     /**
      * Object for our Liberty data source.
      */
-    DataSource ds;
+    private DataSource ds;
     
     /**
      * Flag to indicate we will use JTA for unit of work support.
      */
-    public boolean jta = true;
+    private boolean jta = true;
 
     
     /*
