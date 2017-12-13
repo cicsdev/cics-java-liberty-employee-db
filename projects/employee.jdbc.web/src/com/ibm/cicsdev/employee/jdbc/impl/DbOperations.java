@@ -45,6 +45,11 @@ public class DbOperations {
     private static final String TSQ_NAME = "DB2LOG"; 
 
     /**
+     * The JNDI name used to lookup the JDBC DataSource instance.
+     */
+    public static final String DATABASE_JNDI = "jdbc/sample";
+    
+    /**
      * Uses a specified last name to find a matching employee
      * in the database table.
      * 

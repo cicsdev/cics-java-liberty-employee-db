@@ -100,7 +100,7 @@ public class EmpListBean
         
         try {
             // Attempt to lookup the configured DataSource instance
-            this.ds = (DataSource) InitialContext.doLookup("jdbc/sample");
+            this.ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
             this.databaseAvailable = true;
         }
         catch (NamingException e) {

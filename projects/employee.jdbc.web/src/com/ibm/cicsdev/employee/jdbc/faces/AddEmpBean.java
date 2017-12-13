@@ -70,7 +70,7 @@ public class AddEmpBean {
         employee = new Employee();
         
         try {
-            ds = (DataSource)InitialContext.doLookup("jdbc/sample");
+            ds = (DataSource)InitialContext.doLookup(DbOperations.DATABASE_JNDI);
         } catch(NamingException e) {
             resultMessage = "NO DATABASE AVAILABLE";
             e.printStackTrace();
