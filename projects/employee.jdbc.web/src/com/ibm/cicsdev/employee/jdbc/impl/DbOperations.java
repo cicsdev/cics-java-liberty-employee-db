@@ -449,36 +449,41 @@ public class DbOperations {
     /**
      * Populates a CREATE statement with values, taken from an employee bean.
      * 
-     * @param employee - The employee you wish to use values from
      * @param statement - The statement you want to populate
-     * @return - A populated statement
-     * @throws SQLException
+     * @param employee - The employee you wish to use values from
+     * 
+     * @return A populated statement
+     * 
+     * @throws SQLException if any JDBC errors are encountered when updating
+     * the statement.
      */
     private static PreparedStatement populateStatement(PreparedStatement statement, Employee employee) throws SQLException
     {
+        // Check for non-null value on birth date field
+        Date bDate = employee.getBirthDate() == null ? null : new Date(employee.getBirthDate().getTime());
+        statement.setDate(1, bDate);
+        
+        // Check for non-null value on hire date field
+        Date hDate = employee.getHireDate() == null ? null : new Date(employee.getHireDate().getTime());
+        statement.setDate(7, hDate);
+                
         // Set a null department, as not set for the application
-        String deptno = null;
-    
-        // Check for the values on date fields.
-        Date bDate = employee.getBirthDate() == null ? null : (new Date(employee.getBirthDate().getTime()));
-        Date hDate = employee.getHireDate() == null ? null : (new Date(employee.getHireDate().getTime()));
+        statement.setString(14, null);
         
         // Fill in the rest of the fields
-        statement.setDate(1, bDate);
         statement.setBigDecimal(2, employee.getBonus());
         statement.setBigDecimal(3, employee.getComm());
         statement.setShort(4, employee.getEdLevel());
         statement.setString(5, employee.getEmpNo());
-        statement.setString(6,  employee.getFirstName());
-        statement.setDate(7, hDate);
-        statement.setString(8,  employee.getJob());
-        statement.setString(9,  employee.getLastName());
-        statement.setString(10,  employee.getMidInit());
-        statement.setString(11,  employee.getPhoneNo());
+        statement.setString(6, employee.getFirstName());
+        statement.setString(8, employee.getJob());
+        statement.setString(9, employee.getLastName());
+        statement.setString(10, employee.getMidInit());
+        statement.setString(11, employee.getPhoneNo());
         statement.setBigDecimal(12, employee.getSalary());
-        statement.setString(13,  employee.getSex());
-        statement.setString(14,  deptno);
+        statement.setString(13, employee.getSex());
         
+        // Return the populated statement
         return statement;
     }
 }
