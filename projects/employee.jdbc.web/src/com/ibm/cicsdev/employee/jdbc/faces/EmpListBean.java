@@ -218,28 +218,30 @@ public class EmpListBean
     public String deleteEmployee() {
         
         try {
-            // call the delete employee function for this employee
+            // Call the delete function for this employee
             DbOperations.deleteEmployee(ds, employee, jta);
-        } catch(Exception e) {
+        }
+        catch (Exception e) {
         
             // Check for the delete permissions error
-            // If found, returns the user to the same page
-            if(e.getMessage().contains("RESTRICTS THE DELETION")){
+            if ( e.getMessage().contains("RESTRICTS THE DELETION") ) {
+                // Not allowed to delete the record
                 message = "ERROR: You cannot delete this record.";
-                employee.setCanDelete(false);
-                return "master.xhtml";
             }
-            
-            // If we can't find the permission error, report the problem
-            message = "ERROR: See stdout for details";
-            e.printStackTrace();
+            else {
+                // If we can't find the permission error, report the problem
+                message = "ERROR: See stdout for details";
+                e.printStackTrace();
+            }
+
+            // Clear the flag
             employee.setCanDelete(false);
+
+            // Redirect back to main page
             return "master.xhtml";
-            
         }    
         
-        // Call the search function, refreshing the view
-        // of the rows, removing the deleted record
+        // Successful: call the search function, refreshing the view
         return search();
     }
     
