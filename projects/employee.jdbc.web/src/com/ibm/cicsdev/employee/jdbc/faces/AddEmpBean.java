@@ -89,10 +89,14 @@ public class AddEmpBean
      * will attempt to set up the connection to the database.
      */
     public AddEmpBean() {
+        
         try {
-            ds = (DataSource)InitialContext.doLookup(DbOperations.DATABASE_JNDI);
-        } catch(NamingException e) {
-            resultMessage = "NO DATABASE AVAILABLE";
+            // Attempt to lookup the configured DataSource instance
+            this.ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
+        }
+        catch (NamingException e) {
+            // Flag the error and write out to the log
+            this.resultMessage = "NO DATASOURCE CONNECTION";
             e.printStackTrace();
         }
     }
@@ -110,7 +114,7 @@ public class AddEmpBean
      * @return
      */
     public String goBack() {
-        resultMessage = "";
+        this.resultMessage = "";
         return "master.xhtml";
     }
     
@@ -146,10 +150,10 @@ public class AddEmpBean
         
         // Attempt to create the new employee record in the DB
         try {
-            DbOperations.createEmployee(ds, employee, jta);
-            resultMessage = "SUCCESSFULLY ADDED EMPLOYEE";
+            DbOperations.createEmployee(this.ds, employee, this.jta);
+            this.resultMessage = "SUCCESSFULLY ADDED EMPLOYEE";
         } catch (Exception e) {
-            resultMessage = "ERROR ";
+            this.resultMessage = "ERROR ";
             if(e.getMessage().contains("DUPLICATE VALUES")) {
                 resultMessage += "Employee number already in use";
             } else {
