@@ -23,14 +23,12 @@ import javax.naming.NamingException;
 
 /**
  * Bean used to implement the function of the master.xhtml page.
-
  * 
  * This bean provides all of the required methods for populating the
  * page, as well as controlling the edit/delete buttons and calling
  * into the database methods class.
  * 
  * @author Michael Jones
- *
  */
 @ManagedBean(name = "employeeList")
 @SessionScoped
@@ -38,7 +36,6 @@ public class EmpListBean
 {
     /**
      * Stores current target employee for an update or delete operation.
-     * FIXME Funny behaviour when you select delete/edit for more than one record.
      */
     private Employee employee;
     
@@ -54,7 +51,6 @@ public class EmpListBean
     
     /**
      * Stores the results of any search.
-     * Used by JSF to display the results in a table.
      */
     private ArrayList<Employee> allResults = new ArrayList<>();
     
@@ -89,12 +85,10 @@ public class EmpListBean
      */
     
     /**
-     * No args constructor for this bean. JSF will call it when
-     * the page is first loaded. 
+     * No args constructor for this bean. JSF will call it when the page is first loaded. 
      * 
-     * This constructor will attempt to create a connection to
-     * the database. If it can't it will show a message and hide
-     * the command buttons.
+     * This constructor will attempt to create a connection to the database. If it can't,
+     * the page will show a message and hide the command buttons.
      */
     public EmpListBean() {
         
@@ -116,6 +110,8 @@ public class EmpListBean
      */
     
     /**
+     * Called by JSF when the user clicks the "Add new employee" button.
+     * 
      * Navigates the user to the correct page to add an employee.
      * 
      * @return the name of the JSF file for rendering next.
@@ -125,6 +121,8 @@ public class EmpListBean
     }
     
     /** 
+     * Called by JSF when the user clicks the "Toggle JTA" button.
+     * 
      * Toggles the state of the JTA flag.
      */
     public void toggleJta() {
@@ -132,9 +130,12 @@ public class EmpListBean
     }
     
     /**
-     * Updates the canEdit flag for a row. When this flag
-     * is set to true, the fields become input fields rather
-     * than just text boxes
+     * Called by JSF when the user clicks the "Edit" button for a row. 
+     * 
+     * Updates the editable flag for a row. When this flag is set to true, the
+     * fields become input fields rather than just text boxes.
+     * 
+     * @see Employee#setCanEdit(boolean)
      */
     public void setCanEdit() {
         System.out.println(String.format("setCanEdit on employee %#08X", employee == null ? 0 : employee.hashCode()));
@@ -142,12 +143,12 @@ public class EmpListBean
     }
     
     /**
-     * Saves any edits made by the user in the form after the edit button
-     * has been clicked.
+     * Called by JSF when the user clicks the "Save" button for a row.
      * 
-     * It will run the update function using the new values, updating the
-     * record in the database. Will also clear the canEdit flag for the
-     * current record.
+     * This method will run the update function using the new values, updating the record
+     * in the database. Will also clear the editable flag for the current record.
+     * 
+     * @see DbOperations#updateEmployee(DataSource, Employee, boolean)
      */
     public void saveUpdates() {
         
@@ -166,13 +167,14 @@ public class EmpListBean
         employee.setCanEdit(false);
     }
     
-    
-    
     /** 
-     * Performs the actual search function. This will be called by
-     * JSF when the user presses the search button.
+     * Called by JSF when the user presses the Search button.
      * 
-     * @return - The empList.xhtml page, with results included
+     * This method will call the database search method, passing the supplied search string.
+     * 
+     * @return The name of the page to navigate to, which will contain the results.
+     * 
+     * @see DbOperations#findEmployeeByLastName(DataSource, String)
      */
     public String search() {
         
@@ -198,25 +200,26 @@ public class EmpListBean
     }
     
     /**
-     * Allows JSF to check the canDel flag on an employee.
+     * Called by JSF when the user clicks the "Delete" button for a record.
      * 
-     * This flag enables or disabled the delete function.
+     * This method will update the deletable flag for the record in question,
+     * which will have the effect of showing the "Confirm" button.
      */
     public void confirmDel() {
         employee.setCanDelete(true);
     }
     
     /**
-     * Provides the action for the confirm deletion button on master.xhtml.
+     * Called by JSF when the user clicks the "Confirm" button for a record.
      * 
-     * Will take the employee it's been selected against and use it as the
-     * basis for the delete command
-     * 
+     * Will take the relevant employee and use it as the basis for the delete command.
      * It will try to detect the error that informs the user they don't have
-     * the permission to delete the record. If that occurs, it'll update the
+     * the permission to delete the record. If that occurs, it will update the
      * status message.
      * 
-     * @return - Calls the search function, refreshing the rows. Removing the record
+     * @return The next page to display in the user interaction
+     * 
+     * @see DbOperations#deleteEmployee(DataSource, Employee, boolean)
      */
     public String deleteEmployee() {
         
