@@ -145,20 +145,21 @@ public class EmpListBean
      * has been clicked.
      * 
      * It will run the update function using the new values, updating the
-     * record in the DB.
-     * 
-     * Will also re-enable the edit button, hiding the save button
+     * record in the database. Will also clear the canEdit flag for the
+     * current record.
      */
     public void saveUpdates() {
         
         try {
+            // Call our utility routine to update the database
             DbOperations.updateEmployee(ds, employee, jta);
-        } catch(Exception e) {
+        }
+        catch (Exception e) {
             message = "ERROR: Please check stderr.";
             e.printStackTrace();
         }
-        
-        
+
+        // Clear the flag that says we can edit this row
         employee.setCanEdit(false);
     }
     
