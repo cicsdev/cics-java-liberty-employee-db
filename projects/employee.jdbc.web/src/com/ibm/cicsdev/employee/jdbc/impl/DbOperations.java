@@ -58,7 +58,7 @@ public class DbOperations {
      * 
      * @return a list of {@link Employee} instances
      * 
-     * @throws Exception All exceptions are propagated from this method.
+     * @throws SQLException All SQL exceptions are propagated from this method.
      */
     public static List<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
     {
@@ -85,9 +85,9 @@ public class DbOperations {
             ResultSet rs = statement.executeQuery();
             
             // Store any results in the Employee bean list
-            ArrayList<Employee> results = new ArrayList<Employee>();
+            List<Employee> results = new ArrayList<>();
             while ( rs.next() ) {
-                results.add(createEmployeeBean(rs));
+                results.add( createEmployeeBean(rs) );
             }
             
             // Return the full list
@@ -115,8 +115,7 @@ public class DbOperations {
      * 
      * @param ds - The target data source
      * @param employee - The employee object populated
-     * @param useJta - use JTA to provide unit of work support, rather than the
-     * CICS unit of work support
+     * @param useJta - use JTA to provide unit of work support, rather than the CICS unit of work support
      * 
      * @throws Exception All exceptions are propagated from this method.
      */
