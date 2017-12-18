@@ -9,6 +9,14 @@
 /*                                                                        */
 package com.ibm.cicsdev.employee.jdbc.impl;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
@@ -17,13 +25,6 @@ import com.ibm.cics.server.TSQ;
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
 import com.ibm.cicsdev.employee.jdbc.faces.AddEmpBean;
 import com.ibm.cicsdev.employee.jdbc.faces.EmpListBean;
-
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * This class contains all of the database interaction code for our application.
@@ -59,7 +60,7 @@ public class DbOperations {
      * 
      * @throws Exception All exceptions are propagated from this method.
      */
-    public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
+    public static List<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
     {
         // Instances of JDBC objects
         Connection conn = null;

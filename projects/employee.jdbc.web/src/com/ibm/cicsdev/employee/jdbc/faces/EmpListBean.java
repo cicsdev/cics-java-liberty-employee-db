@@ -10,16 +10,16 @@
 package com.ibm.cicsdev.employee.jdbc.faces;
 
 import java.util.ArrayList;
-
-import javax.sql.DataSource;
-
-import com.ibm.cicsdev.employee.jdbc.beans.Employee;
-import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import com.ibm.cicsdev.employee.jdbc.beans.Employee;
+import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 /**
  * Bean used to implement the function of the main view page.
@@ -56,7 +56,7 @@ public class EmpListBean
     /**
      * Stores the results of any search.
      */
-    private ArrayList<Employee> allResults = new ArrayList<>();
+    private List<Employee> allResults = new ArrayList<>();
     
     /**
      * Used to indicate the index of the first result displayed.
@@ -279,7 +279,7 @@ public class EmpListBean
         return lastRow;
     }
     
-    public ArrayList<Employee> getallResults() {
+    public List<Employee> getallResults() {
         return allResults;
     }
     
