@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="CICS Liberty profile JDBC configuration">
 
-	<library id="Db2Lib" name="jdbclib">
-		<fileset dir="/usr/lpp/db2c10/db2a/jdbc/classes" includes="db2jcc4.jar db2jcc_license_cisuz.jar"/>
-		<fileset dir="/usr/lpp/db2c10/db2a/jdbc/lib" includes="libdb2jcct2zos4_64.so"/>
-	</library>
+    <library id="Db2Lib" name="jdbclib">
+        <fileset dir="/usr/lpp/db2c10/db2a/jdbc/classes" includes="db2jcc4.jar db2jcc_license_cisuz.jar" />
+        <fileset dir="/usr/lpp/db2c10/db2a/jdbc/lib" includes="libdb2jcct2zos4_64.so" />
+    </library>
 
-				
-	<dataSource id="db2type4" jndiName="jdbc/sample" type="javax.sql.XADataSource" >	    
-		<jdbcDriver libraryRef="jdbclib"/>
-		<connectionManager maxPoolSize="50" />
-		<properties.db2.jcc driverType="4" 
-				    databaseName="<>"
-				    user="<user>"
-				    currentSchema="DSN81210" 
-				    password="{xor}<password>" 			    
-				    serverName="localhost"
-				    portNumber="<port>" /> 				    			        
-    </dataSource>	
-
+    <dataSource id="db2type4" jndiName="jdbc/sample" type="javax.sql.XADataSource" >
+        <jdbcDriver libraryRef="jdbclib" />
+        <connectionManager maxPoolSize="50" />
+        <properties.db2.jcc driverType="4" 
+                    databaseName="<>"
+                    user="<user>"
+                    currentSchema="DSN81210" 
+                    password="{xor}<password>"
+                    serverName="localhost"
+                    portNumber="<port>" />
+    </dataSource>
 
 </server>
