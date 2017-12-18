@@ -15,9 +15,9 @@
     
         <!--  Toggle button and status bar for JTA support -->
         <table><tr>
-            <td><h:commandButton value="Toggle JTA" action="#{addEmployee.toggleJta}"/></td>
-            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{addEmployee.jta}"/></td>
-            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not addEmployee.jta}"/></td>
+            <td><h:commandButton value="Toggle JTA" action="#{addEmployee.toggleUseJta}"/></td>
+            <td><h:outputText style="color: green;" value="JTA is ENABLED" rendered="#{addEmployee.useJta}"/></td>
+            <td><h:outputText style="color: blue;" value="JTA is DISABLED" rendered="#{not addEmployee.useJta}"/></td>
         </tr></table>
     
         <!--  Table containing user input fields for the employee -->

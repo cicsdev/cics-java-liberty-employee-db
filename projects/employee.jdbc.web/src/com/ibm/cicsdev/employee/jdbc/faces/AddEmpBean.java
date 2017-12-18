@@ -75,7 +75,7 @@ public class AddEmpBean
     /**
      * Flag to indicate we will use JTA for unit of work support.
      */
-    private boolean jta = true;
+    private boolean useJta = true;
 
     
     /*
@@ -122,8 +122,8 @@ public class AddEmpBean
      * 
      * Toggles the state of the JTA flag.
      */
-    public void toggleJta() {
-        jta = ! jta;
+    public void toggleUseJta() {
+        useJta = ! useJta;
     }
 
     /**
@@ -154,7 +154,7 @@ public class AddEmpBean
 
         try {
             // Attempt to create the new employee record in the DB
-            DbOperations.createEmployee(ds, employee, jta);
+            DbOperations.createEmployee(ds, employee, useJta);
             
             // Update the message
             message = "SUCCESSFULLY ADDED EMPLOYEE";
@@ -186,8 +186,8 @@ public class AddEmpBean
      * Attribute accessor methods used by JSF.
      */
     
-    public boolean isJta() {
-        return jta;
+    public boolean getUseJta() {
+        return useJta;
     }
     
     public String getMessage() {

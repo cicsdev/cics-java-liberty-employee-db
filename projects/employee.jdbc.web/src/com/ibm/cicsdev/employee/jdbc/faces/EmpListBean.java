@@ -76,7 +76,7 @@ public class EmpListBean
     /**
      * Flag to indicate we will use JTA for unit of work support.
      */
-    private boolean jta = true;
+    private boolean useJta = true;
     
     /**
      * Flag to indicate the connection to the database is available.
@@ -129,8 +129,8 @@ public class EmpListBean
      * 
      * Toggles the state of the JTA flag.
      */
-    public void toggleJta() {
-        jta = ! jta;
+    public void toggleUseJta() {
+        useJta = ! useJta;
     }
     
     /**
@@ -157,7 +157,7 @@ public class EmpListBean
         
         try {
             // Call our utility routine to update the database
-            DbOperations.updateEmployee(ds, employee, jta);
+            DbOperations.updateEmployee(ds, employee, useJta);
         }
         catch (Exception e) {
             message = "ERROR: Please check stderr.";
@@ -226,7 +226,7 @@ public class EmpListBean
         
         try {
             // Call the delete function for this employee
-            DbOperations.deleteEmployee(ds, employee, jta);
+            DbOperations.deleteEmployee(ds, employee, useJta);
         }
         catch (Exception e) {
         
@@ -296,7 +296,7 @@ public class EmpListBean
         return databaseAvailable;
     }
     
-    public boolean isJta() {
-        return jta;
+    public boolean getUseJta() {
+        return useJta;
     }    
 }
