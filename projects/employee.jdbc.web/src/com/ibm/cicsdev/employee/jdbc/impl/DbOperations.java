@@ -9,33 +9,32 @@
 /*                                                                        */
 package com.ibm.cicsdev.employee.jdbc.impl;
 
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-import javax.transaction.UserTransaction;
-
-import com.ibm.cics.server.TSQ;
-import com.ibm.cicsdev.employee.jdbc.beans.Employee;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+import javax.transaction.UserTransaction;
+
+import com.ibm.cics.server.TSQ;
+import com.ibm.cicsdev.employee.jdbc.beans.Employee;
+import com.ibm.cicsdev.employee.jdbc.faces.AddEmpBean;
+import com.ibm.cicsdev.employee.jdbc.faces.EmpListBean;
 
 /**
- * This class contains all of the database interaction
- * code for our application.
+ * This class contains all of the database interaction code for our application.
  * 
- * Data is passed in from either EmpListBean or AddEmpBean
- * to one of the update methods.
- * 
- * Those methods will then attempt to perform the methods.
- * Once complete they will return control to the caller,
- * which will print out a message to screen.
+ * Data is passed in from either {@link EmpListBean} or {@link AddEmpBean} to one
+ * of the update methods. Those methods will then attempt to perform the requested
+ * operation. Once complete they will return control to the caller, which will
+ * print out a message to screen.
  * 
  * @author Michael Jones
- *
  */
 public class DbOperations {
     
@@ -45,14 +44,23 @@ public class DbOperations {
     private static final String TSQ_NAME = "DB2LOG"; 
 
     /**
-     * Uses a specified last name to find a matching employee
-     * in the database table.
+     * The JNDI name used to lookup the JDBC DataSource instance.
+     */
+    public static final String DATABASE_JNDI = "jdbc/sample";
+    
+    /**
+     * Uses a specified last name to find a matching employee in the database table.
      * 
      * Used by the search function on master.xhtml page
      * 
-     * @return
+     * @param ds - the DataSource used to connect to the database.
+     * @param lastName - the search argument to be applied to the lastName field.
+     * 
+     * @return a list of {@link Employee} instances
+     * 
+     * @throws SQLException All SQL exceptions are propagated from this method.
      */
-    public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
+    public static List<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
     {
         // Instances of JDBC objects
         Connection conn = null;
@@ -69,7 +77,7 @@ public class DbOperations {
             // Get the DB connection
             conn = ds.getConnection();
             
-            // Prepare the statement, uppercase lastname and set as first query value
+            // Prepare the statement - uppercase lastname and set as first query value
             statement = conn.prepareStatement(sqlCmd);
             statement.setString(1, lastName.toUpperCase() + "%");
             
@@ -77,9 +85,9 @@ public class DbOperations {
             ResultSet rs = statement.executeQuery();
             
             // Store any results in the Employee bean list
-            ArrayList<Employee> results = new ArrayList<Employee>();
+            List<Employee> results = new ArrayList<>();
             while ( rs.next() ) {
-                results.add(createEmployeeBean(rs));
+                results.add( createEmployeeBean(rs) );
             }
             
             // Return the full list
@@ -107,8 +115,7 @@ public class DbOperations {
      * 
      * @param ds - The target data source
      * @param employee - The employee object populated
-     * @param useJta - use JTA to provide unit of work support, rather than the
-     * CICS unit of work support
+     * @param useJta - use JTA to provide unit of work support, rather than the CICS unit of work support
      * 
      * @throws Exception All exceptions are propagated from this method.
      */
@@ -216,7 +223,7 @@ public class DbOperations {
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than CICS
      * 
-     * @throws Exception
+     * @throws Exception All exceptions are propagated from this method.
      */
     public static void deleteEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
     {
@@ -311,7 +318,9 @@ public class DbOperations {
      * 
      * @param ds - The target data source
      * @param employee - The employee object populated
-     * @throws Exception
+     * @param useJta - use JTA to provide unit of work support, rather than CICS
+     * 
+     * @throws Exception All exceptions are propagated from this method.
      */
     public static void updateEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
     {
@@ -346,7 +355,7 @@ public class DbOperations {
              */
 
             // Uppercase the gender
-            employee.setSex(employee.getSex().toUpperCase());
+            employee.setGender(employee.getGender().toUpperCase());
 
             
             /*
@@ -419,7 +428,9 @@ public class DbOperations {
      * 
      * @param rs - ResultSet with pointer
      * 
-     * @return - Populated Employee bean
+     * @return A populated Employee bean
+     * 
+     * @throws Exception All exceptions are propagated from this method.
      */
     private static Employee createEmployeeBean(ResultSet rs) throws SQLException
     {
@@ -439,7 +450,7 @@ public class DbOperations {
         employee.setMidInit(rs.getString("MIDINIT"));
         employee.setPhoneNo(rs.getString("PHONENO"));
         employee.setSalary(rs.getBigDecimal("SALARY"));
-        employee.setSex(rs.getString("SEX"));
+        employee.setGender(rs.getString("SEX"));
         
         // Return the constructed instance
         return employee;
@@ -454,8 +465,7 @@ public class DbOperations {
      * 
      * @return A populated statement
      * 
-     * @throws SQLException if any JDBC errors are encountered when updating
-     * the statement.
+     * @throws SQLException if any JDBC errors are encountered when updating the statement.
      */
     private static PreparedStatement populateStatement(PreparedStatement statement, Employee employee) throws SQLException
     {
@@ -481,7 +491,7 @@ public class DbOperations {
         statement.setString(10, employee.getMidInit());
         statement.setString(11, employee.getPhoneNo());
         statement.setBigDecimal(12, employee.getSalary());
-        statement.setString(13, employee.getSex());
+        statement.setString(13, employee.getGender());
         
         // Return the populated statement
         return statement;
