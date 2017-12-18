@@ -22,7 +22,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 /**
- * Bean used to implement the function of the master.xhtml page.
+ * Bean used to implement the function of the main view page.
  * 
  * This bean provides all of the required methods for populating the
  * page, as well as controlling the edit/delete buttons and calling
@@ -34,13 +34,17 @@ import javax.naming.NamingException;
 @SessionScoped
 public class EmpListBean
 {
-    /**
+    /*
+     * Instance fields.
+     */    
+    
+   /**
      * Stores current target employee for an update or delete operation.
      */
     private Employee employee;
     
     /**
-     * Object for our Liberty data source.
+     * DataSource instance for connecting to the database using JDBC.
      */
     private DataSource ds;
     
@@ -85,7 +89,7 @@ public class EmpListBean
      */
     
     /**
-     * No args constructor for this bean. JSF will call it when the page is first loaded. 
+     * No args constructor for this bean - JSF will call it when the page is first loaded. 
      * 
      * This constructor will attempt to create a connection to the database. If it can't,
      * the page will show a message and hide the command buttons.
@@ -94,8 +98,8 @@ public class EmpListBean
         
         try {
             // Attempt to lookup the configured DataSource instance
-            this.ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
-            this.databaseAvailable = true;
+            ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
+            databaseAvailable = true;
         }
         catch (NamingException e) {
             // Flag the error and write out to the log
@@ -126,7 +130,7 @@ public class EmpListBean
      * Toggles the state of the JTA flag.
      */
     public void toggleJta() {
-        this.jta = ! this.jta;
+        jta = ! jta;
     }
     
     /**
@@ -183,7 +187,7 @@ public class EmpListBean
             allResults = DbOperations.findEmployeeByLastName(ds, searchString);
             
             // Message if no results are found
-            if (allResults.size() < 1) {
+            if ( allResults.size() < 1 ) {
                 message = "NO RESULTS FOUND.";
             }
             else {

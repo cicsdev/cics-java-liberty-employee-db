@@ -15,6 +15,8 @@ import javax.transaction.UserTransaction;
 
 import com.ibm.cics.server.TSQ;
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
+import com.ibm.cicsdev.employee.jdbc.faces.AddEmpBean;
+import com.ibm.cicsdev.employee.jdbc.faces.EmpListBean;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -24,18 +26,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * This class contains all of the database interaction
- * code for our application.
+ * This class contains all of the database interaction code for our application.
  * 
- * Data is passed in from either EmpListBean or AddEmpBean
- * to one of the update methods.
- * 
- * Those methods will then attempt to perform the methods.
- * Once complete they will return control to the caller,
- * which will print out a message to screen.
+ * Data is passed in from either {@link EmpListBean} or {@link AddEmpBean} to one
+ * of the update methods. Those methods will then attempt to perform the requested
+ * operation. Once complete they will return control to the caller, which will
+ * print out a message to screen.
  * 
  * @author Michael Jones
- *
  */
 public class DbOperations {
     
@@ -50,12 +48,16 @@ public class DbOperations {
     public static final String DATABASE_JNDI = "jdbc/sample";
     
     /**
-     * Uses a specified last name to find a matching employee
-     * in the database table.
+     * Uses a specified last name to find a matching employee in the database table.
      * 
      * Used by the search function on master.xhtml page
      * 
-     * @return
+     * @param ds - the DataSource used to connect to the database.
+     * @param lastName - the search argument to be applied to the lastName field.
+     * 
+     * @return a list of {@link Employee} instances
+     * 
+     * @throws Exception All exceptions are propagated from this method.
      */
     public static ArrayList<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
     {
@@ -74,7 +76,7 @@ public class DbOperations {
             // Get the DB connection
             conn = ds.getConnection();
             
-            // Prepare the statement, uppercase lastname and set as first query value
+            // Prepare the statement - uppercase lastname and set as first query value
             statement = conn.prepareStatement(sqlCmd);
             statement.setString(1, lastName.toUpperCase() + "%");
             
@@ -221,7 +223,7 @@ public class DbOperations {
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than CICS
      * 
-     * @throws Exception
+     * @throws Exception All exceptions are propagated from this method.
      */
     public static void deleteEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
     {
@@ -316,7 +318,9 @@ public class DbOperations {
      * 
      * @param ds - The target data source
      * @param employee - The employee object populated
-     * @throws Exception
+     * @param useJta - use JTA to provide unit of work support, rather than CICS
+     * 
+     * @throws Exception All exceptions are propagated from this method.
      */
     public static void updateEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
     {
@@ -424,7 +428,9 @@ public class DbOperations {
      * 
      * @param rs - ResultSet with pointer
      * 
-     * @return - Populated Employee bean
+     * @return A populated Employee bean
+     * 
+     * @throws Exception All exceptions are propagated from this method.
      */
     private static Employee createEmployeeBean(ResultSet rs) throws SQLException
     {
@@ -459,8 +465,7 @@ public class DbOperations {
      * 
      * @return A populated statement
      * 
-     * @throws SQLException if any JDBC errors are encountered when updating
-     * the statement.
+     * @throws SQLException if any JDBC errors are encountered when updating the statement.
      */
     private static PreparedStatement populateStatement(PreparedStatement statement, Employee employee) throws SQLException
     {

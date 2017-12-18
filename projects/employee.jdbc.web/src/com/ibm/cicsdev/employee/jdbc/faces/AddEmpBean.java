@@ -21,12 +21,10 @@ import com.ibm.cicsdev.employee.jdbc.beans.Employee;
 import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 /**
- * The bean class that handles the data and actions used
- * by the addEmp.xhtml page.
+ * The bean class that handles the data and actions used by the Add Employee page. 
  * 
- * It includes data fields used to take user input, as well
- * as methods for sending that information to the database
- * and returning to previous pages.
+ * It includes data fields used to take user input, as well as methods for sending
+ * that information to the database and returning to previous pages.
  * 
  * @author Michael Jones
  *
@@ -70,7 +68,7 @@ public class AddEmpBean
     private String message = "";
     
     /**
-     * Object for our Liberty data source.
+     * DataSource instance for connecting to the database using JDBC.
      */
     private DataSource ds;
     
@@ -85,18 +83,19 @@ public class AddEmpBean
      */
     
     /**
-     * Default constructor called by JSF. This constructor
-     * will attempt to set up the connection to the database.
+     * Default constructor called by JSF.
+     * 
+     * This constructor will attempt to setup the connection to the database.
      */
     public AddEmpBean() {
         
         try {
             // Attempt to lookup the configured DataSource instance
-            this.ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
+            ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
         }
         catch (NamingException e) {
             // Flag the error and write out to the log
-            this.message = "NO DATASOURCE CONNECTION";
+            message = "NO DATASOURCE CONNECTION";
             e.printStackTrace();
         }
     }
@@ -114,7 +113,7 @@ public class AddEmpBean
      * @return The name of the page to navigate to
      */
     public String goBack() {
-        this.message = "";
+        message = "";
         return "master.xhtml";
     }
     
@@ -124,7 +123,7 @@ public class AddEmpBean
      * Toggles the state of the JTA flag.
      */
     public void toggleJta() {
-        this.jta = ! this.jta;
+        jta = ! jta;
     }
 
     /**
@@ -155,26 +154,26 @@ public class AddEmpBean
 
         try {
             // Attempt to create the new employee record in the DB
-            DbOperations.createEmployee(this.ds, employee, this.jta);
+            DbOperations.createEmployee(ds, employee, jta);
             
             // Update the message
-            this.message = "SUCCESSFULLY ADDED EMPLOYEE";
+            message = "SUCCESSFULLY ADDED EMPLOYEE";
             
             // Clear the input data, ready for next request
-            this.empNo = "";
-            this.firstName = "";
-            this.lastName = "";
-            this.gender = "";
-            this.job = "";
+            empNo = "";
+            firstName = "";
+            lastName = "";
+            gender = "";
+            job = "";
         }
         catch (Exception e) {
             
             // Explicit test for duplicate values error
             if (e.getMessage().contains("DUPLICATE VALUES")) {
-                this.message = "ERROR Employee number already in use";
+                message = "ERROR Employee number already in use";
             }
             else {
-                this.message = "ERROR Please consult stderr";
+                message = "ERROR Please consult stderr";
             }
             
             // Dump to output for debug purposes
@@ -192,31 +191,31 @@ public class AddEmpBean
     }
     
     public String getMessage() {
-        return this.message;
+        return message;
     }
     
     public String getEmpNo() {
         return empNo;
     }
     
-    public void setEmpNo(String empno) {
-        this.empNo = empno;
+    public void setEmpNo(String empNo) {
+        this.empNo = empNo;
     }
 
     public String getFirstName() {
         return firstName;
     }
     
-    public void setFirstName(String firstname) {
-        this.firstName = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
     
     public String getLastName() {
         return lastName;
     }
     
-    public void setLastName(String lastname) {
-        this.lastName = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
     
     public String getGender() {

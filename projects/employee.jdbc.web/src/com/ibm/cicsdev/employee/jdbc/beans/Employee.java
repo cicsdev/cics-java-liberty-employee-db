@@ -15,13 +15,11 @@ import java.util.Date;
 
 
 /**
- * A bean class used to store all of the data fields
- * associated with the EMPLOYEE table in the sample
- * Db2 table.
+ * A bean class used to store all of the data fields associated with the
+ * sample Db2 EMPLOYEE table.
  * 
- * The fields will be populated by reading on screen values
- * or from the database, before being used as the basis of displays
- * or SQL commands
+ * The fields will be populated by reading on-screen values, or from the
+ * database, before being used as the basis of displays or SQL commands.
  *
  * @author Michael Jones
  * 
