@@ -14,7 +14,7 @@ Sample web application that uses JDBC to access the sample Db2 EMPLOYEE table.
 * [`employee.jdbc.cicsbundle`](projects/employee.jdbc.cicsbundle) - CICS bundle project 
 
 ## Pre-requisites
-* CICS TS V5.3 with APAR PI67640 and APAR PI58375, or CICS TS V5.4
+* CICS TS V5.3 with [APAR PI67640](www.ibm.com/support/docview.wss?uid=swg1PI67640) and [APAR PI58375](www.ibm.com/support/docview.wss?uid=swg1PI58375), or CICS TS V5.4
 * Java SE 7 or later on the z/OS system
 * CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed [available here](https://developer.ibm.com/mainframe/products/downloads)
 * IBM Db2 for z/OS 
@@ -38,7 +38,7 @@ JDBC type 2 connectivity,  or a remote database with a JDBC type 4 connectivity.
 1. Bind the Db2 plan that is specified in the CICS DB2CONN or DB2ENTRY definition with a PKLIST of NULLID.* 
 1. Create a Liberty JVM server called DFHWLP as described in
  [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
-1. Add the following Liberty features to the featureManger list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1`
+1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1`
 1. Add a library definition to the Liberty server.xml that references the Db2 JCC libraries
 1. Add a data source definition to the Liberty server.xml with the attribute `jndiName="jdbc/sample"`
 
@@ -48,7 +48,7 @@ A template server.xml is provided in [type-2-server.xml](etc/config/type-2-serve
 ### To configure CICS Liberty for JDBC type 4 connectivity to Db2
 1. Create a Liberty JVM server called DFHWLP as described in
  [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
-1. Add the following Liberty features to the featureManger list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1`
+1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1`
 1. Add a library definition to the Liberty server.xml that references the Db2 JCC libraries
 1. Add a data source definition to the Liberty server.xml with the attribute `jndiName="jdbc/sample"`
 
