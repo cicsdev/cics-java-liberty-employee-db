@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <server description="CICS Liberty profile JDBC configuration">
 
-<library id="jdbclib">
-	<fileset dir="/usr/lpp/db2c10/db2a/jdbc/classes" includes="db2jcc4.jar db2jcc_license_cisuz.jar"/>
-	<fileset dir="/usr/lpp/db2c10/db2a/jdbc/lib" includes="libdb2jcct2zos4_64.so"/>
-</library>
+    <library id="jdbclib">
+        <fileset dir="/usr/lpp/db2c10/db2a/jdbc/classes" includes="db2jcc4.jar db2jcc_license_cisuz.jar" />
+        <fileset dir="/usr/lpp/db2c10/db2a/jdbc/lib" includes="libdb2jcct2zos4_64.so" />
+    </library>
 
-<dataSource id="db2type2" jndiName="jdbc/type2sample" transactional="false">
-    <jdbcDriver libraryRef="jdbclib"/>
+    <dataSource id="db2type2" jndiName="jdbc/type2sample" transactional="false">
+        <jdbcDriver libraryRef="jdbclib" />
         <properties.db2.jcc driverType="2" currentSchema="DSN81210" />
         <connectionManager agedTimeout="0" />
-</dataSource>
+    </dataSource>
 
 </server>

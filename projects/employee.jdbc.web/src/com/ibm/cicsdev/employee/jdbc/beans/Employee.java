@@ -15,173 +15,172 @@ import java.util.Date;
 
 
 /**
- * A bean class used to store all of the data fields
- * associated with the EMPLOYEE table in the sample
- * Db2 table.
+ * A bean class used to store all of the data fields associated with the
+ * sample Db2 EMPLOYEE table.
  * 
- * The fields will be populated by reading on screen values
- * or from the database, before being used as the basis of displays
- * or SQL commands
+ * The fields will be populated by reading on-screen values, or from the
+ * database, before being used as the basis of displays or SQL commands.
  *
  * @author Michael Jones
  * 
  */
-public class Employee implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	private String empno;
+public class Employee implements Serializable
+{
+    private static final long serialVersionUID = -5094938829089545370L;
+    
+    private String empNo;
 
-	private Date birthdate;
+    private Date birthDate;
 
-	private BigDecimal bonus;
+    private BigDecimal bonus;
 
-	private BigDecimal comm;
+    private BigDecimal comm;
 
-	private short edlevel;
+    private short edLevel;
 
-	private String firstname;
+    private String firstName;
 
-	private Date hiredate;
+    private Date hireDate;
 
-	private String job;
+    private String job;
 
-	private String lastname;
+    private String lastName;
 
-	private String midinit;
+    private String midInit;
 
-	private String phoneno;
+    private String phoneNo;
 
-	private BigDecimal salary;
+    private BigDecimal salary;
 
-	private String sex;
+    private String gender;
 
-	private boolean canEdit;
-	
-	private boolean canDel;
-	
-	public Employee() {
-		canEdit = false;
-		canDel = false;
-	}
-	
-	public String getEmpno() {
-		return this.empno;
-	}
+    private boolean canEdit;
+    
+    private boolean canDelete;
+    
+    public Employee() {
+        canEdit = false;
+        canDelete = false;
+    }
+    
+    public String getEmpNo() {
+        return this.empNo;
+    }
 
-	public void setEmpno(String empno) {
-		this.empno = empno;
-	}
+    public void setEmpNo(String empNo) {
+        this.empNo = empNo;
+    }
 
-	public Date getBirthdate() {
-		return this.birthdate;
-	}
+    public Date getBirthDate() {
+        return this.birthDate;
+    }
 
-	public void setBirthdate(Date birthdate) {
-		this.birthdate = birthdate;
-	}
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-	public BigDecimal getBonus() {
-		return this.bonus;
-	}
+    public BigDecimal getBonus() {
+        return this.bonus;
+    }
 
-	public void setBonus(BigDecimal bonus) {
-		this.bonus = bonus;
-	}
+    public void setBonus(BigDecimal bonus) {
+        this.bonus = bonus;
+    }
 
-	public BigDecimal getComm() {
-		return this.comm;
-	}
+    public BigDecimal getComm() {
+        return this.comm;
+    }
 
-	public void setComm(BigDecimal comm) {
-		this.comm = comm;
-	}
+    public void setComm(BigDecimal comm) {
+        this.comm = comm;
+    }
 
-	public short getEdlevel() {
-		return this.edlevel;
-	}
+    public short getEdLevel() {
+        return this.edLevel;
+    }
 
-	public void setEdlevel(short edlevel) {
-		this.edlevel = edlevel;
-	}
+    public void setEdLevel(short edLevel) {
+        this.edLevel = edLevel;
+    }
 
-	public String getFirstname() {
-		return this.firstname;
-	}
+    public String getFirstName() {
+        return this.firstName;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public Date getHiredate() {
-		return this.hiredate;
-	}
+    public Date getHireDate() {
+        return this.hireDate;
+    }
 
-	public void setHiredate(Date hiredate) {
-		this.hiredate = hiredate;
-	}
+    public void setHireDate(Date hireDate) {
+        this.hireDate = hireDate;
+    }
 
-	public String getJob() {
-		return this.job;
-	}
+    public String getJob() {
+        return this.job;
+    }
 
-	public void setJob(String job) {
-		this.job = job;
-	}
+    public void setJob(String job) {
+        this.job = job;
+    }
 
-	public String getLastname() {
-		return this.lastname;
-	}
+    public String getLastName() {
+        return this.lastName;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getMidinit() {
-		return this.midinit;
-	}
+    public String getMidInit() {
+        return this.midInit;
+    }
 
-	public void setMidinit(String midinit) {
-		this.midinit = midinit;
-	}
+    public void setMidInit(String midInit) {
+        this.midInit = midInit;
+    }
 
-	public String getPhoneno() {
-		return this.phoneno;
-	}
+    public String getPhoneNo() {
+        return this.phoneNo;
+    }
 
-	public void setPhoneno(String phoneno) {
-		this.phoneno = phoneno;
-	}
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
 
-	public BigDecimal getSalary() {
-		return this.salary;
-	}
+    public BigDecimal getSalary() {
+        return this.salary;
+    }
 
-	public void setSalary(BigDecimal salary) {
-		this.salary = salary;
-	}
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
 
-	public String getSex() {
-		return this.sex;
-	}
+    public String getGender() {
+        return this.gender;
+    }
 
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public boolean isCanEdit() {
-	      return canEdit;
-	}
+    public boolean isCanEdit() {
+        return canEdit;
+    }
 
-	public void setCanEdit(boolean canEdit) {
-	      this.canEdit = canEdit;
-	}
-	
-	public boolean isCanDel() {
-	      return canDel;
-	}
+    public void setCanEdit(boolean canEdit) {
+        this.canEdit = canEdit;
+    }
+    
+    public boolean isCanDelete() {
+        return canDelete;
+    }
 
-	public void setCanDel(boolean canDel) {
-	      this.canDel = canDel;
-	}
+    public void setCanDelete(boolean canDel) {
+        this.canDelete = canDel;
+    }
 
 }
