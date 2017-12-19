@@ -141,8 +141,7 @@ public class DbOperations {
                 utx.begin();
             }
             else {
-                // A unit of work is already provided for this CICS transaction: no-op
-                // Compiler not smart enough to work out utx won't be used again
+                // JTA not required so null user transaction
                 utx = null;
             }
             
@@ -247,8 +246,7 @@ public class DbOperations {
                 utx.begin();
             }
             else {
-                // A unit of work is already provided for this CICS transaction: no-op
-                // Compiler not smart enough to work out utx won't be used again
+                // JTA not required so null user transaction
                 utx = null;
             }
             
@@ -307,11 +305,9 @@ public class DbOperations {
         }
     }
     
-    /**
-     * Uses connection.commit to commit a update an employee in the database.
-     * 
+    /** 
      * This method is called when a user presses the 'Edit' then 'Save' button
-     * next to an employee row when the JTA toggle is false.
+     * next to an employee row.
      * 
      * It will use the employee number in the bean to fill in an UPDATE statement
      * and update the associated record from the DB
@@ -344,8 +340,7 @@ public class DbOperations {
                 utx.begin();
             }
             else {
-                // A unit of work is already provided for this CICS transaction: no-op
-                // Compiler not smart enough to work out utx won't be used again
+                // JTA not required so null user transaction
                 utx = null;
             }
 
