@@ -21,7 +21,6 @@
             <connectionManager agedTimeout="0"/>
     </dataSource>
 
-
 <!-- Web application-->
     <application id="employee" 
         location="<>/apps/employee.jdbc.web.war">
