@@ -12,10 +12,10 @@ package com.ibm.cicsdev.employee.jdbc.faces;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.annotation.Resource.AuthenticationType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
@@ -30,6 +30,7 @@ import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
  * 
  * @author Michael Jones
  */
+
 @ManagedBean(name = "employeeList")
 @SessionScoped
 public class EmpListBean
@@ -37,6 +38,12 @@ public class EmpListBean
     /*
      * Instance fields.
      */    
+	
+    /**
+     * The JNDI name used to lookup the JDBC DataSource instance.
+     */
+    public static final String DATABASE_JNDI = "jdbc/sample";
+	
     
    /**
      * Stores current target employee for an update or delete operation.
@@ -44,8 +51,10 @@ public class EmpListBean
     private Employee employee;
     
     /**
-     * DataSource instance for connecting to the database using JDBC.
-     */
+     * DataSource instance for connecting to the database using JDBC
+     * Use of Resource injection required for container mgd security
+     */          
+    @Resource(authenticationType=AuthenticationType.CONTAINER,name=DATABASE_JNDI)
     private DataSource ds;
     
     /**
@@ -78,11 +87,6 @@ public class EmpListBean
      */
     private boolean useJta = true;
     
-    /**
-     * Flag to indicate the connection to the database is available.
-     */
-    private boolean databaseAvailable = false;
-
     
     /*
      * Constructor.
@@ -90,23 +94,11 @@ public class EmpListBean
     
     /**
      * No args constructor for this bean - JSF will call it when the page is first loaded. 
-     * 
-     * This constructor will attempt to create a connection to the database. If it can't,
-     * the page will show a message and hide the command buttons.
-     */
+     *
+     */ 
+
     public EmpListBean() {
-        
-        try {
-            // Attempt to lookup the configured DataSource instance
-            ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
-            databaseAvailable = true;
-        }
-        catch (NamingException e) {
-            // Flag the error and write out to the log
-            message = "NO DATASOURCE CONNECTION";
-            e.printStackTrace();
-        }
-    }
+    } 
 
     
     /*
@@ -290,11 +282,8 @@ public class EmpListBean
     
     public void setEmployee(Employee emp) {
         this.employee = emp;
-    }
-    
-    public boolean isDatabaseAvailable() {
-        return databaseAvailable;
-    }
+    }  
+
     
     public boolean getUseJta() {
         return useJta;

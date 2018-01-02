@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
@@ -36,17 +37,17 @@ import com.ibm.cicsdev.employee.jdbc.faces.EmpListBean;
  * 
  * @author Michael Jones
  */
+
+
+
 public class DbOperations {
-    
+	
+   
     /**
      * Name of CICS TSQ used to log activity.
      */
-    private static final String TSQ_NAME = "DB2LOG"; 
+    private static final String TSQ_NAME = "DB2LOG";
 
-    /**
-     * The JNDI name used to lookup the JDBC DataSource instance.
-     */
-    public static final String DATABASE_JNDI = "jdbc/sample";
     
     /**
      * Uses a specified last name to find a matching employee in the database table.
@@ -180,7 +181,7 @@ public class DbOperations {
             tsq.setName(TSQ_NAME);
             String msg = String.format("Added %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
-
+ 
             
             /*
              * Commit the transaction.
@@ -386,13 +387,17 @@ public class DbOperations {
             String msg = String.format("Updated %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
-            
+           
+           
+
             /*
              * Commit the transaction.
              */
+           
             
             // Handle JTA and non-JTA commits differently
             if ( useJta ) {
+            	
                 // Use the JTA API to commit the changes
                 utx.commit();
             }

@@ -11,10 +11,10 @@ package com.ibm.cicsdev.employee.jdbc.faces;
 
 import java.math.BigDecimal;
 
+import javax.annotation.Resource;
+import javax.annotation.Resource.AuthenticationType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
@@ -37,6 +37,13 @@ public class AddEmpBean
      * Instance fields.
      */    
     
+	
+    /**
+     * The JNDI name used to lookup the JDBC DataSource instance.
+     */
+    public static final String DATABASE_JNDI = "jdbc/sample";
+	
+	
     /**
      * The employee number specified on the form.
      */
@@ -68,8 +75,10 @@ public class AddEmpBean
     private String message = "";
     
     /**
-     * DataSource instance for connecting to the database using JDBC.
-     */
+     * DataSource instance for connecting to the database using JDBC
+     * Use of Resource injection required for container mgd security
+     */          
+    @Resource(authenticationType=AuthenticationType.CONTAINER,name=DATABASE_JNDI)
     private DataSource ds;
     
     /**
@@ -85,19 +94,8 @@ public class AddEmpBean
     /**
      * Default constructor called by JSF.
      * 
-     * This constructor will attempt to setup the connection to the database.
      */
-    public AddEmpBean() {
-        
-        try {
-            // Attempt to lookup the configured DataSource instance
-            ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
-        }
-        catch (NamingException e) {
-            // Flag the error and write out to the log
-            message = "NO DATASOURCE CONNECTION";
-            e.printStackTrace();
-        }
+    public AddEmpBean() {       
     }
     
 
