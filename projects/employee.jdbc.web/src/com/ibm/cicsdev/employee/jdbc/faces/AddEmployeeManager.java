@@ -11,14 +11,11 @@ package com.ibm.cicsdev.employee.jdbc.faces;
 
 import java.math.BigDecimal;
 
-import javax.annotation.Resource;
-import javax.annotation.Resource.AuthenticationType;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.sql.DataSource;
 
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
-import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 /**
  * The bean class that handles the data and actions used by the Add Employee page. 
@@ -31,19 +28,12 @@ import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
  */
 @ManagedBean(name = "addEmployee")
 @SessionScoped
-public class AddEmpBean
+public class AddEmployeeManager
 {    
     /*
      * Instance fields.
      */    
     
-	
-    /**
-     * The JNDI name used to lookup the JDBC DataSource instance.
-     */
-    public static final String DATABASE_JNDI = "jdbc/sample";
-	
-	
     /**
      * The employee number specified on the form.
      */
@@ -73,14 +63,13 @@ public class AddEmpBean
      * Current error message for display.
      */
     private String message = "";
-    
+
     /**
-     * DataSource instance for connecting to the database using JDBC
-     * Use of Resource injection required for container mgd security
-     */          
-    @Resource(authenticationType=AuthenticationType.CONTAINER,name=DATABASE_JNDI)
-    private DataSource ds;
-    
+     * 
+     */
+    @ManagedProperty("#{databaseOperations}")
+    private DatabaseOperationsManager dbOperations;
+
     /**
      * Flag to indicate we will use JTA for unit of work support.
      */
@@ -95,7 +84,7 @@ public class AddEmpBean
      * Default constructor called by JSF.
      * 
      */
-    public AddEmpBean() {       
+    public AddEmployeeManager() {       
     }
     
 
@@ -152,7 +141,7 @@ public class AddEmpBean
 
         try {
             // Attempt to create the new employee record in the DB
-            DbOperations.createEmployee(ds, employee, useJta);
+            dbOperations.createEmployee(employee, useJta);
             
             // Update the message
             message = "SUCCESSFULLY ADDED EMPLOYEE";
@@ -230,5 +219,9 @@ public class AddEmpBean
     
     public void setJob(String job) {
         this.job = job;
+    }    
+
+    public void setDbOperations(DatabaseOperationsManager dbOperations) {
+        this.dbOperations = dbOperations;
     }    
 }

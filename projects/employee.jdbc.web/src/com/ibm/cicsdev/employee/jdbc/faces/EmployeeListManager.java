@@ -12,14 +12,12 @@ package com.ibm.cicsdev.employee.jdbc.faces;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.annotation.Resource.AuthenticationType;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.sql.DataSource;
 
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
-import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 /**
  * Bean used to implement the function of the main view page.
@@ -33,30 +31,17 @@ import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 @ManagedBean(name = "employeeList")
 @SessionScoped
-public class EmpListBean
+public class EmployeeListManager
 {
     /*
      * Instance fields.
      */    
 	
     /**
-     * The JNDI name used to lookup the JDBC DataSource instance.
-     */
-    public static final String DATABASE_JNDI = "jdbc/sample";
-	
-    
-   /**
      * Stores current target employee for an update or delete operation.
      */
     private Employee employee;
-    
-    /**
-     * DataSource instance for connecting to the database using JDBC
-     * Use of Resource injection required for container mgd security
-     */          
-    @Resource(authenticationType=AuthenticationType.CONTAINER,name=DATABASE_JNDI)
-    private DataSource ds;
-    
+
     /**
      * Stores the last value used as the search criteria.
      */
@@ -87,6 +72,12 @@ public class EmpListBean
      */
     private boolean useJta = true;
     
+    /**
+     * Injected field to access the DB manipulation methods.
+     */
+    @ManagedProperty("#{databaseOperations}")
+    private DatabaseOperationsManager dbOperations;
+
     
     /*
      * Constructor.
@@ -97,7 +88,9 @@ public class EmpListBean
      *
      */ 
 
-    public EmpListBean() {
+    public EmployeeListManager() {
+        
+        System.out.println("EmployeeListManager()");
     } 
 
     
@@ -143,13 +136,13 @@ public class EmpListBean
      * This method will run the update function using the new values, updating the record
      * in the database. Will also clear the editable flag for the current record.
      * 
-     * @see DbOperations#updateEmployee(DataSource, Employee, boolean)
+     * @see DatabaseOperationsManager#updateEmployee(DataSource, Employee, boolean)
      */
     public void saveUpdates() {
         
         try {
             // Call our utility routine to update the database
-            DbOperations.updateEmployee(ds, employee, useJta);
+            dbOperations.updateEmployee(employee, useJta);
         }
         catch (Exception e) {
             message = "ERROR: Please check stderr.";
@@ -167,13 +160,13 @@ public class EmpListBean
      * 
      * @return The name of the page to navigate to, which will contain the results.
      * 
-     * @see DbOperations#findEmployeeByLastName(DataSource, String)
+     * @see DatabaseOperationsManager#findEmployeeByLastName(DataSource, String)
      */
     public String search() {
         
         try {
             // Search the database for this string
-            allResults = DbOperations.findEmployeeByLastName(ds, searchString);
+            allResults = dbOperations.findEmployeeByLastName(searchString);
             
             // Message if no results are found
             if ( allResults.size() < 1 ) {
@@ -212,13 +205,13 @@ public class EmpListBean
      * 
      * @return The next page to display in the user interaction
      * 
-     * @see DbOperations#deleteEmployee(DataSource, Employee, boolean)
+     * @see DatabaseOperationsManager#deleteEmployee(DataSource, Employee, boolean)
      */
     public String deleteEmployee() {
         
         try {
             // Call the delete function for this employee
-            DbOperations.deleteEmployee(ds, employee, useJta);
+            dbOperations.deleteEmployee(employee, useJta);
         }
         catch (Exception e) {
         
@@ -238,7 +231,7 @@ public class EmpListBean
 
             // Redirect back to main page
             return "master.xhtml";
-        }    
+        }
         
         // Successful: call the search function, refreshing the view
         return search();
@@ -269,11 +262,13 @@ public class EmpListBean
     }
     
     public List<Employee> getallResults() {
-        return allResults;
+        // Shallow clone so JSF can update the Employee instances
+        return new ArrayList<>(allResults);
     }
     
-    public void setAllResults(ArrayList<Employee> allResults) {
-        this.allResults = allResults;
+    public void setAllResults(List<Employee> allResults) {
+        // Shallow clone so JSF can update the Employee instances
+        this.allResults = new ArrayList<>(allResults);
     }
     
     public Employee getEmployee() {
@@ -284,8 +279,11 @@ public class EmpListBean
         this.employee = emp;
     }  
 
-    
     public boolean getUseJta() {
         return useJta;
+    }
+
+    public void setDbOperations(DatabaseOperationsManager dbOperations) {
+        this.dbOperations = dbOperations;
     }    
 }

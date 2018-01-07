@@ -7,7 +7,7 @@
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
 /*                                                                        */
-package com.ibm.cicsdev.employee.jdbc.impl;
+package com.ibm.cicsdev.employee.jdbc.faces;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -17,51 +17,55 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import javax.annotation.Resource;
+import javax.annotation.Resource.AuthenticationType;
+import javax.faces.bean.ApplicationScoped;
+import javax.faces.bean.ManagedBean;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import javax.transaction.UserTransaction;
 
 import com.ibm.cics.server.TSQ;
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
-import com.ibm.cicsdev.employee.jdbc.faces.AddEmpBean;
-import com.ibm.cicsdev.employee.jdbc.faces.EmpListBean;
 
 /**
  * This class contains all of the database interaction code for our application.
  * 
- * Data is passed in from either {@link EmpListBean} or {@link AddEmpBean} to one
+ * Data is passed in from either {@link EmployeeListManager} or {@link AddEmployeeManager} to one
  * of the update methods. Those methods will then attempt to perform the requested
  * operation. Once complete they will return control to the caller, which will
  * print out a message to screen.
  * 
  * @author Michael Jones
  */
-
-
-
-public class DbOperations {
-	
-   
+@ManagedBean(name = "databaseOperations", eager = true)
+@ApplicationScoped
+public class DatabaseOperationsManager
+{
     /**
      * Name of CICS TSQ used to log activity.
      */
     private static final String TSQ_NAME = "DB2LOG";
 
+    /**
+     * DataSource instance for connecting to the database using JDBC
+     * Use of Resource injection required for container mgd security
+     */          
+    @Resource(authenticationType = AuthenticationType.CONTAINER, name = "jdbc/sample")
+    private DataSource ds;    
     
     /**
      * Uses a specified last name to find a matching employee in the database table.
      * 
      * Used by the search function on master.xhtml page
      * 
-     * @param ds - the DataSource used to connect to the database.
      * @param lastName - the search argument to be applied to the lastName field.
      * 
      * @return a list of {@link Employee} instances
      * 
      * @throws SQLException All SQL exceptions are propagated from this method.
      */
-    public static List<Employee> findEmployeeByLastName(DataSource ds, String lastName) throws SQLException
+    public List<Employee> findEmployeeByLastName(String lastName) throws SQLException
     {
         // Instances of JDBC objects
         Connection conn = null;
@@ -114,13 +118,12 @@ public class DbOperations {
      * This method is called when a user presses 'Add employee' button.
      * It will add the employee based on the values provided in the already-populated bean
      * 
-     * @param ds - The target data source
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than the CICS unit of work support
      * 
      * @throws Exception All exceptions are propagated from this method.
      */
-    public static void createEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
+    public void createEmployee(Employee employee, final boolean useJta) throws Exception
     {
         // Instances of JDBC objects
         Connection conn = null;
@@ -219,13 +222,12 @@ public class DbOperations {
      * It will use the employee number in the bean to fill in an delete statement
      * and remove the associated record from the DB.
      * 
-     * @param ds - The target data source
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than CICS
      * 
      * @throws Exception All exceptions are propagated from this method.
      */
-    public static void deleteEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
+    public void deleteEmployee(Employee employee, final boolean useJta) throws Exception
     {
         // Instances of JDBC objects
         Connection conn = null;
@@ -313,13 +315,12 @@ public class DbOperations {
      * It will use the employee number in the bean to fill in an UPDATE statement
      * and update the associated record from the DB
      * 
-     * @param ds - The target data source
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than CICS
      * 
      * @throws Exception All exceptions are propagated from this method.
      */
-    public static void updateEmployee(DataSource ds, Employee employee, final boolean useJta) throws Exception
+    public void updateEmployee(Employee employee, final boolean useJta) throws Exception
     {
         // Instances of JDBC objects
         Connection conn = null;
