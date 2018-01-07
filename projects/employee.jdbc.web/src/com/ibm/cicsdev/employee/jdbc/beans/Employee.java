@@ -182,5 +182,4 @@ public class Employee implements Serializable
     public void setCanDelete(boolean canDel) {
         this.canDelete = canDel;
     }
-
 }
