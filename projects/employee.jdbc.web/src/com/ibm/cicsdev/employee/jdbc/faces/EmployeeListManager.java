@@ -2,7 +2,7 @@
 /*                                                                        */
 /* SAMPLE                                                                 */
 /*                                                                        */
-/* (c) Copyright IBM Corp. 2017 All Rights Reserved                       */
+/* (c) Copyright IBM Corp. 2018 All Rights Reserved                       */
 /*                                                                        */
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
@@ -12,14 +12,13 @@ package com.ibm.cicsdev.employee.jdbc.faces;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.annotation.Resource.AuthenticationType;
+import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.sql.DataSource;
+import javax.faces.context.FacesContext;
 
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
-import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 /**
  * Bean used to implement the function of the main view page.
@@ -33,30 +32,17 @@ import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 @ManagedBean(name = "employeeList")
 @SessionScoped
-public class EmpListBean
+public class EmployeeListManager
 {
     /*
      * Instance fields.
      */    
-	
+
     /**
-     * The JNDI name used to lookup the JDBC DataSource instance.
-     */
-    public static final String DATABASE_JNDI = "jdbc/sample";
-	
-    
-   /**
      * Stores current target employee for an update or delete operation.
      */
     private Employee employee;
-    
-    /**
-     * DataSource instance for connecting to the database using JDBC
-     * Use of Resource injection required for container mgd security
-     */          
-    @Resource(authenticationType=AuthenticationType.CONTAINER,name=DATABASE_JNDI)
-    private DataSource ds;
-    
+
     /**
      * Stores the last value used as the search criteria.
      */
@@ -87,6 +73,11 @@ public class EmpListBean
      */
     private boolean useJta = true;
     
+    /**
+     * Field used to access the DB manipulation methods.
+     */
+    private DatabaseOperationsManager dbOperations;
+
     
     /*
      * Constructor.
@@ -97,9 +88,45 @@ public class EmpListBean
      *
      */ 
 
-    public EmpListBean() {
+    public EmployeeListManager() {
+        
     } 
 
+    
+    /*
+     * Lifecycle methods.
+     */
+    
+    /**
+     * Performs initialisation of the bean after the constructor has been called.
+     * 
+     * This method finds the application-scoped instance of the {@link DatabaseOperationsManager}
+     * bean in here, rather than using injection. We do that this way to allow us to trap
+     * any problems with instantiating the class in a try ... catch block. This enables the
+     * ability to provide a "DB down" message on the main page, without a huge amount of
+     * error-handling logic at the backend.
+     */
+    @PostConstruct
+    public void init() {
+        
+        // Get the current faces & application context
+        FacesContext ctxt = FacesContext.getCurrentInstance();
+        Application app = ctxt.getApplication();
+        
+        try {
+            // Get an instance of the DatabaseOperationsManager bean  
+            this.dbOperations = app.evaluateExpressionGet(ctxt, "#{databaseOperations}", DatabaseOperationsManager.class);
+        }
+        catch (Exception e) {
+            
+            // Assume all exceptions from the lookup are fatal
+            this.message = "Database connection unavailable: see error log";
+            
+            // Dump the exception to the log
+            e.printStackTrace(System.out);
+        }
+    }
+    
     
     /*
      * Action methods.
@@ -113,7 +140,7 @@ public class EmpListBean
      * @return the name of the JSF file for rendering next.
      */
     public String goToAddScreen() {
-        return "addEmp.xhtml";
+        return "addEmployee";
     }
     
     /** 
@@ -122,7 +149,7 @@ public class EmpListBean
      * Toggles the state of the JTA flag.
      */
     public void toggleUseJta() {
-        useJta = ! useJta;
+        this.useJta = ! this.useJta;
     }
     
     /**
@@ -134,7 +161,7 @@ public class EmpListBean
      * @see Employee#setCanEdit(boolean)
      */
     public void setCanEdit() {
-        employee.setCanEdit(true);
+        this.employee.setCanEdit(true);
     }
     
     /**
@@ -143,21 +170,22 @@ public class EmpListBean
      * This method will run the update function using the new values, updating the record
      * in the database. Will also clear the editable flag for the current record.
      * 
-     * @see DbOperations#updateEmployee(DataSource, Employee, boolean)
+     * @see DatabaseOperationsManager#updateEmployee(Employee, boolean)
      */
-    public void saveUpdates() {
+    public void saveUpdates() throws Exception {
         
         try {
             // Call our utility routine to update the database
-            DbOperations.updateEmployee(ds, employee, useJta);
+            this.dbOperations.updateEmployee(this.employee, this.useJta);
         }
         catch (Exception e) {
-            message = "ERROR: Please check stderr.";
-            e.printStackTrace();
+            // The database access class will have already rolledback our transaction
+            this.message = "An error occurred: see error log";
+            e.printStackTrace(System.out);
         }
 
         // Clear the flag that says we can edit this row
-        employee.setCanEdit(false);
+        this.employee.setCanEdit(false);
     }
     
     /** 
@@ -167,29 +195,30 @@ public class EmpListBean
      * 
      * @return The name of the page to navigate to, which will contain the results.
      * 
-     * @see DbOperations#findEmployeeByLastName(DataSource, String)
+     * @see DatabaseOperationsManager#findEmployeeByLastName(String)
      */
     public String search() {
         
         try {
             // Search the database for this string
-            allResults = DbOperations.findEmployeeByLastName(ds, searchString);
+            this.allResults = this.dbOperations.findEmployeeByLastName(this.searchString);
             
             // Message if no results are found
-            if ( allResults.size() < 1 ) {
-                message = "NO RESULTS FOUND.";
+            if ( this.allResults.size() < 1 ) {
+                this.message = "No results found";
             }
             else {
-                message = "";
+                this.message = "";
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
-            message = "ERROR: Please see stderr";
+            // The database access class will have already rolledback our transaction
+            this.message = "An error occurred: see error log";
+            e.printStackTrace(System.out);
         }
         
         // Redirect back to main page
-        return "master.xhtml";
+        return "master";
     }
     
     /**
@@ -199,7 +228,7 @@ public class EmpListBean
      * which will have the effect of showing the "Confirm" button.
      */
     public void confirmDel() {
-        employee.setCanDelete(true);
+        this.employee.setCanDelete(true);
     }
     
     /**
@@ -212,33 +241,33 @@ public class EmpListBean
      * 
      * @return The next page to display in the user interaction
      * 
-     * @see DbOperations#deleteEmployee(DataSource, Employee, boolean)
+     * @see DatabaseOperationsManager#deleteEmployee(Employee, boolean)
      */
     public String deleteEmployee() {
         
         try {
             // Call the delete function for this employee
-            DbOperations.deleteEmployee(ds, employee, useJta);
+            this.dbOperations.deleteEmployee(this.employee, this.useJta);
         }
         catch (Exception e) {
         
             // Check for the delete permissions error
             if ( e.getMessage().contains("RESTRICTS THE DELETION") ) {
                 // Not allowed to delete the record
-                message = "ERROR: You cannot delete this record.";
+                this.message = "ERROR: You cannot delete this record.";
             }
             else {
                 // If we can't find the permission error, report the problem
-                message = "ERROR: See stdout for details";
-                e.printStackTrace();
+                this.message = "An error occurred: see error log";
+                e.printStackTrace(System.out);
             }
 
             // Clear the flag
-            employee.setCanDelete(false);
+            this.employee.setCanDelete(false);
 
             // Redirect back to main page
-            return "master.xhtml";
-        }    
+            return "master";
+        }
         
         // Successful: call the search function, refreshing the view
         return search();
@@ -249,7 +278,7 @@ public class EmpListBean
      */
     
     public String getSearchString() {
-        return searchString;
+        return this.searchString;
     }
     
     public void setSearchString(String ss) {
@@ -257,35 +286,40 @@ public class EmpListBean
     }
     
     public String getMessage() {
-        return message;
+        return this.message;
     }
     
     public int getFirstRow() {
-        return firstRow;
+        return this.firstRow;
     }
     
     public int getLastRow() {
-        return lastRow;
+        return this.lastRow;
     }
     
     public List<Employee> getallResults() {
-        return allResults;
+        // Shallow clone so JSF can update the Employee instances
+        return new ArrayList<>(this.allResults);
     }
     
-    public void setAllResults(ArrayList<Employee> allResults) {
-        this.allResults = allResults;
+    public void setAllResults(List<Employee> allResults) {
+        // Shallow clone so JSF can update the Employee instances
+        this.allResults = new ArrayList<>(allResults);
     }
     
     public Employee getEmployee() {
-        return employee;
+        return this.employee;
     }
     
     public void setEmployee(Employee emp) {
         this.employee = emp;
     }  
 
-    
     public boolean getUseJta() {
-        return useJta;
-    }    
+        return this.useJta;
+    }
+
+    public boolean isDatabaseAvailable() {
+        return this.dbOperations != null;
+    }
 }
