@@ -2,7 +2,7 @@
 /*                                                                        */
 /* SAMPLE                                                                 */
 /*                                                                        */
-/* (c) Copyright IBM Corp. 2017 All Rights Reserved                       */
+/* (c) Copyright IBM Corp. 2018 All Rights Reserved                       */
 /*                                                                        */
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
@@ -11,14 +11,13 @@ package com.ibm.cicsdev.employee.jdbc.faces;
 
 import java.math.BigDecimal;
 
+import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import javax.faces.context.FacesContext;
 
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
-import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
 
 /**
  * The bean class that handles the data and actions used by the Add Employee page. 
@@ -31,7 +30,7 @@ import com.ibm.cicsdev.employee.jdbc.impl.DbOperations;
  */
 @ManagedBean(name = "addEmployee")
 @SessionScoped
-public class AddEmpBean
+public class AddEmployeeManager
 {    
     /*
      * Instance fields.
@@ -66,12 +65,12 @@ public class AddEmpBean
      * Current error message for display.
      */
     private String message = "";
-    
+
     /**
-     * DataSource instance for connecting to the database using JDBC.
+     * Field used to access the DB manipulation methods.
      */
-    private DataSource ds;
-    
+    private DatabaseOperationsManager dbOperations;
+
     /**
      * Flag to indicate we will use JTA for unit of work support.
      */
@@ -85,22 +84,46 @@ public class AddEmpBean
     /**
      * Default constructor called by JSF.
      * 
-     * This constructor will attempt to setup the connection to the database.
      */
-    public AddEmpBean() {
-        
-        try {
-            // Attempt to lookup the configured DataSource instance
-            ds = (DataSource) InitialContext.doLookup(DbOperations.DATABASE_JNDI);
-        }
-        catch (NamingException e) {
-            // Flag the error and write out to the log
-            message = "NO DATASOURCE CONNECTION";
-            e.printStackTrace();
-        }
+    public AddEmployeeManager() {       
     }
     
 
+    /*
+     * Lifecycle methods.
+     */
+    
+    /**
+     * Performs initialisation of the bean after the constructor has been called.
+     * 
+     * This method finds the application-scoped instance of the {@link DatabaseOperationsManager}
+     * bean in here, rather than using injection. We do that this way to allow us to trap
+     * any problems with instantiating the class in a try ... catch block. This enables the
+     * ability to provide a "DB down" message on the main page, without a huge amount of
+     * error-handling logic at the backend.
+     */
+    @PostConstruct
+    public void init() {
+        
+        // Get the current faces & application context
+        FacesContext ctxt = FacesContext.getCurrentInstance();
+        Application app = ctxt.getApplication();
+        
+        try {
+            // Get an instance of the DatabaseOperationsManager bean  
+            this.dbOperations = app.evaluateExpressionGet(ctxt, "#{databaseOperations}", DatabaseOperationsManager.class);
+        }
+        catch (Exception e) {
+            
+            // Assume all exceptions from the lookup are fatal
+            this.message = "Database connection unavailable: see error log";
+            
+            // Dump the exception to the log
+            e.printStackTrace(System.out);
+        }
+    }
+    
+    
     /*
      * Action methods.
      */
@@ -113,8 +136,8 @@ public class AddEmpBean
      * @return The name of the page to navigate to
      */
     public String goBack() {
-        message = "";
-        return "master.xhtml";
+        this.message = "";
+        return "master";
     }
     
     /** 
@@ -123,7 +146,7 @@ public class AddEmpBean
      * Toggles the state of the JTA flag.
      */
     public void toggleUseJta() {
-        useJta = ! useJta;
+        this.useJta = ! this.useJta;
     }
 
     /**
@@ -154,30 +177,32 @@ public class AddEmpBean
 
         try {
             // Attempt to create the new employee record in the DB
-            DbOperations.createEmployee(ds, employee, useJta);
+            this.dbOperations.createEmployee(employee, this.useJta);
             
             // Update the message
-            message = "SUCCESSFULLY ADDED EMPLOYEE";
+            this.message = "Successfully added employee";
             
             // Clear the input data, ready for next request
-            empNo = "";
-            firstName = "";
-            lastName = "";
-            gender = "";
-            job = "";
+            this.empNo = "";
+            this.firstName = "";
+            this.lastName = "";
+            this.gender = "";
+            this.job = "";
         }
         catch (Exception e) {
             
+            // The database access class will have already rolledback our transaction
+            
             // Explicit test for duplicate values error
             if (e.getMessage().contains("DUPLICATE VALUES")) {
-                message = "ERROR Employee number already in use";
+                this.message = "Error: Employee number already in use";
             }
             else {
-                message = "ERROR Please consult stderr";
+                this.message = "An error occurred: see error log";
             }
             
             // Dump to output for debug purposes
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
     
@@ -187,15 +212,15 @@ public class AddEmpBean
      */
     
     public boolean getUseJta() {
-        return useJta;
+        return this.useJta;
     }
     
     public String getMessage() {
-        return message;
+        return this.message;
     }
     
     public String getEmpNo() {
-        return empNo;
+        return this.empNo;
     }
     
     public void setEmpNo(String empNo) {
@@ -203,7 +228,7 @@ public class AddEmpBean
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
     
     public void setFirstName(String firstName) {
@@ -211,7 +236,7 @@ public class AddEmpBean
     }
     
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
     
     public void setLastName(String lastName) {
@@ -219,7 +244,7 @@ public class AddEmpBean
     }
     
     public String getGender() {
-        return gender;
+        return this.gender;
     }
     
     public void setGender(String gender) {
@@ -227,10 +252,14 @@ public class AddEmpBean
     }
     
     public String getJob() {
-        return job;
+        return this.job;
     }
     
     public void setJob(String job) {
         this.job = job;
     }    
+
+    public boolean isDatabaseAvailable() {
+        return this.dbOperations != null;
+    }
 }

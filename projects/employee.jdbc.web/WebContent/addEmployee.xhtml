@@ -8,10 +8,9 @@
 
     <h1><h:outputText value="Add new employee" /></h1>
     
-    <h:form>
+    <p><h:outputText style="color: red;" value="#{addEmployee.message}" /></p>
     
-        <!--  Displays the result message of any executed command -->
-        <td><h:outputText style="color: red;" value="#{addEmployee.message}" /></td>
+    <h:form rendered="#{addEmployee.databaseAvailable}">
     
         <!--  Toggle button and status bar for JTA support -->
         <table><tr>

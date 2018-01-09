@@ -8,14 +8,15 @@
 
     <h1><h:outputText value="Employee database - List" /></h1>
 
-    <h:form id="frm">
+    <p><h:outputText style="color: red;" value="#{employeeList.message}" /></p>
+    
+    <h:form id="frm" rendered="#{employeeList.databaseAvailable}">
 
         <!-- Search box allowing one to search by last name -->
         <table><tr>
             <td><h:outputText style="color: black;" value="Search by last name: " /></td>
             <td><h:inputText id="inputSearchTxt" value="#{employeeList.searchString}" /></td>
-            <td><h:commandButton value="Search" action="#{employeeList.search}" rendered="#{employeeList.databaseAvailable}"/></td>
-            <td><h:outputText style="color: red;" value="#{employeeList.message}" /></td>
+            <td><h:commandButton value="Search" action="#{employeeList.search}" /></td>
         </tr></table>
         
         <!-- Toggle and status message for JTA support -->
@@ -89,7 +90,7 @@
 
         <!--  Button that will take the user to add an employee -->
         <table><tr><td>
-            <h:commandButton value="Add new employee" action="#{employeeList.goToAddScreen}" rendered="#{employeeList.databaseAvailable}" />
+            <h:commandButton value="Add new employee" action="#{employeeList.goToAddScreen}" />
         </td></tr></table>
 
     </h:form>

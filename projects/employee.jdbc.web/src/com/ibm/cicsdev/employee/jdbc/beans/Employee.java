@@ -2,7 +2,7 @@
 /*                                                                        */
 /* SAMPLE                                                                 */
 /*                                                                        */
-/* (c) Copyright IBM Corp. 2017 All Rights Reserved                       */
+/* (c) Copyright IBM Corp. 2018 All Rights Reserved                       */
 /*                                                                        */
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
@@ -16,7 +16,7 @@ import java.util.Date;
 
 /**
  * A bean class used to store all of the data fields associated with the
- * sample Db2 EMPLOYEE table.
+ * sample Db2 EMP table.
  * 
  * The fields will be populated by reading on-screen values, or from the
  * database, before being used as the basis of displays or SQL commands.
@@ -59,8 +59,8 @@ public class Employee implements Serializable
     private boolean canDelete;
     
     public Employee() {
-        canEdit = false;
-        canDelete = false;
+        this.canEdit = false;
+        this.canDelete = false;
     }
     
     public String getEmpNo() {
@@ -168,7 +168,7 @@ public class Employee implements Serializable
     }
 
     public boolean isCanEdit() {
-        return canEdit;
+        return this.canEdit;
     }
 
     public void setCanEdit(boolean canEdit) {
@@ -176,11 +176,10 @@ public class Employee implements Serializable
     }
     
     public boolean isCanDelete() {
-        return canDelete;
+        return this.canDelete;
     }
 
     public void setCanDelete(boolean canDel) {
         this.canDelete = canDel;
     }
-
 }
