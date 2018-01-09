@@ -1,7 +1,7 @@
 cics-java-liberty-employee
 =====================
 
-Sample web application that uses JDBC to access the sample Db2 EMPLOYEE table.
+Sample web application that uses JDBC to access the sample Db2 EMP table.
 
 ## Repository structure
 
@@ -38,21 +38,17 @@ JDBC type 2 connectivity,  or a remote database with a JDBC type 4 connectivity.
 1. Bind the Db2 plan that is specified in the CICS DB2CONN or DB2ENTRY definition with a PKLIST of NULLID.* 
 1. Create a Liberty JVM server called DFHWLP as described in
  [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
-1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jdbc-4.1`
+1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1` 
 1. Add a library definition to the Liberty server.xml that references the Db2 JCC libraries
-1. Add a data source definition to the Liberty server.xml with the attribute `jndiName="jdbc/sample"`
-
-A template server.xml is provided in [type-2-server.xml](etc/config/type-2-server.xml) 
+1. Add a data source definition to the Liberty server.xml a template server.xml is provided in [type-2-server.xml](etc/config/type-2-server.xml) 
 
 
 ### To configure CICS Liberty for JDBC type 4 connectivity to Db2
 1. Create a Liberty JVM server called DFHWLP as described in
  [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
-1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jdbc-4.1`
+1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1` 
 1. Add a library definition to the Liberty server.xml that references the Db2 JCC libraries
-1. Add a data source definition to the Liberty server.xml with the attribute `jndiName="jdbc/sample"`
-
-A template server.xml is provided in [type-4-server.xml](etc/config/type-4-server.xml) 
+1. Add a data source definition to the Liberty server.xml a template server.xml is provided in [type-4-server.xml](etc/Liberty/type-4-server.xml) 
 
 ## Deploying the sample
 
@@ -67,13 +63,14 @@ To install the sample through Liberty configuration:
 
 1. Export the dynamic Web project **employee.jdbc.web** from Eclipse using the menu **File** > **Export** > **WAR file** > **Finish**.
 1. Copy the exported WAR file in binary to zFS.
-1. Add an application element to the Liberty server.xml configuration file that refernces the WAR file using [employee.xml](etc/config/employee.xml) as a basis.
+1. Add an application element to the Liberty server.xml configuration file that refernces the WAR file using [employee.xml](etc/Liberty/employee.xml) as a basis.
 
-
+To define the DB2LOG temporary storage queue as recoverable, you will need to create a CICS TSMODEL resource definition with the ```Recovery``` attribute was set to ```Yes```.
+A sample DFHCSDUP input file is provided in [DFHCSD.txt](etc/RDO/DFHCSD.txt) 
 
 ## Running the sample
 The application is accessed with the following URL: [http://host:port/employee.jdbc.web/](http://host:port/employee.jdbc.web/)
-and allows the user to perform create, read, update and delete operations on employees listed in the Db2 employee table.
+and allows the user to perform create, read, update and delete operations on employees listed in the Db2 EMP table.
 
 
 ## Reference
