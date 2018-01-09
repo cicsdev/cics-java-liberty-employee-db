@@ -14,7 +14,7 @@ Sample web application that uses JDBC to access the sample Db2 EMP table.
 * [`employee.jdbc.cicsbundle`](projects/employee.jdbc.cicsbundle) - CICS bundle project 
 
 ## Pre-requisites
-* CICS TS V5.3 with [APAR PI67640](www.ibm.com/support/docview.wss?uid=swg1PI67640) and [APAR PI58375](http://www-01.ibm.com/support/docview.wss?uid=swg1PI58375), or CICS TS V5.4
+* CICS TS V5.3 with APAR PI77502
 * Java SE 7 or later on the z/OS system
 * CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed [available here](https://developer.ibm.com/mainframe/products/downloads)
 * IBM Db2 for z/OS 
