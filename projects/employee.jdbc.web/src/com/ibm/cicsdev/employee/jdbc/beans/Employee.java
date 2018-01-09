@@ -16,7 +16,7 @@ import java.util.Date;
 
 /**
  * A bean class used to store all of the data fields associated with the
- * sample Db2 EMPLOYEE table.
+ * sample Db2 EMP table.
  * 
  * The fields will be populated by reading on-screen values, or from the
  * database, before being used as the basis of displays or SQL commands.
