@@ -2,7 +2,7 @@
 /*                                                                        */
 /* SAMPLE                                                                 */
 /*                                                                        */
-/* (c) Copyright IBM Corp. 2017 All Rights Reserved                       */
+/* (c) Copyright IBM Corp. 2018 All Rights Reserved                       */
 /*                                                                        */
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
@@ -59,8 +59,8 @@ public class Employee implements Serializable
     private boolean canDelete;
     
     public Employee() {
-        canEdit = false;
-        canDelete = false;
+        this.canEdit = false;
+        this.canDelete = false;
     }
     
     public String getEmpNo() {
@@ -168,7 +168,7 @@ public class Employee implements Serializable
     }
 
     public boolean isCanEdit() {
-        return canEdit;
+        return this.canEdit;
     }
 
     public void setCanEdit(boolean canEdit) {
@@ -176,7 +176,7 @@ public class Employee implements Serializable
     }
     
     public boolean isCanDelete() {
-        return canDelete;
+        return this.canDelete;
     }
 
     public void setCanDelete(boolean canDel) {
