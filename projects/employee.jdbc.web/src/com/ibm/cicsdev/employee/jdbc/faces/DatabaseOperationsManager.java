@@ -2,7 +2,7 @@
 /*                                                                        */
 /* SAMPLE                                                                 */
 /*                                                                        */
-/* (c) Copyright IBM Corp. 2017 All Rights Reserved                       */
+/* (c) Copyright IBM Corp. 2018 All Rights Reserved                       */
 /*                                                                        */
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
@@ -22,9 +22,16 @@ import javax.annotation.Resource.AuthenticationType;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
+import com.ibm.cics.server.CicsConditionException;
 import com.ibm.cics.server.TSQ;
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
 
@@ -38,7 +45,7 @@ import com.ibm.cicsdev.employee.jdbc.beans.Employee;
  * 
  * @author Michael Jones
  */
-@ManagedBean(name = "databaseOperations", eager = true)
+@ManagedBean(name = "databaseOperations")
 @ApplicationScoped
 public class DatabaseOperationsManager
 {
@@ -49,7 +56,7 @@ public class DatabaseOperationsManager
 
     /**
      * DataSource instance for connecting to the database using JDBC
-     * Use of Resource injection required for container mgd security
+     * Use of Resource injection required for container managed security
      */          
     @Resource(authenticationType = AuthenticationType.CONTAINER, name = "jdbc/sample")
     private DataSource ds;    
@@ -80,7 +87,10 @@ public class DatabaseOperationsManager
                             "FROM EMP  WHERE LASTNAME LIKE ? ORDER BY LASTNAME, EMPNO";
             
             // Get the DB connection
-            conn = ds.getConnection();
+            conn = this.ds.getConnection();
+            
+            // This is only a search - for this example we are not updating any resources or require any locks
+            conn.setAutoCommit(true);
             
             // Prepare the statement - uppercase lastname and set as first query value
             statement = conn.prepareStatement(sqlCmd);
@@ -102,6 +112,8 @@ public class DatabaseOperationsManager
             
             // Any exceptions will be propagated
             
+            // No transaction rollback needed - all operations read-only
+            
             // Close database objects, regardless of what happened
             if ( statement != null ) {
                 statement.close();
@@ -121,22 +133,31 @@ public class DatabaseOperationsManager
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than the CICS unit of work support
      * 
-     * @throws Exception All exceptions are propagated from this method.
+     * @throws NamingException if the JNDI lookup of the UserTransaction fails
+     * @throws SQLException if a JDBC error occurs
+     * @throws CicsConditionException if a CICS error occurs
+     * @throws NotSupportedException propagated from {@link UserTransaction#begin()}
+     * @throws RollbackException propagated from {@link UserTransaction#commit()}
+     * @throws HeuristicMixedException propagated from {@link UserTransaction#commit()}
+     * @throws HeuristicRollbackException propagated from {@link UserTransaction#commit()} 
+     * @throws SystemException propagated from {@link UserTransaction#begin()} and {@link UserTransaction#commit()}
      */
-    public void createEmployee(Employee employee, final boolean useJta) throws Exception
+    public void createEmployee(Employee employee, final boolean useJta)
+            throws NamingException, SQLException, CicsConditionException,
+            NotSupportedException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException 
     {
         // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
+        
+        // The JTA transaction, if we're using one
+        UserTransaction utx = null;
         
         try {
 
             /*
              * Setup the transaction, based on whether JTA has been requested.
              */
-            
-            // The JTA transaction, if we're using one
-            UserTransaction utx;
             
             // Transactions are started implictly in CICS, explicitly in JTA
             if ( useJta ) {
@@ -165,7 +186,8 @@ public class DatabaseOperationsManager
                                 "?, ?, ?, ?)";
             
             // Get the DB connection
-            conn = ds.getConnection();
+            conn = this.ds.getConnection();
+            conn.setAutoCommit(false);
             
             // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
@@ -190,15 +212,33 @@ public class DatabaseOperationsManager
              * Commit the transaction.
              */
             
-            // Handle JTA and non-JTA commits differently
-            if ( useJta ) {
+            if ( utx != null ) {
+                
                 // Use the JTA API to commit the changes
                 utx.commit();
             }
-            else {
+            else if ( conn != null ) {
+                
                 // Use the connection to commit the changes
                 conn.commit();
             }
+        }
+        catch (Throwable t) {
+            
+            // Make sure we rollback the transaction
+            if ( utx != null ) {
+                
+                // Use the JTA API to rollback the changes
+                utx.rollback();
+            }
+            else if ( conn != null ) {
+                
+                // Use the connection to rollback the changes
+                conn.rollback();
+            }
+            
+            // Rethrow out to the caller
+            throw t;
         }
         finally {
         
@@ -225,22 +265,31 @@ public class DatabaseOperationsManager
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than CICS
      * 
-     * @throws Exception All exceptions are propagated from this method.
+     * @throws NamingException if the JNDI lookup of the UserTransaction fails
+     * @throws SQLException if a JDBC error occurs
+     * @throws CicsConditionException if a CICS error occurs
+     * @throws NotSupportedException propagated from {@link UserTransaction#begin()}
+     * @throws RollbackException propagated from {@link UserTransaction#commit()}
+     * @throws HeuristicMixedException propagated from {@link UserTransaction#commit()}
+     * @throws HeuristicRollbackException propagated from {@link UserTransaction#commit()} 
+     * @throws SystemException propagated from {@link UserTransaction#begin()} and {@link UserTransaction#commit()}
      */
-    public void deleteEmployee(Employee employee, final boolean useJta) throws Exception
+    public void deleteEmployee(Employee employee, final boolean useJta)
+            throws NamingException, SQLException, CicsConditionException,
+            NotSupportedException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException     
     {
         // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
+        
+        // The JTA transaction, if we're using one
+        UserTransaction utx = null;
         
         try {
 
             /*
              * Setup the transaction, based on whether JTA has been requested.
              */
-            
-            // The JTA transaction, if we're using one
-            UserTransaction utx;
             
             // Transactions are started implictly in CICS, explicitly in JTA
             if ( useJta ) {
@@ -259,7 +308,8 @@ public class DatabaseOperationsManager
              */
             
             // Get the DB connection
-            conn = ds.getConnection();
+            conn = this.ds.getConnection();
+            conn.setAutoCommit(false);
             
             // Prepare the statement and add the specified employee number
             statement = conn.prepareStatement("DELETE FROM EMP WHERE EMPNO = ?");
@@ -284,15 +334,33 @@ public class DatabaseOperationsManager
              * Commit the transaction.
              */
             
-            // Handle JTA and non-JTA commits differently
-            if ( useJta ) {
+            if ( utx != null ) {
+                
                 // Use the JTA API to commit the changes
                 utx.commit();
             }
-            else {
+            else if ( conn != null ) {
+                
                 // Use the connection to commit the changes
                 conn.commit();
             }
+        }
+        catch (Throwable t) {
+            
+            // Make sure we rollback the transaction
+            if ( utx != null ) {
+                
+                // Use the JTA API to rollback the changes
+                utx.rollback();
+            }
+            else if ( conn != null ) {
+                
+                // Use the connection to rollback the changes
+                conn.rollback();
+            }
+            
+            // Rethrow out to the caller
+            throw t;
         }
         finally {
             
@@ -318,13 +386,25 @@ public class DatabaseOperationsManager
      * @param employee - The employee object populated
      * @param useJta - use JTA to provide unit of work support, rather than CICS
      * 
-     * @throws Exception All exceptions are propagated from this method.
+     * @throws NamingException if the JNDI lookup of the UserTransaction fails
+     * @throws SQLException if a JDBC error occurs
+     * @throws CicsConditionException if a CICS error occurs
+     * @throws NotSupportedException propagated from {@link UserTransaction#begin()}
+     * @throws RollbackException propagated from {@link UserTransaction#commit()}
+     * @throws HeuristicMixedException propagated from {@link UserTransaction#commit()}
+     * @throws HeuristicRollbackException propagated from {@link UserTransaction#commit()} 
+     * @throws SystemException propagated from {@link UserTransaction#begin()} and {@link UserTransaction#commit()}
      */
-    public void updateEmployee(Employee employee, final boolean useJta) throws Exception
+    public void updateEmployee(Employee employee, final boolean useJta)
+            throws NamingException, SQLException, CicsConditionException,
+                   NotSupportedException, RollbackException, HeuristicMixedException, HeuristicRollbackException, SystemException 
     {
         // Instances of JDBC objects
         Connection conn = null;
         PreparedStatement statement = null;
+        
+        // The JTA transaction, if we're using one
+        UserTransaction utx = null;
         
         try {
 
@@ -332,18 +412,11 @@ public class DatabaseOperationsManager
              * Setup the transaction, based on whether JTA has been requested.
              */
             
-            // The JTA transaction, if we're using one
-            UserTransaction utx;
-            
             // Transactions are started implictly in CICS, explicitly in JTA
             if ( useJta ) {
                 // Get a new user transaction for this piece of work and start it
                 utx = (UserTransaction) InitialContext.doLookup("java:comp/UserTransaction");
                 utx.begin();
-            }
-            else {
-                // JTA not required so null user transaction
-                utx = null;
             }
 
             
@@ -367,7 +440,8 @@ public class DatabaseOperationsManager
                             "WHERE EMPNO = ?";
 
             // Get the DB connection
-            conn = ds.getConnection();
+            conn = this.ds.getConnection();
+            conn.setAutoCommit(false);
 
             // Prepare the statement and populate with data
             statement = conn.prepareStatement(sqlCmd);
@@ -377,7 +451,7 @@ public class DatabaseOperationsManager
             // Perform the UPDATE operation
             statement.execute();
 
-
+            
             /*
              * Update a CICS resource.
              */
@@ -388,7 +462,11 @@ public class DatabaseOperationsManager
             String msg = String.format("Updated %s with last name: %s", employee.getEmpNo(), employee.getLastName());
             tsq.writeString(msg);
 
-           
+            
+            // Fail if updated name ends with X
+            if ( employee.getLastName().endsWith("X") ) {
+                throw new NullPointerException();
+            }
            
 
             /*
@@ -396,20 +474,35 @@ public class DatabaseOperationsManager
              */
            
             
-            // Handle JTA and non-JTA commits differently
-            if ( useJta ) {
-            	
+            if ( utx != null ) {
+                
                 // Use the JTA API to commit the changes
                 utx.commit();
             }
-            else {
+            else if ( conn != null ) {
+                
                 // Use the connection to commit the changes
                 conn.commit();
             }
         }
-        finally {
+        catch (Throwable t) {
             
-            // Any exceptions will be propagated
+            // Make sure we rollback the transaction
+            if ( utx != null ) {
+                
+                // Use the JTA API to rollback the changes
+                utx.rollback();
+            }
+            else if ( conn != null ) {
+                
+                // Use the connection to rollback the changes
+                conn.rollback();
+            }
+            
+            // Rethrow out to the caller
+            throw t;
+        }
+        finally {
             
             // Close database objects, regardless of what happened
             if ( statement != null ) {

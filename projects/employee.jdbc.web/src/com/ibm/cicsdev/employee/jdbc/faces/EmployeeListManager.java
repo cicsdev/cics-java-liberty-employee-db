@@ -2,7 +2,7 @@
 /*                                                                        */
 /* SAMPLE                                                                 */
 /*                                                                        */
-/* (c) Copyright IBM Corp. 2017 All Rights Reserved                       */
+/* (c) Copyright IBM Corp. 2018 All Rights Reserved                       */
 /*                                                                        */
 /* US Government Users Restricted Rights - Use, duplication or disclosure */
 /* restricted by GSA ADP Schedule Contract with IBM Corp                  */
@@ -12,10 +12,11 @@ package com.ibm.cicsdev.employee.jdbc.faces;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.sql.DataSource;
+import javax.faces.context.FacesContext;
 
 import com.ibm.cicsdev.employee.jdbc.beans.Employee;
 
@@ -73,9 +74,8 @@ public class EmployeeListManager
     private boolean useJta = true;
     
     /**
-     * Injected field to access the DB manipulation methods.
+     * Field used to access the DB manipulation methods.
      */
-    @ManagedProperty("#{databaseOperations}")
     private DatabaseOperationsManager dbOperations;
 
     
@@ -90,9 +90,43 @@ public class EmployeeListManager
 
     public EmployeeListManager() {
         
-        System.out.println("EmployeeListManager()");
     } 
 
+    
+    /*
+     * Lifecycle methods.
+     */
+    
+    /**
+     * Performs initialisation of the bean after the constructor has been called.
+     * 
+     * This method finds the application-scoped instance of the {@link DatabaseOperationsManager}
+     * bean in here, rather than using injection. We do that this way to allow us to trap
+     * any problems with instantiating the class in a try ... catch block. This enables the
+     * ability to provide a "DB down" message on the main page, without a huge amount of
+     * error-handling logic at the backend.
+     */
+    @PostConstruct
+    public void init() {
+        
+        // Get the current faces & application context
+        FacesContext ctxt = FacesContext.getCurrentInstance();
+        Application app = ctxt.getApplication();
+        
+        try {
+            // Get an instance of the DatabaseOperationsManager bean  
+            this.dbOperations = app.evaluateExpressionGet(ctxt, "#{databaseOperations}", DatabaseOperationsManager.class);
+        }
+        catch (Exception e) {
+            
+            // Assume all exceptions from the lookup are fatal
+            this.message = "Database connection unavailable: see error log";
+            
+            // Dump the exception to the log
+            e.printStackTrace(System.out);
+        }
+    }
+    
     
     /*
      * Action methods.
@@ -106,7 +140,7 @@ public class EmployeeListManager
      * @return the name of the JSF file for rendering next.
      */
     public String goToAddScreen() {
-        return "addEmp.xhtml";
+        return "addEmployee";
     }
     
     /** 
@@ -115,7 +149,7 @@ public class EmployeeListManager
      * Toggles the state of the JTA flag.
      */
     public void toggleUseJta() {
-        useJta = ! useJta;
+        this.useJta = ! this.useJta;
     }
     
     /**
@@ -127,7 +161,7 @@ public class EmployeeListManager
      * @see Employee#setCanEdit(boolean)
      */
     public void setCanEdit() {
-        employee.setCanEdit(true);
+        this.employee.setCanEdit(true);
     }
     
     /**
@@ -136,21 +170,22 @@ public class EmployeeListManager
      * This method will run the update function using the new values, updating the record
      * in the database. Will also clear the editable flag for the current record.
      * 
-     * @see DatabaseOperationsManager#updateEmployee(DataSource, Employee, boolean)
+     * @see DatabaseOperationsManager#updateEmployee(Employee, boolean)
      */
-    public void saveUpdates() {
+    public void saveUpdates() throws Exception {
         
         try {
             // Call our utility routine to update the database
-            dbOperations.updateEmployee(employee, useJta);
+            this.dbOperations.updateEmployee(this.employee, this.useJta);
         }
         catch (Exception e) {
-            message = "ERROR: Please check stderr.";
-            e.printStackTrace();
+            // The database access class will have already rolledback our transaction
+            this.message = "An error occurred: see error log";
+            e.printStackTrace(System.out);
         }
 
         // Clear the flag that says we can edit this row
-        employee.setCanEdit(false);
+        this.employee.setCanEdit(false);
     }
     
     /** 
@@ -160,29 +195,30 @@ public class EmployeeListManager
      * 
      * @return The name of the page to navigate to, which will contain the results.
      * 
-     * @see DatabaseOperationsManager#findEmployeeByLastName(DataSource, String)
+     * @see DatabaseOperationsManager#findEmployeeByLastName(String)
      */
     public String search() {
         
         try {
             // Search the database for this string
-            allResults = dbOperations.findEmployeeByLastName(searchString);
+            this.allResults = this.dbOperations.findEmployeeByLastName(this.searchString);
             
             // Message if no results are found
-            if ( allResults.size() < 1 ) {
-                message = "NO RESULTS FOUND.";
+            if ( this.allResults.size() < 1 ) {
+                this.message = "No results found";
             }
             else {
-                message = "";
+                this.message = "";
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
-            message = "ERROR: Please see stderr";
+            // The database access class will have already rolledback our transaction
+            this.message = "An error occurred: see error log";
+            e.printStackTrace(System.out);
         }
         
         // Redirect back to main page
-        return "master.xhtml";
+        return "master";
     }
     
     /**
@@ -192,7 +228,7 @@ public class EmployeeListManager
      * which will have the effect of showing the "Confirm" button.
      */
     public void confirmDel() {
-        employee.setCanDelete(true);
+        this.employee.setCanDelete(true);
     }
     
     /**
@@ -205,32 +241,32 @@ public class EmployeeListManager
      * 
      * @return The next page to display in the user interaction
      * 
-     * @see DatabaseOperationsManager#deleteEmployee(DataSource, Employee, boolean)
+     * @see DatabaseOperationsManager#deleteEmployee(Employee, boolean)
      */
     public String deleteEmployee() {
         
         try {
             // Call the delete function for this employee
-            dbOperations.deleteEmployee(employee, useJta);
+            this.dbOperations.deleteEmployee(this.employee, this.useJta);
         }
         catch (Exception e) {
         
             // Check for the delete permissions error
             if ( e.getMessage().contains("RESTRICTS THE DELETION") ) {
                 // Not allowed to delete the record
-                message = "ERROR: You cannot delete this record.";
+                this.message = "ERROR: You cannot delete this record.";
             }
             else {
                 // If we can't find the permission error, report the problem
-                message = "ERROR: See stdout for details";
-                e.printStackTrace();
+                this.message = "An error occurred: see error log";
+                e.printStackTrace(System.out);
             }
 
             // Clear the flag
-            employee.setCanDelete(false);
+            this.employee.setCanDelete(false);
 
             // Redirect back to main page
-            return "master.xhtml";
+            return "master";
         }
         
         // Successful: call the search function, refreshing the view
@@ -242,7 +278,7 @@ public class EmployeeListManager
      */
     
     public String getSearchString() {
-        return searchString;
+        return this.searchString;
     }
     
     public void setSearchString(String ss) {
@@ -250,20 +286,20 @@ public class EmployeeListManager
     }
     
     public String getMessage() {
-        return message;
+        return this.message;
     }
     
     public int getFirstRow() {
-        return firstRow;
+        return this.firstRow;
     }
     
     public int getLastRow() {
-        return lastRow;
+        return this.lastRow;
     }
     
     public List<Employee> getallResults() {
         // Shallow clone so JSF can update the Employee instances
-        return new ArrayList<>(allResults);
+        return new ArrayList<>(this.allResults);
     }
     
     public void setAllResults(List<Employee> allResults) {
@@ -272,7 +308,7 @@ public class EmployeeListManager
     }
     
     public Employee getEmployee() {
-        return employee;
+        return this.employee;
     }
     
     public void setEmployee(Employee emp) {
@@ -280,10 +316,10 @@ public class EmployeeListManager
     }  
 
     public boolean getUseJta() {
-        return useJta;
+        return this.useJta;
     }
 
-    public void setDbOperations(DatabaseOperationsManager dbOperations) {
-        this.dbOperations = dbOperations;
-    }    
+    public boolean isDatabaseAvailable() {
+        return this.dbOperations != null;
+    }
 }
