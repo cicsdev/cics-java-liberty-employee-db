@@ -463,12 +463,6 @@ public class DatabaseOperationsManager
             tsq.writeString(msg);
 
             
-            // Fail if updated name ends with X
-            if ( employee.getLastName().endsWith("X") ) {
-                throw new NullPointerException();
-            }
-           
-
             /*
              * Commit the transaction.
              */
