@@ -6,7 +6,7 @@ Sample web application that uses JDBC to access the sample Db2 EMP table.
 ## Repository structure
 
 * [`projects/`](projects) - Eclipse web project and CICS bundle project suitable for importing into a CICS Explorer or z/OS Explorer environment. 
-* [`etc/`](etc) - Liberty server configuration files.
+* [`etc/`](etc) - Liberty server configuration files and CICS DFHCSDUP input.
 
 ## Project overview
 
