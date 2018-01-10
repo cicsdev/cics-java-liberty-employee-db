@@ -1,4 +1,4 @@
-cics-java-liberty-employee
+cics-java-liberty-employee-db
 =====================
 
 Sample web application that uses JDBC to access the sample Db2 EMP table.
@@ -14,7 +14,7 @@ Sample web application that uses JDBC to access the sample Db2 EMP table.
 * [`employee.jdbc.cicsbundle`](projects/employee.jdbc.cicsbundle) - CICS bundle project 
 
 ## Pre-requisites
-* CICS TS V5.3 with APAR PI77502
+* CICS TS V5.3 with APAR PI77502 for Java EE 7 and JDBC type 2 dataSource support.
 * Java SE 7 or later on the z/OS system
 * CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed [available here](https://developer.ibm.com/mainframe/products/downloads)
 * IBM Db2 for z/OS 
