@@ -1,7 +1,7 @@
 cics-java-liberty-employee-db
 =====================
 
-Sample web application that uses JDBC to access the sample Db2 EMP table.
+Sample web application that uses JDBC to read and update the sample Db2 EMP table.
 
 ## Repository structure
 
@@ -33,19 +33,16 @@ JDBC type 2 connectivity,  or a remote database with a JDBC type 4 connectivity.
 
 ### To configure CICS Liberty for JDBC type 2 connectivity 
 1. Update the CICS STEPLIB with the Db2 SDSNLOAD and SDSNLOD2 libraries
-1. Configure CICS URIMAP, DB2CONN, DB2TRAN and DB2ENTRY resource definitions as described in
- [How you can define the CICS DB2 connection](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.4.0/configuring/databases/dfhtk2c.html)
+1. Configure CICS URIMAP, DB2CONN, DB2TRAN and DB2ENTRY resource definitions as described in [How you can define the CICS DB2 connection](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.4.0/configuring/databases/dfhtk2c.html)
 1. Bind the Db2 plan that is specified in the CICS DB2CONN or DB2ENTRY definition with a PKLIST of NULLID.* 
-1. Create a Liberty JVM server called DFHWLP as described in
- [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
+1. Create a Liberty JVM server called DFHWLP as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
 1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1` 
 1. Add a library definition to the Liberty server.xml that references the Db2 JCC libraries
 1. Add a data source definition to the Liberty server.xml, a template server.xml is provided in [type-2-server.xml](etc/Liberty/type-2-server.xml) 
 
 
 ### To configure CICS Liberty for JDBC type 4 connectivity to Db2
-1. Create a Liberty JVM server called DFHWLP as described in
- [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
+1. Create a Liberty JVM server called DFHWLP as described in [4 easy steps](https://developer.ibm.com/cics/2015/06/04/starting-a-cics-liberty-jvm-server-in-4-easy-steps/)
 1. Add the following Liberty features to the `featureManger` list in server.xml: `jsf-2.2`, `jndi-1.0`, `jdbc-4.1` 
 1. Add a library definition to the Liberty server.xml that references the Db2 JCC libraries
 1. Add a data source definition to the Liberty server.xml, a template server.xml is provided in [type-4-server.xml](etc/Liberty/type-4-server.xml) 
@@ -70,12 +67,14 @@ A sample DFHCSDUP input file is provided in [DFHCSD.txt](etc/RDO/DFHCSD.txt)
 
 ## Running the sample
 The application is accessed with the following URL: [http://host:port/employee.jdbc.web/](http://host:port/employee.jdbc.web/)
-and allows the user to perform create, read, update and delete operations on employees listed in the Db2 EMP table.
+and allows the user to perform create, read, update and delete operations on employees listed in the Db2 EMP table. 
+Further details on how to use the sample to connect to Db2 by using JDBC can be found in chapter 4 of the IBM Redbook *Liberty in IBM CICS: Deploying and Managing Java EE Applications*, [SG248418](www.redbooks.ibm.com/abstracts/sg248418.html)
 
 
 ## Reference
 *  CICS Knowledge Center [Configuring a Liberty JVM server](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.4.0/configuring/java/config_jvmserver_liberty.html)
 *  CICS Knowledge Center [Configuring a JVM server to support DB2](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.4.0/applications/developing/database/dfhtk4b.html)
+*  IBM Redbook [Liberty in IBM CICS: Deploying and Managing Java EE Applications](www.redbooks.ibm.com/abstracts/sg248418.html)
 
 ## License
 This project is licensed under [Apache License Version 2.0](LICENSE).
