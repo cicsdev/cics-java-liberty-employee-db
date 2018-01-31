@@ -68,13 +68,13 @@ A sample DFHCSDUP input file is provided in [DFHCSD.txt](etc/RDO/DFHCSD.txt)
 ## Running the sample
 The application is accessed with the following URL: [http://host:port/employee.jdbc.web/](http://host:port/employee.jdbc.web/)
 and allows the user to perform create, read, update and delete operations on employees listed in the Db2 EMP table. 
-Further details on how to use the sample to connect to Db2 by using JDBC can be found in chapter 4 of the IBM Redbook *Liberty in IBM CICS: Deploying and Managing Java EE Applications*, [SG248418](www.redbooks.ibm.com/abstracts/sg248418.html)
+Further details on how to use the sample to connect to Db2 by using JDBC can be found in chapter 4 of the IBM Redbook *Liberty in IBM CICS: Deploying and Managing Java EE Applications*, [SG248418](http://www.redbooks.ibm.com/abstracts/sg248418.html)
 
 
 ## Reference
 *  CICS Knowledge Center [Configuring a Liberty JVM server](https://www.ibm.com/support/knowledgecenter/SSGMCP_5.4.0/configuring/java/config_jvmserver_liberty.html)
 *  CICS Knowledge Center [Configuring a JVM server to support DB2](https://www.ibm.com/support/knowledgecenter/en/SSGMCP_5.4.0/applications/developing/database/dfhtk4b.html)
-*  IBM Redbook [Liberty in IBM CICS: Deploying and Managing Java EE Applications](www.redbooks.ibm.com/abstracts/sg248418.html)
+*  IBM Redbook [Liberty in IBM CICS: Deploying and Managing Java EE Applications](http://www.redbooks.ibm.com/abstracts/sg248418.html)
 
 ## License
 This project is licensed under [Apache License Version 2.0](LICENSE).
