@@ -3,7 +3,7 @@
 	<display-name>employee.jdbc.web.v2</display-name>
 
 	<welcome-file-list>
-		<welcome-file>master.xhtml</welcome-file>
+		<welcome-file>main.xhtml</welcome-file>
 	</welcome-file-list>
 	
 	<servlet>

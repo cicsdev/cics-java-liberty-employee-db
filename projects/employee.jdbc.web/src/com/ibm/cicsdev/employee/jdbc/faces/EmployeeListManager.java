@@ -218,7 +218,7 @@ public class EmployeeListManager
         }
         
         // Redirect back to main page
-        return "master";
+        return "main";
     }
     
     /**

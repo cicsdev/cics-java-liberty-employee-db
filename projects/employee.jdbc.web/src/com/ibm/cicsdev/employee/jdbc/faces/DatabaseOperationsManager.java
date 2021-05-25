@@ -64,7 +64,7 @@ public class DatabaseOperationsManager
     /**
      * Uses a specified last name to find a matching employee in the database table.
      * 
-     * Used by the search function on master.xhtml page
+     * Used by the search function on main.xhtml page
      * 
      * @param lastName - the search argument to be applied to the lastName field.
      * 
