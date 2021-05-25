@@ -266,7 +266,7 @@ public class EmployeeListManager
             this.employee.setCanDelete(false);
 
             // Redirect back to main page
-            return "master";
+            return "main";
         }
         
         // Successful: call the search function, refreshing the view
