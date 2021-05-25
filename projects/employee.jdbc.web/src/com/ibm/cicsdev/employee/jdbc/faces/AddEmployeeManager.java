@@ -131,13 +131,13 @@ public class AddEmployeeManager
     /**
      * Called by JSF when the user clicks the "Go back" button.
      * 
-     * This will clear any error message and send the user back to the master page.
+     * This will clear any error message and send the user back to the main page.
      * 
      * @return The name of the page to navigate to
      */
     public String goBack() {
         this.message = "";
-        return "master";
+        return "main";
     }
     
     /** 
