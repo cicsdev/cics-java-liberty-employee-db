@@ -1,7 +1,7 @@
 cics-java-liberty-employee-db
 =====================
 
-Sample web application that uses JDBC to read and update the sample Db2 EMP table.
+Sample web application using JSF that uses JDBC DataSource to read and update the sample Db2 EMP table.
 
 ## Repository structure
 
