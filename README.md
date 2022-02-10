@@ -14,9 +14,9 @@ Sample web application using JSF that uses JDBC DataSource to read and update th
 * [`employee.jdbc.cicsbundle`](projects/employee.jdbc.cicsbundle) - CICS bundle project 
 
 ## Pre-requisites
-* CICS TS V5.3 with APAR PI77502 for Java EE 7 and JDBC type 2 dataSource support.
-* Java SE 7 or later on the z/OS system
-* CICS Explorer V5.4 with the IBM CICS SDK for Java EE and Liberty feature installed [available here](https://developer.ibm.com/mainframe/products/downloads)
+* CICS TS V5.3 with APAR PI77502 for Java EE 7 
+* Java SE 8 or later on the z/OS system
+* Eclipse with the IBM CICS SDK for Java EE, Jakarta EE and Liberty installed [available here](https://developer.ibm.com/mainframe/products/downloads)
 * IBM Db2 for z/OS 
 
 ## Configuration
