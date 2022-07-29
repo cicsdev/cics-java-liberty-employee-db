@@ -15,7 +15,7 @@ Sample web application using JSF that uses JDBC DataSource to read and update th
 
 ## Pre-requisites
 * CICS TS V5.3 with APAR PI77502 for Java EE 7 
-* Java SE 8 or later on the z/OS system
+* Java SE 1.8 or later on the workstation 
 * Eclipse with the IBM CICS SDK for Java EE, Jakarta EE and Liberty installed [available here](https://developer.ibm.com/mainframe/products/downloads)
 * IBM Db2 for z/OS 
 
