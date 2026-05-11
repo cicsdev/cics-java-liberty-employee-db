@@ -1,6 +1,9 @@
 # Maintainers
 
-- Phil Wakelin [@PhilWakelin](https://github.com/PhilWakelin)
 - Tony Fitzgerald [@fitzget](https://github.com/fitzget)
 
-*Last reviewed:* September 2025
+## Former maintainers
+
+- Phil Wakelin [@PhilWakelin](https://github.com/PhilWakelin)
+
+*Last reviewed:* May 2026
